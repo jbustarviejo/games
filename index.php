@@ -12,13 +12,13 @@
                     <h2>La caña más larga</h2>
                     <p>Elige una de las tres cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
                 </div>
-                <button class="play-button" onclick="playGame();">Jugar</button>
+                <button class="play-button" onclick="sticksGame.playGame();">Jugar</button>
             </div>
             <div id="main-scren-game" style="z-index: 8; width: 100%; height: 100%; position: absolute; background-color: rgb(117, 117, 219);">
-                <img id="close-hand" src="/images/larguest-stick/close-hand.png"/>
+                <img id="close-hand" src="/images/larguest-stick/close-hand.png" style="bottom:10%;"/>
                 <img class="stick" number="1" src="/images/larguest-stick/stick.png" style="left:43%"/>
-                <img class="stick" number="2"  src="/images/larguest-stick/stick.png"/>
-                <img class="stick" number="3"  src="/images/larguest-stick/stick.png"  style="left:57%"/>
+                <img class="stick" number="2" src="/images/larguest-stick/stick.png"/>
+                <img class="stick" number="3" src="/images/larguest-stick/stick.png"  style="left:57%"/>
             </div>
         </div>
 
@@ -39,51 +39,69 @@
         </div>
 
         <script type="text/javascript">
-            function playGame() {
-                window.start_decission = new Date().getTime();
-                document.getElementById('instructions-screen').style.display = 'none';
-            }
-            window.onload = function () {
-                var sticks = document.getElementsByClassName("stick");
-                window.winner_stick = Math.floor(Math.random() * 3) + 1;
-                for (var i = 0; i < sticks.length; i++) {
-                    //Bind sticks onclicks
-                    sticks[i].onclick = function () {
-                        chooseStick(this.getAttribute("number"));
+            var sticksGame = {
+                playGame: function () {
+                    this.start_decission = new Date().getTime();
+                    document.getElementById('instructions-screen').style.display = 'none';
+                },
+                init: function () {
+                    var self = this;
+                    var sticks = document.getElementsByClassName("stick");
+                    self.winner_stick = Math.floor(Math.random() * 3) + 1;
+                    for (var i = 0; i < sticks.length; i++) {
+                        //Bind sticks onclicks
+                        sticks[i].onclick = function () {
+                            self.chooseStick(this.getAttribute("number"));
+                        };
                     }
+                    //Bind on resize
+                    window.onresize = function () {
+                        self.resized();
+                    };
+                    self.resized();
+                },
+                //Returns Body tag width displayed on window
+                getBodyWidth: function () {
+                    return document.getElementById("body").offsetWidth;
+                },
+                animateDown: function (obj, to, choosen) {
+                    var self = this;
+                    var bottomInit = obj.style.bottom;
+                    bottomInit = bottomInit.substring(0, bottomInit.length - 1);
+                    if (bottomInit <= to) {
+                        self.finish(choosen);
+                        return;
+                    }
+                    obj.style.bottom = (bottomInit - 0.5) + "%";
+                    setTimeout(function () {
+                        self.animateDown(obj, to, choosen);
+                    }, 10);
+                },
+                //When a stick is choose
+                chooseStick: function (choosen) {
+                    ellapsed_time = new Date().getTime() - this.start_decission;
+                    console.log(ellapsed_time);
+                    console.log(this.winner_stick, choosen);
+                    this.animateDown(document.getElementById("close-hand"), -8, choosen);
+                },
+                finish: function (choosen) {
+                    console.log(this.winner_stick, choosen);
+                    if (this.winner_stick.toString() === choosen) {
+                        alert("Ganas! " + ellapsed_time);
+                    } else {
+                        alert("Pierdes! " + ellapsed_time);
+                    }
+                },
+                //Function that controls the rigth width and height
+                resized: function () {
+                    var size = Math.round(this.getBodyWidth() * 0.75);
+                    document.getElementById("gameContainer").style.width = size + "px";
+                    document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
                 }
             };
-
-            //Returns Body tag width displayed on window
-            function getBodyWidth() {
-                return document.getElementById("body").offsetWidth;
-            }
-
-            //When a stick is choose
-            function chooseStick(choosen) {
-                ellapsed_time = new Date().getTime() - window.start_decission
-                console.log(ellapsed_time);
-                console.log(window.winner_stick, choosen);
-                if (window.winner_stick.toString() === choosen) {
-                    alert("Ganas! " + ellapsed_time);
-                } else {
-                    alert("Pierdes! " + ellapsed_time);
-                }
-            }
-
-            //Function that controls the rigth width and height
-            function resized() {
-                var size = Math.round(getBodyWidth() * 0.75);
-                document.getElementById("gameContainer").style.width = size + "px";
-                document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
-            }
-            resized();
-
-            //Bind on resize
-            window.onresize = function () {
-                resized();
+            window.onload = function () {
+                sticksGame.init();
             };
-
         </script>
         <style>
             #body{
