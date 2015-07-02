@@ -7,18 +7,30 @@
 
     <body id="body">
         <div id="gameContainer" class="">
-            <div id="instructions-screen">
+            <div id="instructions-screen" class="screen menu-screen">
                 <div style="color: #fff; margin-top: 22%;">
                     <h2>La caña más larga</h2>
                     <p>Elige una de las tres cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
                 </div>
                 <button class="play-button" onclick="sticksGame.playGame();">Jugar</button>
             </div>
-            <div id="main-scren-game" style="z-index: 8; width: 100%; height: 100%; position: absolute; background-color: rgb(117, 117, 219);">
+            <div id="main-scren-game" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
                 <img id="close-hand" src="/images/larguest-stick/close-hand.png" style="bottom:10%;"/>
                 <img class="stick" number="1" src="/images/larguest-stick/stick.png" style="left:43%"/>
                 <img class="stick" number="2" src="/images/larguest-stick/stick.png"/>
                 <img class="stick" number="3" src="/images/larguest-stick/stick.png"  style="left:57%"/>
+            </div>
+            <div id="win-screen" class="screen menu-screen" style="display:none;">
+                <div style="color: #fff; margin-top: 22%;">
+                    <h2>Enhorabuena ¡Has ganado!</h2>
+                    <p>Has conseguido X puntos</p>
+                </div>
+            </div>
+            <div id="lose-screen" class="screen menu-screen" style="display:none;">
+                <div style="color: #fff; margin-top: 22%;">
+                    <h2>Vaya... No has ganado...</h2>
+                    <p>Has perdido Y puntos</p>
+                </div>
             </div>
         </div>
 
@@ -82,14 +94,14 @@
                     ellapsed_time = new Date().getTime() - this.start_decission;
                     console.log(ellapsed_time);
                     console.log(this.winner_stick, choosen);
+                    this.sendDataToServer();
                     this.animateDown(document.getElementById("close-hand"), -8, choosen);
                 },
                 finish: function (choosen) {
-                    console.log(this.winner_stick, choosen);
                     if (this.winner_stick.toString() === choosen) {
-                        alert("Ganas! " + ellapsed_time);
+                        document.getElementById("win-screen").style.display = "block";
                     } else {
-                        alert("Pierdes! " + ellapsed_time);
+                        document.getElementById("lose-screen").style.display = "block";
                     }
                 },
                 //Function that controls the rigth width and height
@@ -97,6 +109,21 @@
                     var size = Math.round(this.getBodyWidth() * 0.75);
                     document.getElementById("gameContainer").style.width = size + "px";
                     document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
+                },
+                sendDataToServer: function () {
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('POST', encodeURI('myservice/username'));
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onload = function () {
+                        if (xhr.status === 200 && xhr.responseText !== "todook") {
+                            console.log('Something went wrong.  Name is now ' + xhr.responseText);
+                        }
+                        else if (xhr.status !== 200) {
+                            console.log('Request failed.  Returned status of ' + xhr.status);
+                        }
+                    };
+                    xhr.send(encodeURI('name=' + " holi"));
                 }
             };
             window.onload = function () {
@@ -109,9 +136,6 @@
             }
             #gameContainer{
                 border-radius:8px;overflow:hidden;z-index:10;margin: 50px auto; position: relative; width: 90%; height: 90%; border: 1px solid #000;
-            }
-            #gameContainer #instructions-screen{
-                z-index:9;text-align:center;position: absolute; width: 100%; height: 100%; border: 1px solid black; background-color:rgba(0, 50, 69,0.95);
             }
             #gameContainer button{
                 cursor:pointer;border: 0 none;border-radius: 5px;font-size: 20px;height: 50px;width: 150px;
@@ -129,6 +153,17 @@
                 position: absolute;
                 width: 5%;
                 z-index: 6;
+            }
+            #gameContainer .screen{
+                width: 100%; 
+                height: 100%; 
+                position: absolute;
+                text-align: center;
+            }
+            #gameContainer .menu-screen{
+                z-index: 9;
+                background-color:rgba(0, 50, 69,0.95);
+                border: 1px solid black;
             }
             #gameContainer .stick:hover{
                 width: 6%;
