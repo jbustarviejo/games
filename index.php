@@ -3,22 +3,24 @@
     <head>
         <meta charset="utf-8" /> 
         <title>Games</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
     </head>
 
     <body id="body">
         <div id="gameContainer" class="">
             <div id="instructions-screen" class="screen menu-screen">
-                <div style="color: #fff; margin-top: 22%;">
-                    <h2>La caña más larga</h2>
-                    <p>Elige una de las tres cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
+                <div>
+                    <h2 class="h2-title">La caña más larga</h2>
+                    <p class="screen-msg">Elige una de las tres cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
                 </div>
-                <button class="play-button" onclick="sticksGame.playGame();">Jugar</button>
+                <button class="play-button" onclick="sticksGame.startSticksGame();">Jugar</button>
             </div>
             <div id="main-scren-game" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
-                <img id="close-hand" src="/images/larguest-stick/close-hand.png" style="bottom:10%;"/>
-                <img class="stick" number="1" src="/images/larguest-stick/stick.png" style="left:43%"/>
-                <img class="stick" number="2" src="/images/larguest-stick/stick.png"/>
-                <img class="stick" number="3" src="/images/larguest-stick/stick.png"  style="left:57%"/>
+                <img id="close-hand" ondragstart="return false;" src="/images/larguest-stick/close-hand.png" style=""/>
+                <img class="stick" ondragstart="return false;" number="1" src="/images/larguest-stick/stick.png" onmouseover="sticksGame.createsoundbite('/audio/click.ogg', '/audio/click.mp3').play();" style="left:43%"/>
+                <img class="stick" ondragstart="return false;" number="2" src="/images/larguest-stick/stick.png" onmouseover="sticksGame.createsoundbite('/audio/click.ogg', '/audio/click.mp3').play();"/>
+                <img class="stick" ondragstart="return false;" number="3" src="/images/larguest-stick/stick.png" onmouseover="sticksGame.createsoundbite('/audio/click.ogg', '/audio/click.mp3').play();"  style="left:57%"/>
+                <img id="open-hand" ondragstart="return false;" src="/images/larguest-stick/open-hand.png" style="display:none;bottom:10%;"/>
             </div>
             <div id="win-screen" class="screen menu-screen" style="display:none;">
                 <div style="color: #fff; margin-top: 22%;">
@@ -51,15 +53,15 @@
         </div>
 
         <script type="text/javascript">
+            window.onload = function () {
+                sticksGame.init();
+            };
             var sticksGame = {
-                playGame: function () {
-                    this.start_decission = new Date().getTime();
-                    document.getElementById('instructions-screen').style.display = 'none';
-                },
                 init: function () {
                     var self = this;
                     var sticks = document.getElementsByClassName("stick");
                     self.winner_stick = Math.floor(Math.random() * 3) + 1;
+                    self.sticksNumber = 3;
                     for (var i = 0; i < sticks.length; i++) {
                         //Bind sticks onclicks
                         sticks[i].onclick = function () {
@@ -71,6 +73,42 @@
                         self.resized();
                     };
                     self.resized();
+                },
+                startSticksGame: function () {
+                    this.start_decission = new Date().getTime();
+                    document.getElementById('instructions-screen').style.display = 'none';
+                },
+                createsoundbite: function (sound) {
+                    var html5_audiotypes = {//define list of audio file extensions and their associated audio types. Add to it if your specified audio file isn't on this list:
+                        "mp3": "audio/mpeg",
+                        "mp4": "audio/mp4",
+                        "ogg": "audio/ogg",
+                        "wav": "audio/wav"
+                    };
+                    var html5audio = document.createElement('audio');
+                    if (html5audio.canPlayType) { //check support for HTML5 audio
+                        for (var i = 0; i < arguments.length; i++) {
+                            var sourceel = document.createElement('source');
+                            sourceel.setAttribute('src', arguments[i]);
+                            if (arguments[i].match(/\.(\w+)$/i)) {
+                                sourceel.setAttribute('type', html5_audiotypes[RegExp.$1]);
+                            }
+                            html5audio.appendChild(sourceel);
+                        }
+                        html5audio.load();
+                        html5audio.playclip = function () {
+                            html5audio.pause();
+                            html5audio.currentTime = 0;
+                            html5audio.play();
+                        };
+                        return html5audio;
+                    } else {
+                        return {
+                            playclip: function () {
+                                throw new Error("Your browser doesn't support HTML5 audio unfortunately");
+                            }
+                        };
+                    }
                 },
                 //Returns Body tag width displayed on window
                 getBodyWidth: function () {
@@ -84,18 +122,34 @@
                         self.finish(choosen);
                         return;
                     }
-                    obj.style.bottom = (bottomInit - 0.5) + "%";
+                    obj.style.bottom = (bottomInit - 0.3) + "%";
                     setTimeout(function () {
                         self.animateDown(obj, to, choosen);
-                    }, 10);
+                    }, 50);
                 },
                 //When a stick is choose
                 chooseStick: function (choosen) {
-                    ellapsed_time = new Date().getTime() - this.start_decission;
+                    var self = this;
+                    var ellapsed_time = new Date().getTime() - this.start_decission;
                     console.log(ellapsed_time);
                     console.log(this.winner_stick, choosen);
-                    this.sendDataToServer();
-                    this.animateDown(document.getElementById("close-hand"), -8, choosen);
+                    this.sendDataToServer(ellapsed_time, this.winner_stick, choosen, this.sticksNumber);
+                    document.getElementById("open-hand").style.display = "block";
+                    document.getElementById("close-hand").style.display = "none";
+                    var sticks = document.getElementsByClassName("stick");
+                    for (var i = 0; i < sticks.length; i++) {
+                        //Bind sticks onclicks
+                        if (i == (choosen - 1)) {
+                            sticks[i].setAttribute("class", sticks[i].className + " selected");
+                        } else {
+                            sticks[i].setAttribute("class", sticks[i].className + " no-selected");
+                        }
+                        sticks[i].removeAttribute("onmouseover");
+                        sticks[i].onclick = "";
+                    }
+                    setTimeout(function () {
+                        self.animateDown(document.getElementById("open-hand"), -8, choosen);
+                    }, 1200);
                 },
                 finish: function (choosen) {
                     if (this.winner_stick.toString() === choosen) {
@@ -110,10 +164,10 @@
                     document.getElementById("gameContainer").style.width = size + "px";
                     document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
                 },
-                sendDataToServer: function () {
+                sendDataToServer: function (time, winner, selected, sticksNumber) {
                     var xhr = new XMLHttpRequest();
 
-                    xhr.open('POST', encodeURI('myservice/username'));
+                    xhr.open('POST', encodeURI('store-data/sticks-game'));
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     xhr.onload = function () {
                         if (xhr.status === 200 && xhr.responseText !== "todook") {
@@ -123,53 +177,9 @@
                             console.log('Request failed.  Returned status of ' + xhr.status);
                         }
                     };
-                    xhr.send(encodeURI('name=' + " holi"));
+                    xhr.send(encodeURI('time=' + time) + "&" + encodeURI('winner=' + winner) + "&" + encodeURI('selected=' + selected) + "&" + encodeURI('sticksNumber=' + sticksNumber));
                 }
-            };
-            window.onload = function () {
-                sticksGame.init();
-            };
+            }
         </script>
-        <style>
-            #body{
-                width:100%; height: 100%; margin:0;
-            }
-            #gameContainer{
-                border-radius:8px;overflow:hidden;z-index:10;margin: 50px auto; position: relative; width: 90%; height: 90%; border: 1px solid #000;
-            }
-            #gameContainer button{
-                cursor:pointer;border: 0 none;border-radius: 5px;font-size: 20px;height: 50px;width: 150px;
-            }
-            #gameContainer #close-hand{
-                bottom: 10%;
-                left: 35%;
-                position: absolute;
-                width: 30%;
-                z-index: 7;
-            }
-            #gameContainer .stick{
-                bottom: 50%;
-                left: 50%;
-                position: absolute;
-                width: 5%;
-                z-index: 6;
-            }
-            #gameContainer .screen{
-                width: 100%; 
-                height: 100%; 
-                position: absolute;
-                text-align: center;
-            }
-            #gameContainer .menu-screen{
-                z-index: 9;
-                background-color:rgba(0, 50, 69,0.95);
-                border: 1px solid black;
-            }
-            #gameContainer .stick:hover{
-                width: 6%;
-                cursor: pointer;
-                opacity: 0.8;
-            }
-        </style>
     </body>
 </html>

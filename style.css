@@ -1,0 +1,82 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 03-jul-2015, 18:13:47
+    Author     : jbustarviejo
+*/
+
+#body{
+    width:100%; height: 100%; margin:0;
+}
+#gameContainer{
+    border-radius:8px;overflow:hidden;z-index:10;margin: 50px auto; position: relative; width: 90%; height: 90%; border: 1px solid #000;
+}
+#gameContainer button{
+    cursor:pointer;border: 0 none;border-radius: 5px;font-size: 20px;height: 50px;width: 150px;
+    margin-top: 20px;
+}
+#gameContainer #close-hand{
+    bottom: 10%;
+    left: 35%;
+    position: absolute;
+    width: 30%;
+    z-index: 7;
+}
+#gameContainer #open-hand {
+    bottom: 10%;
+    left: 31%;
+    position: absolute;
+    width: 51%;
+    z-index: 7;
+}
+#gameContainer .stick{
+    top: 15%;
+    left: 50%;
+    position: absolute;
+    width: 5%;
+    z-index: 6;
+}
+#gameContainer .screen{
+    width: 100%; 
+    height: 100%; 
+    position: absolute;
+    text-align: center;
+}
+#gameContainer #instructions-screen > div{
+    color: #fff; margin-top: 19%;
+}
+#gameContainer .menu-screen{
+    z-index: 9;
+    background-color:rgba(0, 50, 69,0.95);
+    border: 1px solid black;
+}
+#gameContainer .stick:hover, #gameContainer .stick.selected{
+    width: 6%;
+    cursor: pointer;
+    opacity: 0.8;
+}
+#gameContainer .stick.selected:hover{
+    cursor: default;
+}
+#gameContainer .stick.no-selected:hover{
+    width: 5%;
+    cursor: default;
+    opacity:1;
+}
+#gameContainer .screen-msg{
+    font-size: 22px;
+}
+#gameContainer .h2-title{
+    font-size: 40px;
+}
+@media (max-width: 1200px){
+    #gameContainer .screen-msg{
+        font-size: 16px;
+    }
+    #gameContainer .h2-title{
+        font-size: 30px;
+    }
+}
