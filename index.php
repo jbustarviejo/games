@@ -19,7 +19,7 @@
                     <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
                     <div>
                         <h2 class="h2-title">La caña más larga</h2>
-                        <p class="screen-msg">Elige una de las tres cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
+                        <p class="screen-msg">Elige una de las cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
                     </div>
                     <button class="play-button" onclick="games.sticksGame.startSticksGame();">Jugar</button>
                 </div>
