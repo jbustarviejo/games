@@ -8,27 +8,39 @@
 
     <body id="body">
         <div id="gameContainer" class="">
-            <div id="instructions-screen" class="screen menu-screen">
+            <div id="main-menu" class="screen menu-screen">
                 <div>
-                    <h2 class="h2-title">La caña más larga</h2>
-                    <p class="screen-msg">Elige una de las tres cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
-                </div>
-                <button class="play-button" onclick="sticksGame.startSticksGame();">Jugar</button>
-            </div>
-            <div id="main-screen-game-sticks" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
-                <img id="close-hand" ondragstart="return false;" src="/images/larguest-stick/close-hand.png" style=""/>
-                <img id="open-hand" ondragstart="return false;" src="/images/larguest-stick/open-hand.png" style="display:none;bottom:2%;opacity: 1;"/>
-            </div>
-            <div id="win-screen" class="screen menu-screen" style="display:none;">
-                <div style="color: #fff; margin-top: 22%;">
-                    <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
-                    <p class="screen-msg">Has conseguido X puntos</p>
+                    <h2 class="h2-title">Elige un juego:</h2>
+                    <button class="play-button" onclick="games.sticksGame.init(Math.floor(Math.random() * 3) + 3);">La caña más larga</button>
                 </div>
             </div>
-            <div id="lose-screen" class="screen menu-screen" style="display:none;">
-                <div style="color: #fff; margin-top: 22%;">
-                    <h2 class="h2-title">Vaya... No has ganado...</h2>
-                    <p class="screen-msg">Has perdido Y puntos</p>
+            <div id="sticks-game">
+                <div id="instructions-screen" class="screen menu-screen">
+                    <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
+                    <div>
+                        <h2 class="h2-title">La caña más larga</h2>
+                        <p class="screen-msg">Elige una de las tres cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
+                    </div>
+                    <button class="play-button" onclick="games.sticksGame.startSticksGame();">Jugar</button>
+                </div>
+                <div id="main-screen-game-sticks" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
+                    <img id="close-hand" ondragstart="return false;" src="/images/larguest-stick/close-hand.png"/>
+                    <img id="open-hand" ondragstart="return false;" src="/images/larguest-stick/open-hand.png"/>
+                    <div id="main-screen-game-sticks-container"></div>
+                </div>
+                <div id="sticks-win-screen" class="screen menu-screen" style="display:none;">
+                    <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
+                    <div style="color: #fff; margin-top: 22%;">
+                        <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
+                        <p class="screen-msg">Has conseguido X puntos</p>
+                    </div>
+                </div>
+                <div id="sticks-lose-screen" class="screen menu-screen" style="display:none;">
+                    <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
+                    <div style="color: #fff; margin-top: 22%;">
+                        <h2 class="h2-title">Vaya... No has ganado...</h2>
+                        <p class="screen-msg">Has perdido Y puntos</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,14 +63,43 @@
 
         <script type="text/javascript">
             window.onload = function () {
-                sticksGame.init(Math.floor(Math.random() * 3) + 3);
+                console.log("asdas");
+                games.resized();
             };
-            var sticksGame = {
+            //Bind on resize
+            window.onresize = function () {
+                games.resized();
+            };
+            var games = {
+                displayMainMenu: function (hide) {
+                    document.getElementById(hide).style.display = "none";
+                    document.getElementById('main-menu').style.display = "block";
+                },
+                getBodyWidth: function () {
+                    return document.getElementById("body").offsetWidth;
+                },
+                resized: function () {
+                    var size = Math.round(this.getBodyWidth() * 0.75);
+                    document.getElementById("gameContainer").style.width = size + "px";
+                    document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
+                }
+            };
+            games.sticksGame = {
                 init: function (sticksNumber) {
                     var self = this;
+                    document.getElementById('sticks-game').style.display = "block";
+                    document.getElementById('main-menu').style.display = "none";
+                    document.getElementById("sticks-lose-screen").style.display = "none";
+                    document.getElementById("sticks-win-screen").style.display = "none";
+                    var openHand = document.getElementById("open-hand");
+                    openHand.style.display = "none";
+                    openHand.style.opacity = "1";
+                    openHand.style.bottom = "2%";
+                    document.getElementById("close-hand").style.display = "block";
                     self.sticksNumber = sticksNumber;
                     self.winner_stick = Math.floor(Math.random() * sticksNumber) + 1;
-                    var sticksContainer = document.getElementById('main-screen-game-sticks');
+                    var sticksContainer = document.getElementById('main-screen-game-sticks-container');
+                    sticksContainer.innerHTML = "";
                     console.log("sticksNumber: " + sticksNumber);
                     var availableWidth = 20;
                     var leftInc = Math.round(availableWidth * 100 / sticksNumber) / 100;
@@ -70,14 +111,9 @@
                             var height = Math.floor(Math.random() * 12) + 38;
                         }
                         sticksContainer.innerHTML += self.createsoundbite('/audio/click.ogg', '/audio/click.mp3', (i + 1)).outerHTML;
-                        sticksContainer.innerHTML += '<img class="stick" onclick="sticksGame.chooseStick(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/larguest-stick/straw' + (Math.floor(Math.random() * 7) + 1) + '.jpg" onmouseover="document.getElementById(\'stickAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">';
+                        sticksContainer.innerHTML += '<img class="stick" onclick="games.sticksGame.chooseStick(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/larguest-stick/straw' + (Math.floor(Math.random() * 7) + 1) + '.jpg" onmouseover="document.getElementById(\'stickAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">';
                         leftOffset += leftInc;
                     }
-                    //Bind on resize
-                    window.onresize = function () {
-                        self.resized();
-                    };
-                    self.resized();
                 },
                 startSticksGame: function () {
                     this.start_decission = new Date().getTime();
@@ -123,9 +159,9 @@
                 },
                 finish: function (choosen) {
                     if (this.winner_stick === choosen) {
-                        document.getElementById("win-screen").style.display = "block";
+                        document.getElementById("sticks-win-screen").style.display = "block";
                     } else {
-                        document.getElementById("lose-screen").style.display = "block";
+                        document.getElementById("sticks-lose-screen").style.display = "block";
                     }
                 },
                 createsoundbite: function (sound) {
@@ -175,16 +211,6 @@
                         }
                     };
                     xhr.send(encodeURI('time=' + time) + "&" + encodeURI('winner=' + winner) + "&" + encodeURI('selected=' + selected) + "&" + encodeURI('sticksNumber=' + sticksNumber));
-                },
-                //Function that controls the rigth width and height
-                resized: function () {
-                    var size = Math.round(this.getBodyWidth() * 0.75);
-                    document.getElementById("gameContainer").style.width = size + "px";
-                    document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
-                },
-                //Returns Body tag width displayed on window
-                getBodyWidth: function () {
-                    return document.getElementById("body").offsetWidth;
                 }
             };
         </script>
