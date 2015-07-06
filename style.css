@@ -71,7 +71,7 @@ and open the template in the editor.
     position: absolute;
     text-align: center;
 }
-#gameContainer #instructions-screen > div{
+#gameContainer #sticks-instructions-screen > div,#gameContainer #cards-instructions-screen > div{
     color: #fff; margin-top: 19%;
 }
 #gameContainer .menu-screen{
@@ -107,4 +107,61 @@ and open the template in the editor.
     #gameContainer .h2-title{
         font-size: 30px;
     }
+}
+
+/*Flip effects*/
+#cards-game .flip-container {
+    perspective: 1000;
+    position: absolute;
+    margin-top: 1%;
+}
+
+#cards-game .flip-container:hover .flipper, #cards-game .flip-container.hover .flipper {
+    transform: rotateY(180deg);
+}
+
+#cards-game .flip-container, #cards-game .front, #cards-game .back {
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#cards-game .flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+
+    position: relative;
+}
+
+#cards-game .front,#cards-game  .back {
+    backface-visibility: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.front {
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
+}
+
+#cards-game .back {
+    transform: rotateY(180deg);
+}
+
+#cards-game .red-card{
+    background-color: red;
+}
+
+#cards-game .black-card{
+    background-color: #222;
+}
+
+#cards-game .cards-play-button{
+    bottom: 8%;
+    left: 42%;
+    position: absolute;
+    text-align: center;
+    width: 15%;
 }

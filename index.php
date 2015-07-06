@@ -6,16 +6,17 @@
         <link rel="stylesheet" type="text/css" href="style.css"/>
     </head>
 
-    <body id="body">
+    <body id="body">        
         <div id="gameContainer" class="">
             <div id="main-menu" class="screen menu-screen">
                 <div>
                     <h2 class="h2-title">Elige un juego:</h2>
-                    <button class="play-button" onclick="games.sticksGame.init(Math.floor(Math.random() * 3) + 3);">La caña más larga</button>
+                    <button class="play-button" onclick="games.sticksGame.init(Math.floor(Math.random() * 3) + 3);">La caña más larga</button><br/>
+                    <button class="play-button" onclick="games.cardsGame.init(Math.floor(Math.random() * 3) + 3);">Adivina el color</button>
                 </div>
             </div>
-            <div id="sticks-game">
-                <div id="instructions-screen" class="screen menu-screen">
+            <div id="sticks-game" style="display:none">
+                <div id="sticks-instructions-screen" class="screen menu-screen">
                     <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
                     <div>
                         <h2 class="h2-title">La caña más larga</h2>
@@ -43,6 +44,36 @@
                     </div>
                 </div>
             </div>
+            <div id="cards-game" style="display:none;">
+                <div id="cards-instructions-screen" class="screen menu-screen">
+                    <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
+                    <div>
+                        <h2 class="h2-title">Adivina el color</h2>
+                        <p class="screen-msg">Estate atento a las cartas. Se mezclarán y se cogerá una al azar ¿podrás adivinar el color del reverso?</p>
+                    </div>
+                    <button class="play-button" onclick="games.cardsGame.startCardsGame();">Jugar</button>
+                </div>
+                <div id="main-screen-game-cards" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
+                    <div id="main-screen-cards-container">
+                        <h2 class="h2-title">Memoriza las cartas</h2>
+                        <button class="play-button cards-play-button" onclick="games.cardsGame.mixCards();">¡Hecho!</button>
+                    </div>                    
+                </div>
+                <div id="cards-win-screen" class="screen menu-screen" style="display:none;">
+                    <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
+                    <div style="color: #fff; margin-top: 22%;">
+                        <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
+                        <p class="screen-msg">Has conseguido Z puntos</p>
+                    </div>
+                </div>
+                <div id="cards-lose-screen" class="screen menu-screen" style="display:none;">
+                    <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
+                    <div style="color: #fff; margin-top: 22%;">
+                        <h2 class="h2-title">Vaya... No has ganado...</h2>
+                        <p class="screen-msg">Has perdido W puntos</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div>
@@ -63,7 +94,6 @@
 
         <script type="text/javascript">
             window.onload = function () {
-                console.log("asdas");
                 games.resized();
             };
             //Bind on resize
@@ -82,6 +112,20 @@
                     var size = Math.round(this.getBodyWidth() * 0.75);
                     document.getElementById("gameContainer").style.width = size + "px";
                     document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
+                },
+                shuffle: function (array) {
+                    var currentIndex = array.length, temporaryValue, randomIndex;
+                    // While there remain elements to shuffle...
+                    while (0 !== currentIndex) {
+                        // Pick a remaining element...
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        currentIndex -= 1;
+                        // And swap it with the current element.
+                        temporaryValue = array[currentIndex];
+                        array[currentIndex] = array[randomIndex];
+                        array[randomIndex] = temporaryValue;
+                    }
+                    return array;
                 }
             };
             games.sticksGame = {
@@ -117,7 +161,7 @@
                 },
                 startSticksGame: function () {
                     this.start_decission = new Date().getTime();
-                    document.getElementById('instructions-screen').style.display = 'none';
+                    document.getElementById('sticks-instructions-screen').style.display = 'none';
                 },
                 animateDown: function (obj, to, choosen) {
                     var self = this;
@@ -211,6 +255,59 @@
                         }
                     };
                     xhr.send(encodeURI('time=' + time) + "&" + encodeURI('winner=' + winner) + "&" + encodeURI('selected=' + selected) + "&" + encodeURI('sticksNumber=' + sticksNumber));
+                }
+            };
+            games.cardsGame = {
+                init: function (cardsNumber) {
+                    var self = this;
+                    document.getElementById('cards-game').style.display = "block";
+                    document.getElementById('main-menu').style.display = "none";
+                    document.getElementById('main-menu').style.display = "none";
+
+                    var cardsArray = [["red-card", "black-card"], ["black-card", "black-card"], ["red-card", "red-card"]];
+                    var offsetLeft = 20;
+                    if (cardsNumber === 4) {
+                        cardsArray[cardsArray.length] = ["black-card", "red-card"];
+                        offsetLeft = 10;
+                    } else if (cardsNumber === 5) {
+                        cardsArray[cardsArray.length] = ["black-card", "red-card"];
+                        cardsArray[cardsArray.length] = ["red-card", "black-card"];
+                        offsetLeft = 0.5;
+                    }
+
+                    self.cardsArray = games.shuffle(cardsArray);
+
+                    var container = document.getElementById('main-screen-cards-container');
+                    if (window.attachEvent) {
+                        window.attachEvent('onresize', function () {
+                            games.cardsGame.resizeCards();
+                        });
+                    }
+                    else if (window.addEventListener) {
+                        window.addEventListener('resize', function () {
+                            games.cardsGame.resizeCards();
+                        }, true);
+                    }
+
+                    var offsetIncrement = 20;
+                    for (var i = 0; i < cardsNumber; i++) {
+                        container.innerHTML += '<div class="flip-container card-to-be-resized" style="margin-left:' + offsetLeft + '%" ontouchstart="this.classList.toggle(\'hover\');"><div class="flipper"><div class="card-to-be-resized front ' + self.cardsArray[i][0] + '"></div><div class="card-to-be-resized back ' + self.cardsArray[i][1] + '"></div></div></div>';
+                        offsetLeft += offsetIncrement;
+                    }
+                    self.resizeCards();
+                },
+                startCardsGame: function () {
+                    this.start_decission = new Date().getTime();
+                    document.getElementById('cards-instructions-screen').style.display = 'none';
+                },
+                resizeCards: function () {
+                    var width = Math.round(games.getBodyWidth() / 7);
+                    var height = Math.round(games.getBodyWidth() / 5);
+                    var cards = document.getElementsByClassName("card-to-be-resized");
+                    for (var j = 0; j < cards.length; j++) {
+                        cards[j].style.width = width + "px";
+                        cards[j].style.height = height + "px";
+                    }
                 }
             };
         </script>
