@@ -1,167 +1,211 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
 /* 
     Created on : 03-jul-2015, 18:13:47
     Author     : jbustarviejo
-*/
+    */
 
-#body{
-    width:100%; height: 100%; margin:0;
-}
-#gameContainer{
-    border-radius:8px;overflow:hidden;z-index:10;margin: 50px auto; position: relative; width: 90%; height: 90%; border: 1px solid #000;
-}
-#gameContainer #main-menu{
-    color: #fff;
-}
-#gameContainer #main-menu button{
-    width: 250px;
-}
-#gameContainer button{
-    cursor:pointer;border: 0 none;border-radius: 5px;font-size: 20px;height: 50px;width: 150px;
-    margin-top: 20px;
-}
-#gameContainer .close-button{
-    background-color: #ff0000;
-    border-radius: 10px;
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-weight: bold;
-    line-height: 15px;
-    padding: 4px 6px;
-    position: absolute;
-    right: 1%;
-    top: 1%;
-}
-/*Sticks game*/
-#gameContainer #sticks-game{
-    display:none;
-}
-#gameContainer #close-hand{
-    bottom: 10%;
-    left: 35%;
-    position: absolute;
-    width: 30%;
-    z-index: 7;
-}
-#gameContainer #open-hand {
-    bottom: 2%;
-    left: 31%;
-    position: absolute;
-    width: 48%;
-    z-index: 7;
-}
-#gameContainer .stick{
-    top: 15%;
-    left: 50%;
-    height: 70%;
-    position: absolute;
-    width: 2.5%;
-    margin-left: 1%;
-    margin-top: 1%;
-    z-index: 6;
-}
-#gameContainer .screen{
-    width: 100%; 
-    height: 100%; 
-    position: absolute;
-    text-align: center;
-}
-#gameContainer #sticks-instructions-screen > div,#gameContainer #cards-instructions-screen > div{
-    color: #fff; margin-top: 19%;
-}
-#gameContainer .menu-screen{
-    z-index: 9;
-    background-color:rgba(0, 50, 69,0.95);
-    border: 1px solid black;
-}
-#gameContainer .stick:hover, #gameContainer .stick.selected{
-    width: 3.5%;
-    cursor: pointer;
-    margin-left: 0.5%;
-    margin-top: 0%;
-    opacity: 0.8;
-}
-#gameContainer .stick.selected:hover{
-    cursor: default;
-}
-#gameContainer .stick.no-selected:hover{
-    width: 2.5%;
-    cursor: default;
-    opacity:1;
-}
-#gameContainer .screen-msg{
-    font-size: 22px;
-}
-#gameContainer .h2-title{
-    font-size: 40px;
-}
-@media (max-width: 1200px){
+    #body{
+        width:100%; height: 100%; margin:0;
+    }
+    #gameContainer{
+        border-radius:8px;overflow:hidden;z-index:10;margin: 50px auto; position: relative; width: 90%; height: 90%; border: 1px solid #000;
+    }
+    #gameContainer #main-menu{
+        color: #fff;
+    }
+    #gameContainer #main-menu button{
+        width: 250px;
+    }
+    #gameContainer button{
+        cursor:pointer;border: 0 none;border-radius: 5px;font-size: 20px;height: 50px;width: 150px;
+        margin-top: 20px;
+    }
+    #gameContainer .close-button{
+        background-color: #ff0000;
+        border-radius: 10px;
+        color: #fff;
+        cursor: pointer;
+        display: block;
+        font-weight: bold;
+        line-height: 15px;
+        padding: 4px 6px;
+        position: absolute;
+        right: 1%;
+        top: 1%;
+    }
+    /*Sticks game*/
+    #gameContainer #sticks-game{
+        display:none;
+    }
+    #gameContainer #close-hand{
+        bottom: 10%;
+        left: 35%;
+        position: absolute;
+        width: 30%;
+        z-index: 7;
+    }
+    #gameContainer #open-hand {
+        bottom: 2%;
+        left: 31%;
+        position: absolute;
+        width: 48%;
+        z-index: 7;
+    }
+    #gameContainer .stick{
+        top: 15%;
+        left: 50%;
+        height: 70%;
+        position: absolute;
+        width: 2.5%;
+        margin-left: 1%;
+        margin-top: 1%;
+        z-index: 6;
+    }
+    #gameContainer .screen{
+        width: 100%; 
+        height: 100%; 
+        position: absolute;
+        text-align: center;
+    }
+    #gameContainer #sticks-instructions-screen > div,#gameContainer #cards-instructions-screen > div{
+        color: #fff; margin-top: 19%;
+    }
+    #gameContainer .menu-screen{
+        z-index: 9;
+        background-color:rgba(0, 50, 69,0.95);
+        border: 1px solid black;
+    }
+    #gameContainer .stick:hover, #gameContainer .stick.selected{
+        width: 3.5%;
+        cursor: pointer;
+        margin-left: 0.5%;
+        margin-top: 0%;
+        opacity: 0.8;
+    }
+    #gameContainer .stick.selected:hover{
+        cursor: default;
+    }
+    #gameContainer .stick.no-selected:hover{
+        width: 2.5%;
+        cursor: default;
+        opacity:1;
+    }
     #gameContainer .screen-msg{
-        font-size: 16px;
+        font-size: 22px;
     }
     #gameContainer .h2-title{
-        font-size: 30px;
+        font-size: 40px;
     }
+    @media (max-width: 1200px){
+        #gameContainer .screen-msg{
+            font-size: 16px;
+        }
+        #gameContainer .h2-title{
+            font-size: 30px;
+        }
+    }
+
+    /*Flip effects*/
+    #cards-game .flip-container {
+        perspective: 1000;
+        position: absolute;
+        margin-top: 1%;
+    }
+
+    #cards-game .flip-container:hover .flipper, #cards-game .flip-container.hover .flipper {
+        transform: rotateY(180deg);
+    }
+
+    #cards-game .flip-container, #cards-game .front, #cards-game .back {
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    #cards-game .flipper {
+        transition: 0.6s;
+        transform-style: preserve-3d;
+        position: relative;
+    }
+
+    #cards-game .front,#cards-game  .back {
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    #cards-game .front {
+        z-index: 2;
+        /* for firefox 31 */
+        transform: rotateY(0deg);
+    }
+
+    #cards-game .back {
+        transform: rotateY(180deg);
+    }
+
+    #cards-game .red-card{
+        background-color: #d63232;
+    }
+
+    #cards-game .black-card{
+        background-color: #222;
+    }
+
+    #cards-game .cards-play-button{
+        bottom: 8%;
+        left: 42%;
+        position: absolute;
+        text-align: center;
+        width: 15%;
+    }
+
+    #cards-game .smaller{
+        transition: 2s;
+        margin-top: 10%;
+        margin-left: 44% !important;
+    }
+
+    #cards-game #cards-hat {
+        left: 37%;
+        /*margin-top: 6%;*/
+        margin-top: 45%;
+        position: absolute;
+        width: 25%;
+        z-index: 3;
+        transition: 2.5s;
+    }
+
+    #cards-game #final-card {
+       border-radius: 10px;
+       display: none;
+       height: 15%;
+       margin-left: 47% !important;
+       position: absolute;
+       width: 6.5%;
+   }
+
+   #cards-game .card-to-choose{
+     border-radius: 10px;
+     bottom: 10%;
+     display: none;
+     height: 46%;
+     left: 15%;
+     position: absolute;
+     width: 19%;
+     cursor: pointer;
+     transition: 1s;
+     opacity: 0;
+ }
+
+ #cards-game .card-to-choose#card-to-choose-right{
+    left:67%;
 }
 
-/*Flip effects*/
-#cards-game .flip-container {
-    perspective: 1000;
-    position: absolute;
-    margin-top: 1%;
-}
-
-#cards-game .flip-container:hover .flipper, #cards-game .flip-container.hover .flipper {
-    transform: rotateY(180deg);
-}
-
-#cards-game .flip-container, #cards-game .front, #cards-game .back {
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-#cards-game .flipper {
-    transition: 0.6s;
-    transform-style: preserve-3d;
-
+ #cards-game .span-explain{
+   color: white;
+    font-size: 21px;
     position: relative;
-}
-
-#cards-game .front,#cards-game  .back {
-    backface-visibility: hidden;
-
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.front {
-    z-index: 2;
-    /* for firefox 31 */
-    transform: rotateY(0deg);
-}
-
-#cards-game .back {
-    transform: rotateY(180deg);
-}
-
-#cards-game .red-card{
-    background-color: red;
-}
-
-#cards-game .black-card{
-    background-color: #222;
-}
-
-#cards-game .cards-play-button{
-    bottom: 8%;
-    left: 42%;
-    position: absolute;
     text-align: center;
-    width: 15%;
+    top: 50%;
+    vertical-align: middle;
 }
