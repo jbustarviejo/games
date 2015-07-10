@@ -12,7 +12,8 @@
             <div>
                 <h2 class="h2-title">Elige un juego:</h2>
                 <button class="play-button" onclick="games.sticksGame.init(Math.floor(Math.random() * 3) + 3);">La caña más larga</button><br/>
-                <button class="play-button" onclick="games.cardsGame.init(Math.floor(Math.random() * 3) + 3);">Adivina el color</button>
+                <button class="play-button" onclick="games.cardsGame.init(Math.floor(Math.random() * 3) + 3);">Adivina el color</button><br/>
+                <button class="play-button" onclick="games.boxesGame.init(Math.floor(Math.random() * 3) + 3);">Elige la caja</button>
             </div>
         </div>
         <div id="sticks-game" style="display:none">
@@ -75,6 +76,35 @@
                 <div style="color: #fff; margin-top: 22%;">
                     <h2 class="h2-title">Vaya... No has ganado...</h2>
                     <p class="screen-msg">Has perdido W puntos</p>
+                </div>
+            </div>
+        </div>
+        <div id="boxes-game" style="display:none;">
+            <div id="cards-instructions-screen" class="screen menu-screen">
+                <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
+                <div>
+                    <h2 class="h2-title">Encuentra la caja con el premio</h2>
+                    <p class="screen-msg">¿Eres capaz de encontrar la caja con los punots</p>
+                </div>
+                <button class="play-button" onclick="games.boxesGame.startBoxesGame();">Jugar</button>
+            </div>
+            <div id="main-screen-game-cards" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
+                <div id="main-screen-boxes-container">
+                    <h2 id="boxes-title" class="h2-title">Elige una caja</h2>
+                </div>                    
+            </div>
+            <div id="boxes-win-screen" class="screen menu-screen" style="display:none;">
+                <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
+                <div style="color: #fff; margin-top: 22%;">
+                    <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
+                    <p class="screen-msg">Has conseguido F puntos</p>
+                </div>
+            </div>
+            <div id="boxes-lose-screen" class="screen menu-screen" style="display:none;">
+                <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
+                <div style="color: #fff; margin-top: 22%;">
+                    <h2 class="h2-title">Vaya... No has ganado...</h2>
+                    <p class="screen-msg">Has perdido G puntos</p>
                 </div>
             </div>
         </div>
@@ -244,8 +274,7 @@
                         }
                     };
                 }
-            },
-            sendDataToServer: function (time, winner, selected, sticksNumber) {
+            }, sendDataToServer: function (time, winner, selected, sticksNumber) {
                 var xhr = new XMLHttpRequest();
 
                 xhr.open('POST', encodeURI('store-data/sticks-game'));
@@ -269,7 +298,9 @@
                 document.getElementById('cards-win-screen').style.display = "none";
                 document.getElementById('cards-lose-screen').style.display = "none";
                 document.getElementById("cards-play-button").style.display = "block";
+                document.getElementById("cards-instructions-screen").style.display = "block";
                 var final_card=document.getElementById("final-card");
+                self.cardsNumber=cardsNumber;
                 final_card.style = "";
                 final_card.className="smaller";
                 var right_card=document.getElementById("card-to-choose-right");
@@ -297,6 +328,7 @@
                 }
 
                 self.cardsArray = games.shuffle(cardsArray);
+                self.displayedCards=encodeURI(self.cardsArray);
 
                 var container = document.getElementById('main-screen-cards-container');
                 if (window.attachEvent) {
@@ -318,7 +350,7 @@
                 self.resizeCards(7, 5);
             },
             startCardsGame: function () {
-                this.start_decission = new Date().getTime();
+                this.start_memory = new Date().getTime();
                 document.getElementById('cards-instructions-screen').style.display = 'none';
             },
             resizeCards: function (wP, hP, withTransition) {
@@ -335,6 +367,8 @@
             },
             animateCardsToCenter: function () {
                 var self=this;
+                self.ellapsed_time_memory = new Date().getTime() - self.start_memory;
+                console.log("Time memory:"+self.ellapsed_time_memory);
                 document.getElementById("cards-play-button").style.display = "none";
                 this.resizeCards(21, 15, true);
                 document.getElementById("cards-hat").style.margin = "6% 0 0 0";
@@ -349,6 +383,8 @@
                         var choose=Math.floor(Math.random()*2);
                         var selected_side = card[choose];
                         var winner_side = (choose == 0 ? card[1] : card[0]);
+                        self.displayed=selected_side;
+                        self.winner=winner_side;
                         var final_card=document.getElementById("final-card");
                         final_card.style.display = "block";
                         final_card.className += " " +selected_side;
@@ -362,12 +398,13 @@
                             right_card.style.display="block";
                             left_card.style.display="block";
                             console.log(winner_side,winner_side==="red-card");
+                            self.start_decission=new Date().getTime();
                             if(winner_side==="red-card"){
-                                left_card.setAttribute("onclick","document.getElementById('cards-win-screen').style.display='block';");
-                                right_card.setAttribute("onclick","document.getElementById('cards-lose-screen').style.display='block';");
+                                left_card.setAttribute("onclick","games.cardsGame.finishCardGame(true, 'red-card');");
+                                right_card.setAttribute("onclick","games.cardsGame.finishCardGame(false, 'black-card');");
                             }else{
-                                left_card.setAttribute("onclick","document.getElementById('cards-lose-screen').style.display='block';");
-                                right_card.setAttribute("onclick","document.getElementById('cards-win-screen').style.display='block';");
+                                left_card.setAttribute("onclick","games.cardsGame.finishCardGame(false, 'red-card');");
+                                right_card.setAttribute("onclick","games.cardsGame.finishCardGame(true, 'black-card');");
                             }
                             setTimeout(function () {
                                 right_card.style.opacity=1;
@@ -376,7 +413,39 @@
                         }, 500);
 }, 1000);
 }, 2500);
+},
+finishCardGame: function(win, selected_side){
+    var self=this;
+    self.ellapsed_time_decission=new Date().getTime() - this.start_decission;
+    if(win){
+        document.getElementById('cards-win-screen').style.display='block';
+    }else{
+        document.getElementById('cards-lose-screen').style.display='block';
+    }
+    self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
+
+},
+sendDataToServer: function (time_memory, time_decission, displayed_side, winner_side, selected_side, cards_number, cards_array) {
+    //console.log("Time memory: "+time_memory, "Time decission: "+time_decission, "Displayed side: "+displayed_side, "Winner side: "+winner_side, "Selected: "+selected_side, "Card numbers: "+cards_number)
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST', encodeURI('store-data/cards-game'));
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
+        if (xhr.status === 200 && xhr.responseText !== "todook") {
+            console.log('Something went wrong.  Name is now ' + xhr.responseText);
+        }
+        else if (xhr.status !== 200) {
+            console.log('Request failed.  Returned status of ' + xhr.status);
+        }
+    };
+    xhr.send(encodeURI('time_memory=' + time_memory) + "&" + encodeURI('time_decission=' + time_decission) + "&" + encodeURI('selected_side=' + selected_side) + "&" + encodeURI('displayed_side=' + displayed_side) + "&" + encodeURI('winner_side=' + winner_side) + "&" + encodeURI('cards_number=' + cards_number)+ "&" + encodeURI('cards_array=' + cards_array));
 }
+};
+games.boxesGame = {
+    init: function(){
+
+    }
 };
 </script>
 </body>
