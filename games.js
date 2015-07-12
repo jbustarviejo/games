@@ -344,6 +344,7 @@ games.boxesGame = {
         document.getElementById("boxes-instructions-screen").style.display = "none";
     },
     chooseBox: function(choosen){
+        var self=this;
         console.log("Elegida: " + choosen);
         var box=document.getElementById("box-"+choosen);
         box.className += " choosen-box";
@@ -353,8 +354,14 @@ games.boxesGame = {
         var boxes = document.getElementsByClassName("box");
         for (var j = 0; j < boxes.length; j++) {
             if(j!=(choosen-1)){
-                boxes[j].className += " unselectable";
+                boxes[j].className += " box-unselectable to-be-removed";
             }
+        }
+        document.getElementById("box-"+self.winner_box).classList.remove("to-be-removed");
+
+        if(choosen == self.winner_box){
+            var boxes_to_be_remove = document.getElementsByClassName("to-be-removed");
+            document.getElementById("box-"+(Math.ceil(Math.random() * boxes_to_be_remove.length))).classList.remove("to-be-removed");
         }
     }
 };

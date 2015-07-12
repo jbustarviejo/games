@@ -224,11 +224,11 @@ Author     : jbustarviejo
     bottom: 34%;
 }
 
-#boxes-game .box.unselectable{
+#boxes-game .box.box-unselectable{
     pointer-events: none;
 }
 
-#boxes-game .box.unselectable:hover{
+#boxes-game .box.box-unselectable:hover{
     width: 14%;
     margin-left: 2%;
     bottom: 36%;

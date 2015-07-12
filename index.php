@@ -90,7 +90,6 @@
             </div>
             <div id="main-screen-game-boxes" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
                 <div id="main-screen-boxes-container">
-                    <h2 id="boxes-title" class="h2-title">Elige una caja</h2>
                 </div>                    
             </div>
             <div id="boxes-win-screen" class="screen menu-screen" style="display:none;">
