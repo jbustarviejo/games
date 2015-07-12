@@ -116,13 +116,13 @@ games.sticksGame = {
     },
     createsoundbite: function (sound) {
         var html5_audiotypes = {//define list of audio file extensions and their associated audio types. Add to it if your specified audio file isn't on this list:
-        "mp3": "audio/mpeg",
+            "mp3": "audio/mpeg",
             //"mp4": "audio/mp4",
             "ogg": "audio/ogg"
                     //"wav": "audio/wav"
-                };
-                var html5audio = document.createElement('audio');
-                html5audio.setAttribute("id", "stickAudio" + (arguments[arguments.length - 1]));
+        };
+        var html5audio = document.createElement('audio');
+        html5audio.setAttribute("id", "stickAudio" + (arguments[arguments.length - 1]));
         if (html5audio.canPlayType) { //check support for HTML5 audio
             for (var i = 0; i < arguments.length - 1; i++) {
                 var sourceel = document.createElement('source');
@@ -141,7 +141,7 @@ games.sticksGame = {
                 }
             };
         }
-    }, 
+    },
     sendDataToServer: function (time, winner, selected, sticksNumber) {
         var xhr = new XMLHttpRequest();
 
@@ -167,17 +167,17 @@ games.cardsGame = {
         document.getElementById('cards-lose-screen').style.display = "none";
         document.getElementById("cards-play-button").style.display = "block";
         document.getElementById("cards-instructions-screen").style.display = "block";
-        var final_card=document.getElementById("final-card");
-        self.cardsNumber=cardsNumber;
+        var final_card = document.getElementById("final-card");
+        self.cardsNumber = cardsNumber;
         final_card.style = "";
-        final_card.className="smaller";
-        var right_card=document.getElementById("card-to-choose-right");
-        right_card.style="";
+        final_card.className = "smaller";
+        var right_card = document.getElementById("card-to-choose-right");
+        right_card.style = "";
         right_card.removeAttribute("onclick");
-        var left_card=document.getElementById("card-to-choose-left");  
-        left_card.style="";
+        var left_card = document.getElementById("card-to-choose-left");
+        left_card.style = "";
         left_card.removeAttribute("onclick");
-        document.getElementById("cards-title").textContent="Memoriza las cartas";
+        document.getElementById("cards-title").textContent = "Memoriza las cartas";
 
         var cards = document.getElementsByClassName("flip-container");
         for (var j = 0; j < cards.length; j++) {
@@ -196,7 +196,7 @@ games.cardsGame = {
         }
 
         self.cardsArray = games.shuffle(cardsArray);
-        self.displayedCards=encodeURI(self.cardsArray);
+        self.displayedCards = encodeURI(self.cardsArray);
 
         var container = document.getElementById('main-screen-cards-container');
         if (window.attachEvent) {
@@ -234,61 +234,61 @@ games.cardsGame = {
         }
     },
     animateCardsToCenter: function () {
-        var self=this;
+        var self = this;
         self.ellapsed_time_memory = new Date().getTime() - self.start_memory;
-        console.log("Time memory:"+self.ellapsed_time_memory);
+        console.log("Time memory:" + self.ellapsed_time_memory);
         document.getElementById("cards-play-button").style.display = "none";
         this.resizeCards(21, 15, true);
         document.getElementById("cards-hat").style.margin = "6% 0 0 0";
         setTimeout(function () {
             var cards = document.getElementsByClassName("card-to-be-resized");
             for (var j = 0; j < cards.length; j++) {
-                cards[j].style.display= "none";
+                cards[j].style.display = "none";
                 cards[j].style.display = "none";
             }
             setTimeout(function () {
                 var card = games.shuffle(self.cardsArray)[0];
-                var choose=Math.floor(Math.random()*2);
+                var choose = Math.floor(Math.random() * 2);
                 var selected_side = card[choose];
                 var winner_side = (choose == 0 ? card[1] : card[0]);
-                self.displayed=selected_side;
-                self.winner=winner_side;
-                var final_card=document.getElementById("final-card");
+                self.displayed = selected_side;
+                self.winner = winner_side;
+                var final_card = document.getElementById("final-card");
                 final_card.style.display = "block";
-                final_card.className += " " +selected_side;
+                final_card.className += " " + selected_side;
                 console.log(card, selected_side, winner_side);
                 document.getElementById("cards-hat").style.margin = "45% 0 0 0";
-                document.getElementById("cards-title").innerHTML="¿De qué color es el reverso?";
+                document.getElementById("cards-title").innerHTML = "¿De qué color es el reverso?";
                 setTimeout(function () {
-                    final_card.style.margin="0";
-                    var right_card=document.getElementById("card-to-choose-right");
-                    var left_card=document.getElementById("card-to-choose-left");                            
-                    right_card.style.display="block";
-                    left_card.style.display="block";
-                    console.log(winner_side,winner_side==="red-card");
-                    self.start_decission=new Date().getTime();
-                    if(winner_side==="red-card"){
-                        left_card.setAttribute("onclick","games.cardsGame.finishCardGame(true, 'red-card');");
-                        right_card.setAttribute("onclick","games.cardsGame.finishCardGame(false, 'black-card');");
-                    }else{
-                        left_card.setAttribute("onclick","games.cardsGame.finishCardGame(false, 'red-card');");
-                        right_card.setAttribute("onclick","games.cardsGame.finishCardGame(true, 'black-card');");
+                    final_card.style.margin = "0";
+                    var right_card = document.getElementById("card-to-choose-right");
+                    var left_card = document.getElementById("card-to-choose-left");
+                    right_card.style.display = "block";
+                    left_card.style.display = "block";
+                    console.log(winner_side, winner_side === "red-card");
+                    self.start_decission = new Date().getTime();
+                    if (winner_side === "red-card") {
+                        left_card.setAttribute("onclick", "games.cardsGame.finishCardGame(true, 'red-card');");
+                        right_card.setAttribute("onclick", "games.cardsGame.finishCardGame(false, 'black-card');");
+                    } else {
+                        left_card.setAttribute("onclick", "games.cardsGame.finishCardGame(false, 'red-card');");
+                        right_card.setAttribute("onclick", "games.cardsGame.finishCardGame(true, 'black-card');");
                     }
                     setTimeout(function () {
-                        right_card.style.opacity=1;
-                        left_card.style.opacity=1;
+                        right_card.style.opacity = 1;
+                        left_card.style.opacity = 1;
                     }, 100);
                 }, 500);
             }, 1000);
         }, 2500);
     },
-    finishCardGame: function(win, selected_side){
-        var self=this;
-        self.ellapsed_time_decission=new Date().getTime() - this.start_decission;
-        if(win){
-            document.getElementById('cards-win-screen').style.display='block';
-        }else{
-            document.getElementById('cards-lose-screen').style.display='block';
+    finishCardGame: function (win, selected_side) {
+        var self = this;
+        self.ellapsed_time_decission = new Date().getTime() - this.start_decission;
+        if (win) {
+            document.getElementById('cards-win-screen').style.display = 'block';
+        } else {
+            document.getElementById('cards-lose-screen').style.display = 'block';
         }
         self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
 
@@ -307,7 +307,7 @@ games.cardsGame = {
                 console.log('Request failed.  Returned status of ' + xhr.status);
             }
         };
-        xhr.send(encodeURI('time_memory=' + time_memory) + "&" + encodeURI('time_decission=' + time_decission) + "&" + encodeURI('selected_side=' + selected_side) + "&" + encodeURI('displayed_side=' + displayed_side) + "&" + encodeURI('winner_side=' + winner_side) + "&" + encodeURI('cards_number=' + cards_number)+ "&" + encodeURI('cards_array=' + cards_array));
+        xhr.send(encodeURI('time_memory=' + time_memory) + "&" + encodeURI('time_decission=' + time_decission) + "&" + encodeURI('selected_side=' + selected_side) + "&" + encodeURI('displayed_side=' + displayed_side) + "&" + encodeURI('winner_side=' + winner_side) + "&" + encodeURI('cards_number=' + cards_number) + "&" + encodeURI('cards_array=' + cards_array));
     }
 };
 games.boxesGame = {
@@ -321,47 +321,47 @@ games.boxesGame = {
 
         var boxesContainer = document.getElementById('main-screen-boxes-container');
         boxesContainer.innerHTML = '<h2 id="boxes-title" class="h2-title">Elige una caja</h2>';
-        boxesContainer.innerHTML+='<h2 id="choosen-box-title" class="h2-title choosen-box-title">Tu caja -></h2>';
+        boxesContainer.innerHTML += '<h2 id="choosen-box-title" class="h2-title choosen-box-title">Tu caja -></h2>';
         console.log("Boxes Number: " + boxesNumber);
         var availableWidth = 80;
         var leftInc = Math.round(availableWidth * 100 / boxesNumber) / 100;
         var leftOffset = 15;
 
-        if(boxesNumber==4){
-            leftOffset=10;
-        }else if(boxesNumber==5){
-            leftOffset=10;
+        if (boxesNumber == 4) {
+            leftOffset = 10;
+        } else if (boxesNumber == 5) {
+            leftOffset = 10;
         }
 
-        for(var i=0; i<boxesNumber; i++){
-            boxesContainer.innerHTML += '<img id="box-'+(i+1)+'"class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">';
+        for (var i = 0; i < boxesNumber; i++) {
+            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '"class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">';
             leftOffset += leftInc;
         }
-        self.winner_box=(Math.ceil(Math.random() * boxesNumber));
-        console.log("Winner:"+self.winner_box);
+        self.winner_box = (Math.ceil(Math.random() * boxesNumber));
+        console.log("Winner:" + self.winner_box);
     },
-    startBoxesGame: function(){
+    startBoxesGame: function () {
         document.getElementById("boxes-instructions-screen").style.display = "none";
     },
-    chooseBox: function(choosen){
-        var self=this;
+    chooseBox: function (choosen) {
+        var self = this;
         console.log("Elegida: " + choosen);
-        var box=document.getElementById("box-"+choosen);
+        var box = document.getElementById("box-" + choosen);
         box.className += " choosen-box";
-        box.onclick="";
-        document.getElementById("choosen-box-title").style.opacity=1;
+        box.onclick = "";
+        document.getElementById("choosen-box-title").style.opacity = 1;
 
         var boxes = document.getElementsByClassName("box");
         for (var j = 0; j < boxes.length; j++) {
-            if(j!=(choosen-1)){
+            if (j != (choosen - 1)) {
                 boxes[j].className += " box-unselectable to-be-removed";
             }
         }
-        document.getElementById("box-"+self.winner_box).classList.remove("to-be-removed");
+        document.getElementById("box-" + self.winner_box).classList.remove("to-be-removed");
 
-        if(choosen == self.winner_box){
+        if (choosen == self.winner_box) {
             var boxes_to_be_remove = document.getElementsByClassName("to-be-removed");
-            document.getElementById("box-"+(Math.ceil(Math.random() * boxes_to_be_remove.length))).classList.remove("to-be-removed");
+            document.getElementById("box-" + (Math.ceil(Math.random() * boxes_to_be_remove.length))).classList.remove("to-be-removed");
         }
     }
 };
