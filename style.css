@@ -252,7 +252,40 @@ Author     : jbustarviejo
 #boxes-game .choosen-box-title{
     bottom: 2%;
     position: absolute;
-    right: 19%;
+    right: 21%;
     opacity: 0;
     transition: 2.5s;
+}
+
+#boxes-game .box-to-hide{
+    transition: 1s;
+    opacity: 0;
+}
+
+#boxes-game .box-to-change{
+    left: 40% !important;
+    transition: 2s;
+}
+
+#boxes-game .box.box-to-change-finish{
+    transition: none;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+#boxes-game .box.box-unselectable.box-to-change-finish:hover{ 
+    width: 14%;
+    margin-left: 2%;
+    bottom: 36%;
+    cursor: pointer;
+}
+
+#boxes-game .box.choosen-box-change{
+    transition: none;
+    margin-left: 1%;
+}
+
+#boxes-game .box.choosen-box-change:hover{
+    width: 14%;
+    cursor: pointer;
 }

@@ -169,13 +169,13 @@ games.cardsGame = {
         document.getElementById("cards-instructions-screen").style.display = "block";
         var final_card = document.getElementById("final-card");
         self.cardsNumber = cardsNumber;
-        final_card.style = "";
+        final_card.removeAttribute("style");
         final_card.className = "smaller";
         var right_card = document.getElementById("card-to-choose-right");
-        right_card.style = "";
+        right_card.removeAttribute("style");
         right_card.removeAttribute("onclick");
         var left_card = document.getElementById("card-to-choose-left");
-        left_card.style = "";
+        left_card.removeAttribute("style");
         left_card.removeAttribute("onclick");
         document.getElementById("cards-title").textContent = "Memoriza las cartas";
 
@@ -360,8 +360,28 @@ games.boxesGame = {
         document.getElementById("box-" + self.winner_box).classList.remove("to-be-removed");
 
         if (choosen == self.winner_box) {
-            var boxes_to_be_remove = document.getElementsByClassName("to-be-removed");
-            document.getElementById("box-" + (Math.ceil(Math.random() * boxes_to_be_remove.length))).classList.remove("to-be-removed");
+            var boxes_to_be_removed = document.getElementsByClassName("to-be-removed");
+            document.getElementById("box-" + (Math.ceil(Math.random() * boxes_to_be_removed.length))).classList.remove("to-be-removed");
         }
+
+        var boxes_to_be_removed = document.getElementsByClassName("to-be-removed");
+        for (var j = 0; j < boxes_to_be_removed.length; j++) {
+            boxes_to_be_removed[j].classList.add("box-to-hide");
+        }
+
+        var boxes = document.getElementsByClassName("box");
+        for (var j = 0; j < boxes.length; j++) {
+            if(!boxes[j].classList.contains("to-be-removed") && !boxes[j].classList.contains("choosen-box")){
+                boxes[j].classList.add("box-to-change");
+            }
+        }
+        document.getElementById("boxes-title").textContent = "¿Cambiarías de caja?"; 
+        
+        setTimeout(function () {
+            var box_to_change = document.getElementsByClassName("box-to-change");
+            box_to_change[0].classList.add("box-to-change-finish");
+            var choosen_box = document.getElementsByClassName("choosen-box");
+            choosen_box[0].classList.add("choosen-box-change");
+        }, 2100);       
     }
 };
