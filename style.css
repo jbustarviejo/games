@@ -275,17 +275,17 @@ Author     : jbustarviejo
 
 #boxes-game .box.box-unselectable.box-to-change-finish:hover{ 
     width: 14%;
-    margin-left: 2%;
+    margin-left: 1.5%;
     bottom: 36%;
     cursor: pointer;
 }
 
 #boxes-game .box.choosen-box-change{
     transition: none;
-    margin-left: 1%;
 }
 
 #boxes-game .box.choosen-box-change:hover{
     width: 14%;
     cursor: pointer;
+    margin-left: 1.5%;
 }

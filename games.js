@@ -101,7 +101,7 @@ games.sticksGame = {
                 sticks[i].setAttribute("class", sticks[i].className + " no-selected");
             }
             sticks[i].removeAttribute("onmouseover");
-            sticks[i].onclick = "";
+            sticks[i].removeAttribute("onclick");
         }
         setTimeout(function () {
             self.animateDown(document.getElementById("open-hand"), -20, choosen);
@@ -326,6 +326,7 @@ games.boxesGame = {
         var availableWidth = 80;
         var leftInc = Math.round(availableWidth * 100 / boxesNumber) / 100;
         var leftOffset = 15;
+        self.boxesNumber=boxesNumber;
 
         if (boxesNumber == 4) {
             leftOffset = 10;
@@ -334,21 +335,24 @@ games.boxesGame = {
         }
 
         for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '"class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">';
+            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '"class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">';
             leftOffset += leftInc;
         }
         self.winner_box = (Math.ceil(Math.random() * boxesNumber));
         console.log("Winner:" + self.winner_box);
     },
     startBoxesGame: function () {
+        this.start_decission = new Date().getTime();
         document.getElementById("boxes-instructions-screen").style.display = "none";
     },
     chooseBox: function (choosen) {
         var self = this;
+        self.ellapsed_time_decission = new Date().getTime() - this.start_decission;
         console.log("Elegida: " + choosen);
+        self.first_choose=choosen;
         var box = document.getElementById("box-" + choosen);
         box.className += " choosen-box";
-        box.onclick = "";
+        box.removeAttribute("onclick");
         document.getElementById("choosen-box-title").style.opacity = 1;
 
         var boxes = document.getElementsByClassName("box");
@@ -378,10 +382,41 @@ games.boxesGame = {
         document.getElementById("boxes-title").textContent = "¿Cambiarías de caja?"; 
         
         setTimeout(function () {
-            var box_to_change = document.getElementsByClassName("box-to-change");
-            box_to_change[0].classList.add("box-to-change-finish");
-            var choosen_box = document.getElementsByClassName("choosen-box");
-            choosen_box[0].classList.add("choosen-box-change");
+            var box_to_change = document.getElementsByClassName("box-to-change")[0];
+            box_to_change.classList.add("box-to-change-finish");
+            self.box_available_to_change=box_to_change.getAttribute("number");
+            box_to_change.setAttribute("onclick","games.boxesGame.finalChoose('"+self.box_available_to_change+"')");
+            var choosen_box = document.getElementsByClassName("choosen-box")[0];
+            choosen_box.classList.add("choosen-box-change");
+            choosen_box.setAttribute("onclick","games.boxesGame.finalChoose('"+choosen_box.getAttribute("number")+"')");
+            self.start_decission_change = new Date().getTime();
         }, 2100);       
+    },
+    finalChoose: function(choose){
+        var self = this;
+        self.ellapsed_time_decission_change = new Date().getTime() - this.start_decission_change;
+        console.log("Winner "+self.winner_box, "choose"+choose);
+         if (self.winner_box==choose) {
+            document.getElementById('boxes-win-screen').style.display = 'block';
+        } else {
+            document.getElementById('boxes-lose-screen').style.display = 'block';
+        }
+        console.log("NumBoxes: "+self.boxesNumber, "Winner: "+self.winner_box, "First choose: "+self.first_choose, "Available to change: "+self.box_available_to_change, "final_choose: "+choose, "time_to_first_choose"+self.ellapsed_time_decission, "time_to_change"+self.ellapsed_time_decission_change);
+        self.sendDataToServer(self.boxesNumber, self.winner_box, self.first_choose, self.box_available_to_change, choose, self.ellapsed_time_decission, self.ellapsed_time_decission_change);
+    },
+     sendDataToServer: function (boxesNumber, winnerBox, firstChoose, availableToChange, finalChoose, timeToFirstChoose, timeToChange) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', encodeURI('store-data/boxes-game'));
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200 && xhr.responseText !== "todook") {
+                console.log('Something went wrong.  Name is now ' + xhr.responseText);
+            }
+            else if (xhr.status !== 200) {
+                console.log('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send(encodeURI('boxesNumber=' + boxesNumber) + "&" + encodeURI('winnerBox=' + winnerBox) + "&" + encodeURI('firstChoose=' + firstChoose) + "&" + encodeURI('availableToChange=' + availableToChange)+ "&" + encodeURI('finalChoose=' + finalChoose)+ "&" + encodeURI('timeToFirstChoose=' + timeToFirstChoose)+ "&" + encodeURI('timeToChange=' + timeToChange));
     }
 };
