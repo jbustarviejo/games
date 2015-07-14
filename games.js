@@ -417,6 +417,6 @@ games.boxesGame = {
                 console.log('Request failed.  Returned status of ' + xhr.status);
             }
         };
-        xhr.send(encodeURI('boxesNumber=' + boxesNumber) + "&" + encodeURI('winnerBox=' + winnerBox) + "&" + encodeURI('firstChoose=' + firstChoose) + "&" + encodeURI('availableToChange=' + availableToChange)+ "&" + encodeURI('finalChoose=' + finalChoose)+ "&" + encodeURI('timeToFirstChoose=' + timeToFirstChoose)+ "&" + encodeURI('timeToChange=' + timeToChange));
+        xhr.send(encodeURI('boxes_number=' + boxesNumber) + "&" + encodeURI('winner_box=' + winnerBox) + "&" + encodeURI('first_box_choose=' + firstChoose) + "&" + encodeURI('available_box_to_change=' + availableToChange)+ "&" + encodeURI('final_box_choose=' + finalChoose)+ "&" + encodeURI('time_to_first_choose=' + timeToFirstChoose)+ "&" + encodeURI('time_to_change_box=' + timeToChange));
     }
 };
