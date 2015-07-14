@@ -365,7 +365,10 @@ games.boxesGame = {
 
         if (choosen == self.winner_box) {
             var boxes_to_be_removed = document.getElementsByClassName("to-be-removed");
-            document.getElementById("box-" + (Math.ceil(Math.random() * boxes_to_be_removed.length))).classList.remove("to-be-removed");
+            do{
+                var box_to_change=(Math.ceil(Math.random() * boxes_to_be_removed.length));
+            }while(box_to_change==self.winner_box);
+            document.getElementById("box-" + box_to_change).classList.remove("to-be-removed");
         }
 
         var boxes_to_be_removed = document.getElementsByClassName("to-be-removed");
