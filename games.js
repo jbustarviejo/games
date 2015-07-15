@@ -199,38 +199,23 @@ games.cardsGame = {
         self.displayedCards = encodeURI(self.cardsArray);
 
         var container = document.getElementById('main-screen-cards-container');
-        if (window.attachEvent) {
-            window.attachEvent('onresize', function () {
-                games.cardsGame.resizeCards();
-            });
-        }
-        else if (window.addEventListener) {
-            window.addEventListener('resize', function () {
-                games.cardsGame.resizeCards();
-            }, true);
-        }
-
         var offsetIncrement = 20;
         for (var i = 0; i < cardsNumber; i++) {
-            container.innerHTML += '<div class="flip-container card-to-be-resized" style="margin-left:' + offsetLeft + '%" ontouchstart="this.classList.toggle(\'hover\');"><div class="flipper"><div class="card-to-be-resized front ' + self.cardsArray[i][0] + '"></div><div class="card-to-be-resized back ' + self.cardsArray[i][1] + '"></div></div></div>';
+            //container.innerHTML += '<div class="flip-container card-to-be-resized" style="margin-left:' + offsetLeft + '%" ontouchstart="this.classList.toggle(\'hover\');"><div class="flipper"><div class="card-to-be-resized front ' + self.cardsArray[i][0] + '"></div><div class="card-to-be-resized back ' + self.cardsArray[i][1] + '"></div></div></div>';
+            container.innerHTML += '<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" onclick="this.classList.toggle(\'flipped\')"><div class="front ' + self.cardsArray[i][0] + '"></div><div class="back ' + self.cardsArray[i][1] + '"></div></div></div>';
             offsetLeft += offsetIncrement;
         }
-        self.resizeCards(7, 5);
     },
     startCardsGame: function () {
         this.start_memory = new Date().getTime();
         document.getElementById('cards-instructions-screen').style.display = 'none';
     },
     resizeCards: function (wP, hP, withTransition) {
-        var width = Math.round(games.getBodyWidth() / wP);
-        var height = Math.round(games.getBodyWidth() / hP);
-        var cards = document.getElementsByClassName("card-to-be-resized");
+        var cards = document.getElementsByClassName("card-container");
         for (var j = 0; j < cards.length; j++) {
-            cards[j].style.width = width + "px";
-            cards[j].style.height = height + "px";
-            if (withTransition) {
-                cards[j].className += " smaller";
-            }
+            cards[j].classList.add("smaller");
+            cards[j].style.width = "7%";
+            cards[j].style.height = "17%";
         }
     },
     animateCardsToCenter: function () {
@@ -241,7 +226,7 @@ games.cardsGame = {
         this.resizeCards(21, 15, true);
         document.getElementById("cards-hat").style.margin = "6% 0 0 0";
         setTimeout(function () {
-            var cards = document.getElementsByClassName("card-to-be-resized");
+            var cards = document.getElementsByClassName("card-container");
             for (var j = 0; j < cards.length; j++) {
                 cards[j].style.display = "none";
                 cards[j].style.display = "none";

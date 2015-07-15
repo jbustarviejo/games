@@ -124,7 +124,6 @@
                 <li></li>
             </ul>
         </div>
-
         <script type="text/javascript" src="/games.js"></script>
     </body>
 </html>
