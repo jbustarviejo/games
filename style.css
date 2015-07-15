@@ -111,13 +111,13 @@ Author     : jbustarviejo
 }
 
 #cards-game .front,#cards-game .back {
-   -webkit-backface-visibility: hidden;
-   -moz-backface-visibility: hidden;
-   -o-backface-visibility: hidden;
-   backface-visibility: hidden;
-   position: absolute;
-   top: 0;
-   left: 0;
+ -webkit-backface-visibility: hidden;
+ -moz-backface-visibility: hidden;
+ -o-backface-visibility: hidden;
+ backface-visibility: hidden;
+ position: absolute;
+ top: 0;
+ left: 0;
 }
 
 #cards-game .red-card{
@@ -290,13 +290,13 @@ Author     : jbustarviejo
 }
 
 #boxes-game .choosen-box{
- -webkit-transition: -webkit-transform 1s;
- -moz-transition: -moz-transform 1s;
- -o-transition: -o-transform 1s;
- transition: transform 1s;
- bottom: 2%;
- left: 80% !important;
- cursor: auto;
+   -webkit-transition: 1s;
+   -moz-transition: 1s;
+   -o-transition: 1s;
+   transition: 1s;
+   bottom: 2%;
+   left: 80% !important;
+   cursor: auto;
 }
 
 #boxes-game .choosen-box:hover{
@@ -311,32 +311,35 @@ Author     : jbustarviejo
     position: absolute;
     right: 21%;
     opacity: 0;
+    -webkit-transition: 2.5s;
+    -moz-transition: 2.5s;
+    -o-transition: 2.5s;
     transition: 2.5s;
 }
 
 #boxes-game .box-to-hide{
- -webkit-transition: -webkit-transform 1s;
- -moz-transition: -moz-transform 1s;
- -o-transition: -o-transform 1s;
- transition: transform 1s;
- opacity: 0;
+   -webkit-transition: 1s;
+   -moz-transition: 1s;
+   -o-transition: 1s;
+   transition: 1s;
+   opacity: 0;
 }
 
 #boxes-game .box-to-change{
     left: 40% !important;
-    -webkit-transition: -webkit-transform 2s;
-    -moz-transition: -moz-transform 2s;
-    -o-transition: -o-transform 2s;
-    transition: transform 2s;
+    -webkit-transition: 2s;
+    -moz-transition: 2s;
+    -o-transition: 2s;
+    transition: 2s;
 }
 
 #boxes-game .box.box-to-change-finish{
- -webkit-transition: -webkit-transform none;
- -moz-transition: -moz-transform none;
- -o-transition: -o-transform none;
- transition: transform none;
- cursor: pointer;
- pointer-events: auto;
+   -webkit-transition: none;
+   -moz-transition: none;
+   -o-transition: none;
+   transition: none;
+   cursor: pointer;
+   pointer-events: auto;
 }
 
 #boxes-game .box.box-unselectable.box-to-change-finish:hover{ 
@@ -347,10 +350,10 @@ Author     : jbustarviejo
 }
 
 #boxes-game .box.choosen-box-change{
-    -webkit-transition: -webkit-transform none;
-    -moz-transition: -moz-transform none;
-    -o-transition: -o-transform none;
-    transition: transform none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
 }
 
 #boxes-game .box.choosen-box-change:hover{
