@@ -106,13 +106,19 @@ Author     : jbustarviejo
 
 /*Flip effects*/
 #cards-game .flip-container {
-    perspective: 1000;
+    -webkit-perspective: 800px;
+    -moz-perspective: 800px;
+    -o-perspective: 800px;
+    perspective: 800px;
     position: absolute;
     margin-top: 1%;
 }
 
 #cards-game .flip-container:hover .flipper, #cards-game .flip-container.hover .flipper {
-    transform: rotateY(180deg);
+   -webkit-transform: rotateY(180deg);
+   -moz-transform: rotateY(180deg);
+   -o-transform: rotateY(180deg);
+   transform: rotateY(180deg);
 }
 
 #cards-game .flip-container, #cards-game .front, #cards-game .back {
@@ -121,26 +127,42 @@ Author     : jbustarviejo
 }
 
 #cards-game .flipper {
-    transition: 0.6s;
-    transform-style: preserve-3d;
-    position: relative;
+ -webkit-transition: -webkit-transform 0.6s;
+ -moz-transition: -moz-transform 0.6s;
+ -o-transition: -o-transform 0.6s;
+ transition: transform 0.6s;
+ -webkit-transform-style: preserve-3d;
+ -moz-transform-style: preserve-3d;
+ -o-transform-style: preserve-3d;
+ transform-style: preserve-3d;
+ -webkit-transform-origin: 50% 50%;
+ position: relative;
 }
 
 #cards-game .front,#cards-game  .back {
-    backface-visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -o-backface-visibility: hidden;
+   backface-visibility: hidden;
+   position: absolute;
+   top: 0;
+   left: 0;
 }
 
 #cards-game .front {
     z-index: 2;
     /* for firefox 31 */
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
     transform: rotateY(0deg);
 }
 
 #cards-game .back {
-    transform: rotateY(180deg);
+   -webkit-transform: rotateY(180deg);
+   -moz-transform: rotateY(180deg);
+   -o-transform: rotateY(180deg);
+   transform: rotateY(180deg);
 }
 
 #cards-game .red-card{
@@ -160,7 +182,10 @@ Author     : jbustarviejo
 }
 
 #cards-game .smaller{
-    transition: 2s;
+    -webkit-transition: -webkit-transform 2s;
+    -moz-transition: -moz-transform 2s;
+    -o-transition: -o-transform 2s;
+    transition: transform 2s;
     margin-top: 10%;
     margin-left: 44% !important;
 }
@@ -172,7 +197,10 @@ Author     : jbustarviejo
     position: absolute;
     width: 25%;
     z-index: 3;
-    transition: 2.5s;
+    -webkit-transition: -webkit-transform 2.5s;
+    -moz-transition: -moz-transform 2.5s;
+    -o-transition: -o-transform 2.5s;
+    transition: transform 2.5s;
 }
 
 #cards-game #final-card {
@@ -193,7 +221,10 @@ Author     : jbustarviejo
     position: absolute;
     width: 19%;
     cursor: pointer;
-    transition: 1s;
+    -webkit-transition: -webkit-transform 1s;
+    -moz-transition: -moz-transform 1s;
+    -o-transition: -o-transform 1s;
+    transition: transform 1s;
     opacity: 0;
 }
 
@@ -236,10 +267,13 @@ Author     : jbustarviejo
 }
 
 #boxes-game .choosen-box{
-    transition: 1s;
-    bottom: 2%;
-    left: 80% !important;
-    cursor: auto;
+ -webkit-transition: -webkit-transform 1s;
+ -moz-transition: -moz-transform 1s;
+ -o-transition: -o-transform 1s;
+ transition: transform 1s;
+ bottom: 2%;
+ left: 80% !important;
+ cursor: auto;
 }
 
 #boxes-game .choosen-box:hover{
@@ -258,19 +292,28 @@ Author     : jbustarviejo
 }
 
 #boxes-game .box-to-hide{
-    transition: 1s;
-    opacity: 0;
+ -webkit-transition: -webkit-transform 1s;
+ -moz-transition: -moz-transform 1s;
+ -o-transition: -o-transform 1s;
+ transition: transform 1s;
+ opacity: 0;
 }
 
 #boxes-game .box-to-change{
     left: 40% !important;
-    transition: 2s;
+    -webkit-transition: -webkit-transform 2s;
+    -moz-transition: -moz-transform 2s;
+    -o-transition: -o-transform 2s;
+    transition: transform 2s;
 }
 
 #boxes-game .box.box-to-change-finish{
-    transition: none;
-    cursor: pointer;
-    pointer-events: auto;
+ -webkit-transition: -webkit-transform none;
+ -moz-transition: -moz-transform none;
+ -o-transition: -o-transform none;
+ transition: transform none;
+ cursor: pointer;
+ pointer-events: auto;
 }
 
 #boxes-game .box.box-unselectable.box-to-change-finish:hover{ 
@@ -281,7 +324,10 @@ Author     : jbustarviejo
 }
 
 #boxes-game .box.choosen-box-change{
-    transition: none;
+    -webkit-transition: -webkit-transform none;
+    -moz-transition: -moz-transform none;
+    -o-transition: -o-transform none;
+    transition: transform none;
 }
 
 #boxes-game .box.choosen-box-change:hover{
