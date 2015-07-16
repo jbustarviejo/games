@@ -59,7 +59,7 @@
                         <h2 id="cards-title" class="h2-title">Memoriza las cartas</h2>
                         <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToCenter();">¡Hecho!</button>
                         <img id="cards-hat" ondragstart="return false;" src="/images/cards/hat.png"/>
-                        <div id="final-card" class="smaller"></div>
+                        <div id="final-card" class="card-container smaller"><div class="card" onclick="return false;"><div id="final-card-front" class="front"></div><div id="final-card-back" class="back"></div></div></div>
                         <div id="card-to-choose-left" class="red-card card-to-choose" style="display:none"><span class="span-explain">Es rojo</span></div>
                         <div id="card-to-choose-right" class="black-card card-to-choose" style="display:none"><span class="span-explain">Es negro</span></div>
                     </div>                    

@@ -167,10 +167,15 @@ games.cardsGame = {
         document.getElementById('cards-lose-screen').style.display = "none";
         document.getElementById("cards-play-button").style.display = "block";
         document.getElementById("cards-instructions-screen").style.display = "block";
+        
         var final_card = document.getElementById("final-card");
-        self.cardsNumber = cardsNumber;
         final_card.removeAttribute("style");
         final_card.className = "smaller";
+        final_card.getElementsByClassName("card")[0].className = "card";
+        document.getElementById("final-card-front").className = "front";
+        document.getElementById("final-card-back").className = "back";
+
+        self.cardsNumber = cardsNumber;       
         var right_card = document.getElementById("card-to-choose-right");
         right_card.removeAttribute("style");
         right_card.removeAttribute("onclick");
@@ -179,7 +184,7 @@ games.cardsGame = {
         left_card.removeAttribute("onclick");
         document.getElementById("cards-title").textContent = "Memoriza las cartas";
 
-        var cards = document.getElementsByClassName("flip-container");
+        var cards = document.getElementsByClassName("card-container");
         for (var j = 0; j < cards.length; j++) {
             cards[j].remove();
         }
@@ -240,7 +245,10 @@ games.cardsGame = {
                 self.winner = winner_side;
                 var final_card = document.getElementById("final-card");
                 final_card.style.display = "block";
-                final_card.className += " " + selected_side;
+                var final_card_front = document.getElementById("final-card-front");
+                final_card_front.classList.add(selected_side);
+                var final_card_back = document.getElementById("final-card-back");
+                final_card_back.classList.add(winner_side);
                 console.log(card, selected_side, winner_side);
                 document.getElementById("cards-hat").style.margin = "45% 0 0 0";
                 document.getElementById("cards-title").innerHTML = "¿De qué color es el reverso?";
@@ -268,15 +276,25 @@ games.cardsGame = {
         }, 2500);
     },
     finishCardGame: function (win, selected_side) {
+        this.ellapsed_time_decission = new Date().getTime() - this.start_decission;
         var self = this;
-        self.ellapsed_time_decission = new Date().getTime() - this.start_decission;
-        if (win) {
-            document.getElementById('cards-win-screen').style.display = 'block';
-        } else {
-            document.getElementById('cards-lose-screen').style.display = 'block';
+        var final_card = document.getElementById("final-card");
+        final_card.getElementsByClassName("card")[0].classList.add("flipped");
+        if(selected_side == "red-card"){
+            var no_selected = document.getElementById("card-to-choose-right");
+        } else{
+            var no_selected = document.getElementById("card-to-choose-left");
         }
-        self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
-
+        no_selected.style.opacity = 0.5;
+        no_selected.style.cursor = "default";
+        setTimeout(function () {
+            if (win) {
+                document.getElementById('cards-win-screen').style.display = 'block';
+            } else {
+                document.getElementById('cards-lose-screen').style.display = 'block';
+            }
+            self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
+        }, 1500);
     },
     sendDataToServer: function (time_memory, time_decission, displayed_side, winner_side, selected_side, cards_number, cards_array) {
         //console.log("Time memory: "+time_memory, "Time decission: "+time_decission, "Displayed side: "+displayed_side, "Winner side: "+winner_side, "Selected: "+selected_side, "Card numbers: "+cards_number)
