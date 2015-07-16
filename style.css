@@ -191,12 +191,20 @@ Author     : jbustarviejo
   -o-transform: rotateY(30deg);
   transform: rotateY(30deg);
 }
-#gameContainer #final-card .card:hover {
+#gameContainer #final-card-front, #gameContainer #final-card-back{
+    cursor: default;
+}
+#gameContainer .smaller .card:hover {
   -webkit-transform: rotateY(0deg);
   -moz-transform: rotateY(0deg);
   -o-transform: rotateY(0deg);
   transform: rotateY(0deg);
-  cursor: default;
+}
+#gameContainer .smaller .card.flipped:hover {
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 #gameContainer .flipped{
   -webkit-transform: rotateY(180deg);

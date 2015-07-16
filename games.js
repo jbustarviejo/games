@@ -221,6 +221,8 @@ games.cardsGame = {
             cards[j].classList.add("smaller");
             cards[j].style.width = "7%";
             cards[j].style.height = "17%";
+            cards[j].style.cursor = "default";
+            cards[j].getElementsByClassName("card")[0].removeAttribute("onclick");
         }
     },
     animateCardsToCenter: function () {
