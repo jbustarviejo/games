@@ -42,7 +42,35 @@ var games = {
             if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
         }
         return null;
-    }
+    },
+    createsoundbite: function (sound) {
+        var html5_audiotypes = {//define list of audio file extensions and their associated audio types. Add to it if your specified audio file isn't on this list:
+            "mp3": "audio/mpeg",
+            //"mp4": "audio/mp4",
+            "ogg": "audio/ogg"
+                    //"wav": "audio/wav"
+        };
+        var html5audio = document.createElement('audio');
+        html5audio.setAttribute("id", arguments[arguments.length - 1]);
+        if (html5audio.canPlayType) { //check support for HTML5 audio
+            for (var i = 0; i < arguments.length - 1; i++) {
+                var sourceel = document.createElement('source');
+                sourceel.setAttribute('src', arguments[i]);
+                if (arguments[i].match(/\.(\w+)$/i)) {
+                    sourceel.setAttribute('type', html5_audiotypes[RegExp.$1]);
+                }
+                html5audio.appendChild(sourceel);
+            }
+            html5audio.load();
+            return html5audio;
+        } else {
+            return {
+                playclip: function () {
+                    throw new Error("Your browser doesn't support HTML5 audio unfortunately");
+                }
+            };
+        }
+    },
 };
 games.login = {
     checkCookie: function(){
@@ -133,7 +161,7 @@ games.sticksGame = {
             } else {
                 var height = Math.floor(Math.random() * 12) + 38;
             }
-            sticksContainer.innerHTML += self.createsoundbite('/audio/click.ogg', '/audio/click.mp3', (i + 1)).outerHTML;
+            sticksContainer.innerHTML += games.createsoundbite('/audio/click.ogg', '/audio/click.mp3', "stickAudio" + (i + 1)).outerHTML;
             sticksContainer.innerHTML += '<img class="stick" onclick="games.sticksGame.chooseStick(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/larguest-stick/straw' + (Math.floor(Math.random() * 7) + 1) + '.jpg" onmouseover="document.getElementById(\'stickAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">';
             leftOffset += leftInc;
         }
@@ -185,34 +213,6 @@ games.sticksGame = {
             document.getElementById("sticks-win-screen").style.display = "block";
         } else {
             document.getElementById("sticks-lose-screen").style.display = "block";
-        }
-    },
-    createsoundbite: function (sound) {
-        var html5_audiotypes = {//define list of audio file extensions and their associated audio types. Add to it if your specified audio file isn't on this list:
-            "mp3": "audio/mpeg",
-            //"mp4": "audio/mp4",
-            "ogg": "audio/ogg"
-                    //"wav": "audio/wav"
-        };
-        var html5audio = document.createElement('audio');
-        html5audio.setAttribute("id", "stickAudio" + (arguments[arguments.length - 1]));
-        if (html5audio.canPlayType) { //check support for HTML5 audio
-            for (var i = 0; i < arguments.length - 1; i++) {
-                var sourceel = document.createElement('source');
-                sourceel.setAttribute('src', arguments[i]);
-                if (arguments[i].match(/\.(\w+)$/i)) {
-                    sourceel.setAttribute('type', html5_audiotypes[RegExp.$1]);
-                }
-                html5audio.appendChild(sourceel);
-            }
-            html5audio.load();
-            return html5audio;
-        } else {
-            return {
-                playclip: function () {
-                    throw new Error("Your browser doesn't support HTML5 audio unfortunately");
-                }
-            };
         }
     },
     sendDataToServer: function (time, winner, selected, sticksNumber) {
@@ -477,13 +477,23 @@ games.boxesGame = {
         var self = this;
         self.ellapsed_time_decission_change = new Date().getTime() - this.start_decission_change;
         console.log("Winner "+self.winner_box, "choose"+choose);
-         if (self.winner_box==choose) {
-            document.getElementById('boxes-win-screen').style.display = 'block';
+        if (self.winner_box==choose) {
+            var winner_box=document.getElementById('box-' + choose);
+            winner_box.setAttribute("src", "/images/boxes/open-box-win.png");
+            winner_box.outerHTML+=games.createsoundbite('/audio/tada.ogg', '/audio/tada.mp3', "winner_audio").outerHTML;
+            document.getElementById('winner_audio').play();
         } else {
-            document.getElementById('boxes-lose-screen').style.display = 'block';
-        }
-        console.log("NumBoxes: "+self.boxesNumber, "Winner: "+self.winner_box, "First choose: "+self.first_choose, "Available to change: "+self.box_available_to_change, "final_choose: "+choose, "time_to_first_choose"+self.ellapsed_time_decission, "time_to_change"+self.ellapsed_time_decission_change);
-        self.sendDataToServer(self.boxesNumber, self.winner_box, self.first_choose, self.box_available_to_change, choose, self.ellapsed_time_decission, self.ellapsed_time_decission_change);
+            document.getElementById('box-' + choose).setAttribute("src", "/images/boxes/open-box.png");
+        }           
+        setTimeout(function () {
+             if (self.winner_box==choose) {
+                document.getElementById('boxes-win-screen').style.display = 'block';
+            } else {
+                document.getElementById('boxes-lose-screen').style.display = 'block';
+            }
+            console.log("NumBoxes: "+self.boxesNumber, "Winner: "+self.winner_box, "First choose: "+self.first_choose, "Available to change: "+self.box_available_to_change, "final_choose: "+choose, "time_to_first_choose"+self.ellapsed_time_decission, "time_to_change"+self.ellapsed_time_decission_change);
+            self.sendDataToServer(self.boxesNumber, self.winner_box, self.first_choose, self.box_available_to_change, choose, self.ellapsed_time_decission, self.ellapsed_time_decission_change);
+        }, 500);  
     },
      sendDataToServer: function (boxesNumber, winnerBox, firstChoose, availableToChange, finalChoose, timeToFirstChoose, timeToChange) {
         var xhr = new XMLHttpRequest();

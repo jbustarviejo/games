@@ -33,7 +33,7 @@
                     </div>
                     <button class="play-button" onclick="games.sticksGame.startSticksGame();">Jugar</button>
                 </div>
-                <div id="main-screen-game-sticks" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
+                <div id="main-screen-game-sticks" class="screen">
                     <img id="close-hand" ondragstart="return false;" src="/images/larguest-stick/close-hand.png"/>
                     <img id="open-hand" ondragstart="return false;" src="/images/larguest-stick/open-hand.png"/>
                     <div id="main-screen-game-sticks-container"></div>
@@ -62,7 +62,7 @@
                     </div>
                     <button class="play-button" onclick="games.cardsGame.startCardsGame();">Jugar</button>
                 </div>
-                <div id="main-screen-game-cards" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
+                <div id="main-screen-game-cards" class="screen">
                     <div id="main-screen-cards-container">
                         <h2 id="cards-title" class="h2-title">Memoriza las cartas</h2>
                         <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToCenter();">¡Hecho!</button>
@@ -96,7 +96,7 @@
                     </div>
                     <button class="play-button" onclick="games.boxesGame.startBoxesGame();">Jugar</button>
                 </div>
-                <div id="main-screen-game-boxes" class="screen" style="z-index: 8; background-color: rgb(117, 117, 219);">
+                <div id="main-screen-game-boxes" class="screen">
                     <div id="main-screen-boxes-container">
                     </div>                    
                 </div>
@@ -127,14 +127,15 @@
                 <li>Plazos</li>
                 <li>Tiempos de selección</li>
                 <li>Diferenes variaciones, ¿son correctas?</li>
+                <li>Duración de cookies</li>
             </ul>
             <h2>Todo</h2>
             <ul>
-                <li>Pantalla login</li>
-                <li>Juego cajas, abrir caja</li>
+                <li>Juego cartas, haz click</li>
                 <li>Sonidos</li>
                 <li>Nuevos gráficos</li>
                 <li>Fondos</li>
+                <li>Preload</li>
             </ul>
         </div>
         <script type="text/javascript" src="/games.js"></script>

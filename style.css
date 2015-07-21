@@ -85,6 +85,19 @@ Author     : jbustarviejo
     position: absolute;
     text-align: center;
 }
+#gameContainer #main-screen-game-sticks{
+  background-color: rgb(117, 117, 219);
+  z-index: 8;
+}
+#gameContainer #main-screen-game-cards{
+  background-color: rgb(117, 117, 219);
+  z-index: 8;
+}
+#gameContainer #main-screen-game-boxes{
+  background-color: rgb(117, 117, 219);
+  z-index: 8;
+}
+
 #gameContainer #sticks-instructions-screen > div,#gameContainer #cards-instructions-screen > div,#gameContainer #boxes-instructions-screen > div{
     color: #fff; margin-top: 19%;
 }
@@ -278,10 +291,10 @@ Author     : jbustarviejo
     position: absolute;
     width: 19%;
     cursor: pointer;
-    -webkit-transition: 1s;
-    -moz-transition: 1s;
-    -o-transition: 1s;
-    transition: 1s;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
     opacity: 0;
 }
 
