@@ -1,4 +1,5 @@
 window.onload = function () {
+    games.login.checkCookie();
     games.resized();
 };
 //Bind on resize
@@ -31,6 +32,78 @@ var games = {
             array[randomIndex] = temporaryValue;
         }
         return array;
+    },
+    readCookie: function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+};
+games.login = {
+    checkCookie: function(){
+        var read=games.readCookie("games-username");
+        console.log(read);
+        if(read == null){
+            return;
+        }else{
+            games.userId=read;
+            document.getElementById('login-menu').style.display = "none";
+        }   
+    },
+    start: function(){
+        username=document.getElementById('login-username').value;
+        if(username === ""){
+            alert("Introduce tu ID de usuario");
+            document.getElementById('login-username').focus();
+            return;
+        }
+        password=document.getElementById('login-password').value;
+        if(password === ""){
+            alert("Introduce tu contraseña");
+            document.getElementById('login-password').focus();
+            return;
+        }
+        this.sendDataToServer(username, password);
+    },
+    keypressed: function(e){
+        var keynum;
+        if(window.event){ // IE                 
+            keynum = e.keyCode;
+        }else if(e.which){ // Netscape/Firefox/Opera                  
+                keynum = e.which;
+             }
+        if(keynum == "13"){
+            this.start();
+        }
+    },
+    sendDataToServer: function (username, password) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', encodeURI('store-data/login'));
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log('Todo ok: ' + xhr.responseText);
+                if(xhr.responseText == "ok"){
+                    document.getElementById('login-menu').style.display = "none";
+                    games.userId=username;
+                    expiry = new Date();   
+                    expiry.setTime(expiry.getTime()+(60*60*24*30*6*1000));  
+                    document.cookie = "games-username="+username+"; expires=" + expiry.toGMTString(); 
+                }else{
+                    alert("Usuario o contraseña incorrecta");
+                }
+            }
+            else if (xhr.status !== 200) {
+                console.log('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send(encodeURI('username=' + username) + "&" + encodeURI('password=' + password));
     }
 };
 games.sticksGame = {
@@ -155,7 +228,7 @@ games.sticksGame = {
                 console.log('Request failed.  Returned status of ' + xhr.status);
             }
         };
-        xhr.send(encodeURI('time=' + time) + "&" + encodeURI('winner=' + winner) + "&" + encodeURI('selected=' + selected) + "&" + encodeURI('sticksNumber=' + sticksNumber));
+        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('time=' + time) + "&" + encodeURI('winner=' + winner) + "&" + encodeURI('selected=' + selected) + "&" + encodeURI('sticksNumber=' + sticksNumber));
     }
 };
 games.cardsGame = {
@@ -312,7 +385,7 @@ games.cardsGame = {
                 console.log('Request failed.  Returned status of ' + xhr.status);
             }
         };
-        xhr.send(encodeURI('time_memory=' + time_memory) + "&" + encodeURI('time_decission=' + time_decission) + "&" + encodeURI('selected_side=' + selected_side) + "&" + encodeURI('displayed_side=' + displayed_side) + "&" + encodeURI('winner_side=' + winner_side) + "&" + encodeURI('cards_number=' + cards_number) + "&" + encodeURI('cards_array=' + cards_array));
+        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('time_memory=' + time_memory) + "&" + encodeURI('time_decission=' + time_decission) + "&" + encodeURI('selected_side=' + selected_side) + "&" + encodeURI('displayed_side=' + displayed_side) + "&" + encodeURI('winner_side=' + winner_side) + "&" + encodeURI('cards_number=' + cards_number) + "&" + encodeURI('cards_array=' + cards_array));
     }
 };
 games.boxesGame = {
@@ -425,6 +498,6 @@ games.boxesGame = {
                 console.log('Request failed.  Returned status of ' + xhr.status);
             }
         };
-        xhr.send(encodeURI('boxes_number=' + boxesNumber) + "&" + encodeURI('winner_box=' + winnerBox) + "&" + encodeURI('first_box_choose=' + firstChoose) + "&" + encodeURI('available_box_to_change=' + availableToChange)+ "&" + encodeURI('final_box_choose=' + finalChoose)+ "&" + encodeURI('time_to_first_choose=' + timeToFirstChoose)+ "&" + encodeURI('time_to_change_box=' + timeToChange));
+        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('boxes_number=' + boxesNumber) + "&" + encodeURI('winner_box=' + winnerBox) + "&" + encodeURI('first_box_choose=' + firstChoose) + "&" + encodeURI('available_box_to_change=' + availableToChange)+ "&" + encodeURI('final_box_choose=' + finalChoose)+ "&" + encodeURI('time_to_first_choose=' + timeToFirstChoose)+ "&" + encodeURI('time_to_change_box=' + timeToChange));
     }
 };

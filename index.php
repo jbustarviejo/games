@@ -8,6 +8,14 @@
 
     <body id="body">        
         <div id="gameContainer" class="">
+            <div id="login-menu" class="screen menu-screen login-menu">
+                <div>
+                    <h2 class="h2-title">Introduce tus datos de acceso</h2>
+                    <input id="login-username" class="input-login" onkeypress="games.login.keypressed(event);" placeholder="Introduce tu id de usuario"/> 
+                    <input id="login-password" type="password" onkeypress="games.login.keypressed(event);" class="input-login" placeholder="Introduce tu contraseña"/><br>
+                    <button class="login-button" onclick="games.login.start()">Entrar</button>
+                </div>
+            </div>
             <div id="main-menu" class="screen menu-screen">
                 <div>
                     <h2 class="h2-title">Elige un juego:</h2>
@@ -113,15 +121,20 @@
             <h2>Dudas</h2>
             <ul>
                 <li>Sistema de puntos</li>
-                <li>Choose a game?</li>
                 <li>Servidor?</li>
-                <li>Login?</li>
-                <li>Juego de los palos, ¿sólo tiempo a elegir palo?</li>
+                <li>¿Login?</li>
+                <li>Tecnologías: HTML5 (probs compatibilidad) y PHP</li>
+                <li>Plazos</li>
+                <li>Tiempos de selección</li>
+                <li>Diferenes variaciones, ¿son correctas?</li>
             </ul>
             <h2>Todo</h2>
             <ul>
-                <li></li>
-                <li></li>
+                <li>Pantalla login</li>
+                <li>Juego cajas, abrir caja</li>
+                <li>Sonidos</li>
+                <li>Nuevos gráficos</li>
+                <li>Fondos</li>
             </ul>
         </div>
         <script type="text/javascript" src="/games.js"></script>

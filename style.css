@@ -9,6 +9,25 @@ Author     : jbustarviejo
 #gameContainer{
     border-radius:8px;overflow:hidden;z-index:10;margin: 50px auto; position: relative; width: 90%; height: 90%; border: 1px solid #000;
 }
+#gameContainer #login-menu{
+    z-index: 10;
+    background-color:rgb(0, 50, 69);
+}
+#gameContainer #login-username{
+  margin-top: 8%;
+}
+#gameContainer #login-menu .h2-title{
+  color: white;
+}
+#gameContainer .input-login{
+  width: 50%;
+  clear: both;
+  height: 40px;
+  border-radius: 10px;
+  border: 0 none;
+  padding: 5px 15px;
+  margin-bottom: 20px;
+}
 #gameContainer #main-menu{
     color: #fff;
 }
