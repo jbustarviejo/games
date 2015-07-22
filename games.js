@@ -413,7 +413,7 @@ games.boxesGame = {
         }
 
         for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '"class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">';
+            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '" onmouseover="document.getElementById(\'boxAudio' + (i + 1) + '\').play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">'+games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1)).outerHTML;;
             leftOffset += leftInc;
         }
         self.winner_box = (Math.ceil(Math.random() * boxesNumber));
@@ -493,7 +493,7 @@ games.boxesGame = {
             }
             console.log("NumBoxes: "+self.boxesNumber, "Winner: "+self.winner_box, "First choose: "+self.first_choose, "Available to change: "+self.box_available_to_change, "final_choose: "+choose, "time_to_first_choose"+self.ellapsed_time_decission, "time_to_change"+self.ellapsed_time_decission_change);
             self.sendDataToServer(self.boxesNumber, self.winner_box, self.first_choose, self.box_available_to_change, choose, self.ellapsed_time_decission, self.ellapsed_time_decission_change);
-        }, 500);  
+        }, 1000);  
     },
      sendDataToServer: function (boxesNumber, winnerBox, firstChoose, availableToChange, finalChoose, timeToFirstChoose, timeToChange) {
         var xhr = new XMLHttpRequest();

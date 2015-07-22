@@ -1,9 +1,6 @@
 <?php
 
-$host_name = "db483958052.db.1and1.com";
-$database = "db483958052";
-$user_name = "dbo483958052";
-$password = "database";
+include("db_connection.php");
 
 $conn = mysqli_connect($host_name, $user_name, $password, $database);
 /*if (mysqli_connect_errno()) {

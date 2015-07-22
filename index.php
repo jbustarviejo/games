@@ -115,6 +115,23 @@
                     </div>
                 </div>
             </div>
+            <div style="display: none;">
+                <img src="/images/boxes/box.png"/>
+                <img src="/images/boxes/open-box-win.png"/>
+                <img src="/images/boxes/open-box.png"/>
+                <img src="/images/cards/hat.png"/>
+                <img src="/images/larguest-stick/close-hand.png"/>
+                <img src="/images/larguest-stick/open-hand.png"/>
+                <img src="/images/larguest-stick/straw1.jpg"/>
+                <img src="/images/larguest-stick/straw2.jpg"/>
+                <img src="/images/larguest-stick/straw3.jpg"/>
+                <img src="/images/larguest-stick/straw4.jpg"/>
+                <img src="/images/larguest-stick/straw5.jpg"/>
+                <img src="/images/larguest-stick/straw6.jpg"/>
+                <img src="/images/larguest-stick/straw7.jpg"/>
+                <audio><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
+                <audio><source src="/audio/tada.ogg" type="audio/ogg"></source><source src="/audio/tada.mp3" type="audio/mpeg"></source></audio>
+            </div>
         </div>
 
         <div>
