@@ -6,18 +6,30 @@ window.onload = function () {
 window.onresize = function () {
     games.resized();
 };
+/**
+ * @Variable games: Contenedor de todas las funciones necesarias para los juegos
+ **/
 var games = {
+    //Debug. true para mostrar por consola el debug
+    debug: false,
+    /**
+     * Función games.displayMainMenu: Muestra el menú principal, escondiendo la pantalla del juego previo 
+     * @param string hide: Id de la pantalla a esconder
+     * @return null
+     **/
     displayMainMenu: function (hide) {
-        document.getElementById(hide).style.display = "none";
-        document.getElementById('main-menu').style.display = "block";
+        $("#" + hide).hide();
+        $('#main-menu').show();
     },
-    getBodyWidth: function () {
-        return document.getElementById("body").offsetWidth;
-    },
+    /**
+     * Función games.resized: En caso de que el browser cambie de tamaño, se cambia el canvas de los juegos
+     * @param null
+     * @return null
+     **/
     resized: function () {
-        var size = Math.round(this.getBodyWidth() * 0.75);
-        document.getElementById("gameContainer").style.width = size + "px";
-        document.getElementById("gameContainer").style.height = Math.round(size * 0.56) + "px";
+        var size = Math.round($("#fake-container").width() * 0.92);
+        $("#gameContainer").css("width", size + "px");
+        $("#gameContainer").css("height", Math.round(size * 0.5) + "px");
     },
     shuffle: function (array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
@@ -33,13 +45,15 @@ var games = {
         }
         return array;
     },
-    readCookie: function(name) {
+    readCookie: function (name) {
         var nameEQ = name + "=";
         var ca = document.cookie.split(';');
-        for(var i=0;i < ca.length;i++) {
+        for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
-            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            while (c.charAt(0) == ' ')
+                c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0)
+                return c.substring(nameEQ.length, c.length);
         }
         return null;
     },
@@ -73,39 +87,39 @@ var games = {
     },
 };
 games.login = {
-    checkCookie: function(){
-        var read=games.readCookie("games-username");
+    checkCookie: function () {
+        var read = games.readCookie("games-username");
         console.log(read);
-        if(read == null){
+        if (read == null) {
             return;
-        }else{
-            games.userId=read;
+        } else {
+            games.userId = read;
             document.getElementById('login-menu').style.display = "none";
-        }   
+        }
     },
-    start: function(){
-        username=document.getElementById('login-username').value;
-        if(username === ""){
+    start: function () {
+        username = document.getElementById('login-username').value;
+        if (username === "") {
             alert("Introduce tu ID de usuario");
             document.getElementById('login-username').focus();
             return;
         }
-        password=document.getElementById('login-password').value;
-        if(password === ""){
+        password = document.getElementById('login-password').value;
+        if (password === "") {
             alert("Introduce tu contraseña");
             document.getElementById('login-password').focus();
             return;
         }
         this.sendDataToServer(username, password);
     },
-    keypressed: function(e){
+    keypressed: function (e) {
         var keynum;
-        if(window.event){ // IE                 
+        if (window.event) { // IE                 
             keynum = e.keyCode;
-        }else if(e.which){ // Netscape/Firefox/Opera                  
-                keynum = e.which;
-             }
-        if(keynum == "13"){
+        } else if (e.which) { // Netscape/Firefox/Opera                  
+            keynum = e.which;
+        }
+        if (keynum == "13") {
             this.start();
         }
     },
@@ -117,13 +131,13 @@ games.login = {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 console.log('Todo ok: ' + xhr.responseText);
-                if(xhr.responseText == "ok"){
+                if (xhr.responseText == "ok") {
                     document.getElementById('login-menu').style.display = "none";
-                    games.userId=username;
-                    expiry = new Date();   
-                    expiry.setTime(expiry.getTime()+(60*60*24*30*6*1000));  
-                    document.cookie = "games-username="+username+"; expires=" + expiry.toGMTString(); 
-                }else{
+                    games.userId = username;
+                    expiry = new Date();
+                    expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
+                    document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
+                } else {
                     alert("Usuario o contraseña incorrecta");
                 }
             }
@@ -134,101 +148,140 @@ games.login = {
         xhr.send(encodeURI('username=' + username) + "&" + encodeURI('password=' + password));
     }
 };
+/**
+ * @Variable games.sticksGame: Contenedor de todas las funciones necesarias para el juego de las cañas
+ **/
 games.sticksGame = {
+    /**
+     * Función games.sticksGame.init: Inicializa el juego de la caña más larga
+     * @param int sticksNumber: Número de cañas a mostrar
+     * @return null
+     **/
     init: function (sticksNumber) {
         var self = this;
-        document.getElementById('sticks-game').style.display = "block";
-        document.getElementById('main-menu').style.display = "none";
-        document.getElementById("sticks-lose-screen").style.display = "none";
-        document.getElementById("sticks-win-screen").style.display = "none";
-        document.getElementById("sticks-instructions-screen").style.display = "block";
-        var openHand = document.getElementById("open-hand");
-        openHand.style.display = "none";
-        openHand.style.opacity = "1";
-        openHand.style.bottom = "2%";
-        document.getElementById("close-hand").style.display = "block";
+        //Mostrar la pantalla de juego principal y la de instrucciones
+        $("#sticks-game").show();
+        $("#sticks-instructions-screen").show();
+        //Esconder las demás
+        $("#main-menu").hide();
+        $("#sticks-lose-screen").hide();
+        $("#sticks-win-screen").hide();
+
+        //Obtener el contenedor principal, borrar su contenido
+        var imagesContainer = $("#main-screen-game-sticks-container");
+        imagesContainer.html("");
+
+        //Crear el dibujo de 'Mano abierta'
+        var openHand = $('<img id="open-hand-back" class="open-hand" ondragstart="return false;" src="/images/largest-stick/open-hand-back.png"/><img id="open-hand-front" class="open-hand" ondragstart="return false;" src="/images/largest-stick/open-hand-front.png"/>')
+                .hide()
+                .appendTo(imagesContainer);
+
+        //Crear el dibujo de 'Mano cerrada'
+        var closeHand = $('<img id="close-hand-front" class="close-hand" ondragstart="return false;" src="/images/largest-stick/close-hand-front2.png"/><img id="close-hand-back" class="close-hand" ondragstart="return false;" src="/images/largest-stick/close-hand-back2.png"/>')
+                .appendTo(imagesContainer);
+
+        //Almacenar los datos que guardaremos al final
         self.sticksNumber = sticksNumber;
         self.winner_stick = Math.floor(Math.random() * sticksNumber) + 1;
-        var sticksContainer = document.getElementById('main-screen-game-sticks-container');
-        sticksContainer.innerHTML = "";
-        console.log("sticksNumber: " + sticksNumber);
+        games.debug && console.log("Número de cañas: " + sticksNumber, "Caña ganadora:" + self.winner_stick);
+
+        //Dibujar las cañas sobre la pantalla
         var availableWidth = 20;
         var leftInc = Math.round(availableWidth * 100 / sticksNumber) / 100;
-        var leftOffset = 39;
+        var leftOffset = 45;
         for (var i = 0; i < sticksNumber; i++) {
             if (i === self.winner_stick - 1) {
                 var height = 70;
             } else {
                 var height = Math.floor(Math.random() * 12) + 38;
             }
-            sticksContainer.innerHTML += games.createsoundbite('/audio/click.ogg', '/audio/click.mp3', "stickAudio" + (i + 1)).outerHTML;
-            sticksContainer.innerHTML += '<img class="stick" onclick="games.sticksGame.chooseStick(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/larguest-stick/straw' + (Math.floor(Math.random() * 7) + 1) + '.jpg" onmouseover="document.getElementById(\'stickAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">';
+            imagesContainer.append($(games.createsoundbite('/audio/click.ogg', '/audio/click.mp3', "stickAudio" + (i + 1)).outerHTML));
+            imagesContainer.append($('<img class="stick" onclick="games.sticksGame.chooseStick(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-stick/straw' + (Math.floor(Math.random() * 10) + 1) + '.jpg" onmouseover="document.getElementById(\'stickAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
             leftOffset += leftInc;
         }
     },
+    /**
+     * Función games.sticksGame.startSticksGame: Borra la página de instrucciones y almacena el tiempo inicial
+     * @param null
+     * @return null
+     */
     startSticksGame: function () {
         this.start_decission = new Date().getTime();
         document.getElementById('sticks-instructions-screen').style.display = 'none';
     },
-    animateDown: function (obj, to, choosen) {
-        var self = this;
-        var bottomInit = obj.style.bottom;
-        bottomInit = bottomInit.substring(0, bottomInit.length - 1);
-        if (bottomInit <= to) {
-            self.finish(choosen);
-            return;
-        }
-        obj.style.bottom = (bottomInit - 0.5) + "%";
-        obj.style.opacity -= 0.05;
-        setTimeout(function () {
-            self.animateDown(obj, to, choosen);
-        }, 50);
-    },
-    //When a stick is choose
+    /**
+     * Función games.sticksGame.chooseStick: Elegir una caña
+     * @param int choosen: Número de la caña elegida
+     * @return null
+     */
     chooseStick: function (choosen) {
         var self = this;
+        //Obtener tiempo consumido y enviar los datos al servidor
         var ellapsed_time = new Date().getTime() - this.start_decission;
-        console.log(ellapsed_time);
-        console.log(this.winner_stick, choosen);
+        games.debug && console.log(ellapsed_time);
+        games.debug && console.log(this.winner_stick, choosen);
         this.sendDataToServer(ellapsed_time, this.winner_stick, choosen, this.sticksNumber);
-        document.getElementById("open-hand").style.display = "block";
-        document.getElementById("close-hand").style.display = "none";
-        var sticks = document.getElementsByClassName("stick");
+
+        //Cambiar mano cerrada por abierta
+        $(".open-hand").show();
+        $(".close-hand").hide();
+
+        //Eliminar efectos previos
+        var sticks = $(".stick");
         for (var i = 0; i < sticks.length; i++) {
-            //Bind sticks onclicks
             if (i === (choosen - 1)) {
-                sticks[i].setAttribute("class", sticks[i].className + " selected");
+                $(sticks[i]).addClass("selected");
             } else {
-                sticks[i].setAttribute("class", sticks[i].className + " no-selected");
+                $(sticks[i]).addClass("no-selected");
             }
-            sticks[i].removeAttribute("onmouseover");
-            sticks[i].removeAttribute("onclick");
+            $(sticks[i]).removeAttr("onmouseover");
+            $(sticks[i]).removeAttr("onclick");
         }
-        setTimeout(function () {
-            self.animateDown(document.getElementById("open-hand"), -20, choosen);
-        }, 1200);
+
+        //Comenzar a desvanecer la mano
+        $(".open-hand").animate({opacity: 0, left: "-50%"}, 1500, function () {
+            // Animación completa
+            self.finish(choosen);
+        });
     },
+    /**
+     * Función games.sticksGame.finish: Mostrar pantalla final
+     * @param int choosen: Número de la caña elegida
+     * @return null
+     */
     finish: function (choosen) {
         if (this.winner_stick === choosen) {
-            document.getElementById("sticks-win-screen").style.display = "block";
+            $("#sticks-win-screen").show();
         } else {
-            document.getElementById("sticks-lose-screen").style.display = "block";
+            $("#sticks-lose-screen").show();
         }
     },
+    /**
+     * Función games.sendDataToServer: Enviar datos al servidor del juego de las cañas
+     * @param int time: Tiempo en ms hasta elegir la caña
+     * @param int winner: Número de la caña ganadora
+     * @param int selected: Número de la caña seleccionada
+     * @param int sticksNumber: Número de cañas mostradas
+     * @return null
+     */
     sendDataToServer: function (time, winner, selected, sticksNumber) {
-        var xhr = new XMLHttpRequest();
-
-        xhr.open('POST', encodeURI('store-data/sticks-game'));
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200 && xhr.responseText !== "todook") {
-                console.log('Something went wrong.  Name is now ' + xhr.responseText);
+        $.ajax({
+            type: "POST",
+            url: "store-data/sticks-game",
+            data: {
+                userId: games.userId,
+                time: time,
+                winner: winner,
+                selected: selected,
+                sticksNumber: sticksNumber,
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log("Algo ha ido mal", data);
             }
-            else if (xhr.status !== 200) {
-                console.log('Request failed.  Returned status of ' + xhr.status);
-            }
-        };
-        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('time=' + time) + "&" + encodeURI('winner=' + winner) + "&" + encodeURI('selected=' + selected) + "&" + encodeURI('sticksNumber=' + sticksNumber));
+        });
     }
 };
 games.cardsGame = {
@@ -240,7 +293,7 @@ games.cardsGame = {
         document.getElementById('cards-lose-screen').style.display = "none";
         document.getElementById("cards-play-button").style.display = "block";
         document.getElementById("cards-instructions-screen").style.display = "block";
-        
+
         var final_card = document.getElementById("final-card");
         final_card.removeAttribute("style");
         final_card.className = "smaller";
@@ -248,7 +301,7 @@ games.cardsGame = {
         document.getElementById("final-card-front").className = "front";
         document.getElementById("final-card-back").className = "back";
 
-        self.cardsNumber = cardsNumber;       
+        self.cardsNumber = cardsNumber;
         var right_card = document.getElementById("card-to-choose-right");
         right_card.removeAttribute("style");
         right_card.removeAttribute("onclick");
@@ -355,9 +408,9 @@ games.cardsGame = {
         var self = this;
         var final_card = document.getElementById("final-card");
         final_card.getElementsByClassName("card")[0].classList.add("flipped");
-        if(selected_side == "red-card"){
+        if (selected_side == "red-card") {
             var no_selected = document.getElementById("card-to-choose-right");
-        } else{
+        } else {
             var no_selected = document.getElementById("card-to-choose-left");
         }
         no_selected.style.opacity = 0.5;
@@ -404,7 +457,7 @@ games.boxesGame = {
         var availableWidth = 80;
         var leftInc = Math.round(availableWidth * 100 / boxesNumber) / 100;
         var leftOffset = 15;
-        self.boxesNumber=boxesNumber;
+        self.boxesNumber = boxesNumber;
 
         if (boxesNumber == 4) {
             leftOffset = 10;
@@ -413,7 +466,8 @@ games.boxesGame = {
         }
 
         for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '" onmouseover="document.getElementById(\'boxAudio' + (i + 1) + '\').play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">'+games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1)).outerHTML;;
+            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '" onmouseover="document.getElementById(\'boxAudio' + (i + 1) + '\').play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">' + games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1)).outerHTML;
+            ;
             leftOffset += leftInc;
         }
         self.winner_box = (Math.ceil(Math.random() * boxesNumber));
@@ -427,7 +481,7 @@ games.boxesGame = {
         var self = this;
         self.ellapsed_time_decission = new Date().getTime() - this.start_decission;
         console.log("Elegida: " + choosen);
-        self.first_choose=choosen;
+        self.first_choose = choosen;
         var box = document.getElementById("box-" + choosen);
         box.className += " choosen-box";
         box.removeAttribute("onclick");
@@ -443,9 +497,9 @@ games.boxesGame = {
 
         if (choosen == self.winner_box) {
             var boxes_to_be_removed = document.getElementsByClassName("to-be-removed");
-            do{
-                var box_to_change=(Math.ceil(Math.random() * boxes_to_be_removed.length));
-            }while(box_to_change==self.winner_box);
+            do {
+                var box_to_change = (Math.ceil(Math.random() * boxes_to_be_removed.length));
+            } while (box_to_change == self.winner_box);
             document.getElementById("box-" + box_to_change).classList.remove("to-be-removed");
         }
 
@@ -456,46 +510,46 @@ games.boxesGame = {
 
         var boxes = document.getElementsByClassName("box");
         for (var j = 0; j < boxes.length; j++) {
-            if(!boxes[j].classList.contains("to-be-removed") && !boxes[j].classList.contains("choosen-box")){
+            if (!boxes[j].classList.contains("to-be-removed") && !boxes[j].classList.contains("choosen-box")) {
                 boxes[j].classList.add("box-to-change");
             }
         }
-        document.getElementById("boxes-title").textContent = "¿Cambiarías de caja?"; 
-        
+        document.getElementById("boxes-title").textContent = "¿Cambiarías de caja?";
+
         setTimeout(function () {
             var box_to_change = document.getElementsByClassName("box-to-change")[0];
             box_to_change.classList.add("box-to-change-finish");
-            self.box_available_to_change=box_to_change.getAttribute("number");
-            box_to_change.setAttribute("onclick","games.boxesGame.finalChoose('"+self.box_available_to_change+"')");
+            self.box_available_to_change = box_to_change.getAttribute("number");
+            box_to_change.setAttribute("onclick", "games.boxesGame.finalChoose('" + self.box_available_to_change + "')");
             var choosen_box = document.getElementsByClassName("choosen-box")[0];
             choosen_box.classList.add("choosen-box-change");
-            choosen_box.setAttribute("onclick","games.boxesGame.finalChoose('"+choosen_box.getAttribute("number")+"')");
+            choosen_box.setAttribute("onclick", "games.boxesGame.finalChoose('" + choosen_box.getAttribute("number") + "')");
             self.start_decission_change = new Date().getTime();
-        }, 2100);       
+        }, 2100);
     },
-    finalChoose: function(choose){
+    finalChoose: function (choose) {
         var self = this;
         self.ellapsed_time_decission_change = new Date().getTime() - this.start_decission_change;
-        console.log("Winner "+self.winner_box, "choose"+choose);
-        if (self.winner_box==choose) {
-            var winner_box=document.getElementById('box-' + choose);
+        console.log("Winner " + self.winner_box, "choose" + choose);
+        if (self.winner_box == choose) {
+            var winner_box = document.getElementById('box-' + choose);
             winner_box.setAttribute("src", "/images/boxes/open-box-win.png");
-            winner_box.outerHTML+=games.createsoundbite('/audio/tada.ogg', '/audio/tada.mp3', "winner_audio").outerHTML;
+            winner_box.outerHTML += games.createsoundbite('/audio/tada.ogg', '/audio/tada.mp3', "winner_audio").outerHTML;
             document.getElementById('winner_audio').play();
         } else {
             document.getElementById('box-' + choose).setAttribute("src", "/images/boxes/open-box.png");
-        }           
+        }
         setTimeout(function () {
-             if (self.winner_box==choose) {
+            if (self.winner_box == choose) {
                 document.getElementById('boxes-win-screen').style.display = 'block';
             } else {
                 document.getElementById('boxes-lose-screen').style.display = 'block';
             }
-            console.log("NumBoxes: "+self.boxesNumber, "Winner: "+self.winner_box, "First choose: "+self.first_choose, "Available to change: "+self.box_available_to_change, "final_choose: "+choose, "time_to_first_choose"+self.ellapsed_time_decission, "time_to_change"+self.ellapsed_time_decission_change);
+            console.log("NumBoxes: " + self.boxesNumber, "Winner: " + self.winner_box, "First choose: " + self.first_choose, "Available to change: " + self.box_available_to_change, "final_choose: " + choose, "time_to_first_choose" + self.ellapsed_time_decission, "time_to_change" + self.ellapsed_time_decission_change);
             self.sendDataToServer(self.boxesNumber, self.winner_box, self.first_choose, self.box_available_to_change, choose, self.ellapsed_time_decission, self.ellapsed_time_decission_change);
-        }, 1000);  
+        }, 1000);
     },
-     sendDataToServer: function (boxesNumber, winnerBox, firstChoose, availableToChange, finalChoose, timeToFirstChoose, timeToChange) {
+    sendDataToServer: function (boxesNumber, winnerBox, firstChoose, availableToChange, finalChoose, timeToFirstChoose, timeToChange) {
         var xhr = new XMLHttpRequest();
 
         xhr.open('POST', encodeURI('store-data/boxes-game'));
@@ -508,6 +562,6 @@ games.boxesGame = {
                 console.log('Request failed.  Returned status of ' + xhr.status);
             }
         };
-        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('boxes_number=' + boxesNumber) + "&" + encodeURI('winner_box=' + winnerBox) + "&" + encodeURI('first_box_choose=' + firstChoose) + "&" + encodeURI('available_box_to_change=' + availableToChange)+ "&" + encodeURI('final_box_choose=' + finalChoose)+ "&" + encodeURI('time_to_first_choose=' + timeToFirstChoose)+ "&" + encodeURI('time_to_change_box=' + timeToChange));
+        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('boxes_number=' + boxesNumber) + "&" + encodeURI('winner_box=' + winnerBox) + "&" + encodeURI('first_box_choose=' + firstChoose) + "&" + encodeURI('available_box_to_change=' + availableToChange) + "&" + encodeURI('final_box_choose=' + finalChoose) + "&" + encodeURI('time_to_first_choose=' + timeToFirstChoose) + "&" + encodeURI('time_to_change_box=' + timeToChange));
     }
 };
