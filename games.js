@@ -201,7 +201,7 @@ games.sticksGame = {
         }
     },
     /**
-     * Función games.sticksGame.startSticksGame: Borra la página de instrucciones y almacena el tiempo inicial
+     * Función games.sticksGame.startSticksGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
      * @param null
      * @return null
      */
@@ -284,80 +284,97 @@ games.sticksGame = {
         });
     }
 };
+/**
+ * @Variable games.cardsGame: Contenedor de todas las funciones necesarias para el juego de las cartas
+ **/
 games.cardsGame = {
+    /**
+     * Función games.cardsGame.init: Inicializa el juego de las cartas
+     * @param int cardsNumber: Número de cartas a mostrar
+     * @return null
+     **/
     init: function (cardsNumber) {
         var self = this;
-        document.getElementById('cards-game').style.display = "block";
-        document.getElementById('main-menu').style.display = "none";
-        document.getElementById('cards-win-screen').style.display = "none";
-        document.getElementById('cards-lose-screen').style.display = "none";
-        document.getElementById("cards-play-button").style.display = "block";
-        document.getElementById("cards-instructions-screen").style.display = "block";
+        //Mostrar las instrucciones escondiendo todo lo demás
+        $("#cards-game").show();
+        $("#main-menu").hide();
+        $("#cards-win-screen").hide();
+        $("#cards-lose-screen").hide();
+        $("#cards-play-button").show();
+        $("#cards-instructions-screen").show();
 
-        var final_card = document.getElementById("final-card");
-        final_card.removeAttribute("style");
-        final_card.className = "smaller";
-        final_card.getElementsByClassName("card")[0].className = "card";
-        document.getElementById("final-card-front").className = "front";
-        document.getElementById("final-card-back").className = "back";
+        //Devolver la carta final mostrada a su estado original
+        var final_card = $("#final-card")
+                .removeAttr("style")
+                .attr("class", "smaller")
+        final_card.find(".card")[0].className = "card";
+        $("#final-card-front").attr("class", "front");
+        $("#final-card-back").attr("class", "back");
 
+        //Devolver la página de selección de cartas a los valores iniciales
+        var right_card = $("#card-to-choose-right")
+                .removeAttr("style")
+                .removeAttr("onclick");
+        var left_card = $("#card-to-choose-left")
+                .removeAttr("style")
+                .removeAttr("onclick");
+        $("cards-title").text("Memoriza las cartas");
+
+        //Borrar posibles cartas antiguas
+        $("card-container").remove();
+
+        //Almacenar el número de cartas mostrado
         self.cardsNumber = cardsNumber;
-        var right_card = document.getElementById("card-to-choose-right");
-        right_card.removeAttribute("style");
-        right_card.removeAttribute("onclick");
-        var left_card = document.getElementById("card-to-choose-left");
-        left_card.removeAttribute("style");
-        left_card.removeAttribute("onclick");
-        document.getElementById("cards-title").textContent = "Memoriza las cartas";
 
-        var cards = document.getElementsByClassName("card-container");
-        for (var j = 0; j < cards.length; j++) {
-            cards[j].remove();
-        }
-
+        //Array de cartas del juego mínimo y los offsets de sus representaciones
         var cardsArray = [["red-card", "black-card"], ["black-card", "black-card"], ["red-card", "red-card"]];
         var offsetLeft = 20;
-        if (cardsNumber === 4) {
+        if (cardsNumber === 4) { //Añadir una carta más si son 4
             cardsArray[cardsArray.length] = ["black-card", "red-card"];
             offsetLeft = 10;
-        } else if (cardsNumber === 5) {
+        } else if (cardsNumber === 5) { //Añadir dos cartas más si son 5
             cardsArray[cardsArray.length] = ["black-card", "red-card"];
             cardsArray[cardsArray.length] = ["red-card", "black-card"];
             offsetLeft = 0.5;
         }
 
+        //Barajar las cartas
         self.cardsArray = games.shuffle(cardsArray);
+        //ALmacenar las cartas que se mostrarán
         self.displayedCards = encodeURI(self.cardsArray);
 
-        var container = document.getElementById('main-screen-cards-container');
+        //Mostrar las cartas en su contenedor principal
+        var container = $('#main-screen-cards-container');
         var offsetIncrement = 20;
         for (var i = 0; i < cardsNumber; i++) {
-            //container.innerHTML += '<div class="flip-container card-to-be-resized" style="margin-left:' + offsetLeft + '%" ontouchstart="this.classList.toggle(\'hover\');"><div class="flipper"><div class="card-to-be-resized front ' + self.cardsArray[i][0] + '"></div><div class="card-to-be-resized back ' + self.cardsArray[i][1] + '"></div></div></div>';
-            container.innerHTML += '<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" onclick="this.classList.toggle(\'flipped\')"><div class="front ' + self.cardsArray[i][0] + '"></div><div class="back ' + self.cardsArray[i][1] + '"></div></div></div>';
+            container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" onclick="this.classList.toggle(\'flipped\')"><div class="front ' + self.cardsArray[i][0] + '"></div><div class="back ' + self.cardsArray[i][1] + '"></div></div></div>'));
             offsetLeft += offsetIncrement;
         }
     },
+    /**
+     * Función games.sticksGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
+     * @param null
+     * @return null
+     */
     startCardsGame: function () {
         this.start_memory = new Date().getTime();
-        document.getElementById('cards-instructions-screen').style.display = 'none';
+        $('#cards-instructions-screen').hide();
     },
-    resizeCards: function (wP, hP, withTransition) {
-        var cards = document.getElementsByClassName("card-container");
-        for (var j = 0; j < cards.length; j++) {
-            cards[j].classList.add("smaller");
-            cards[j].style.width = "7%";
-            cards[j].style.height = "17%";
-            cards[j].style.cursor = "default";
-            cards[j].getElementsByClassName("card")[0].removeAttribute("onclick");
-        }
-    },
-    animateCardsToCenter: function () {
+    /**
+     * Función games.cardsGame.animateCardsToCenter: Meter las cartas en el sombrero
+     * @param null
+     * @return null
+     */
+    animateCardsToHat: function () {
         var self = this;
         self.ellapsed_time_memory = new Date().getTime() - self.start_memory;
-        console.log("Time memory:" + self.ellapsed_time_memory);
-        document.getElementById("cards-play-button").style.display = "none";
-        this.resizeCards(21, 15, true);
-        document.getElementById("cards-hat").style.margin = "6% 0 0 0";
+        games.debug && console.log("Time memory:" + self.ellapsed_time_memory);
+
+        //Make cards smaller
+        this.shrinkCards(21, 15, true);
+        $("#cards-play-button").hide();
+        $("#cards-hat").css("margin-top", "6%");
+
         setTimeout(function () {
             var cards = document.getElementsByClassName("card-container");
             for (var j = 0; j < cards.length; j++) {
@@ -402,6 +419,16 @@ games.cardsGame = {
                 }, 500);
             }, 1000);
         }, 2500);
+    },
+    shrinkCards: function () {
+        var cards = $(".card-container");
+        for (var j = 0; j < cards.length; j++) {
+            cards[j].classList.add("smaller");
+            cards[j].style.width = "7%";
+            cards[j].style.height = "17%";
+            cards[j].style.cursor = "default";
+            cards[j].getElementsByClassName("card")[0].removeAttribute("onclick");
+        }
     },
     finishCardGame: function (win, selected_side) {
         this.ellapsed_time_decission = new Date().getTime() - this.start_decission;

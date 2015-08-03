@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <!--Juego 2: Adivina el color de la carta-->
-                <!--div id="cards-game" style="display:none;">
+                <div id="cards-game" style="display:none;">
                     <div id="cards-instructions-screen" class="screen menu-screen">
                         <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
                         <div>
@@ -81,9 +81,14 @@
                     <div id="main-screen-game-cards" class="screen">
                         <div id="main-screen-cards-container">
                             <h2 id="cards-title" class="h2-title">Memoriza las cartas</h2>
-                            <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToCenter();">¡Hecho!</button>
+                            <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToHat();">¡Hecho!</button>
                             <img id="cards-hat" ondragstart="return false;" src="/images/cards/hat.png"/>
-                            <div id="final-card" class="card-container smaller"><div class="card" onclick="return false;"><div id="final-card-front" class="front"></div><div id="final-card-back" class="back"></div></div></div>
+                            <div id="final-card" class="card-container smaller">
+                                <div class="card" onclick="return false;">
+                                    <div id="final-card-front" class="front"></div>
+                                    <div id="final-card-back" class="back"></div>
+                                </div>
+                            </div>
                             <div id="card-to-choose-left" class="red-card card-to-choose" style="display:none"><span class="span-explain">Es rojo</span></div>
                             <div id="card-to-choose-right" class="black-card card-to-choose" style="display:none"><span class="span-explain">Es negro</span></div>
                         </div>                    
@@ -102,7 +107,7 @@
                             <p class="screen-msg">Has perdido W puntos</p>
                         </div>
                     </div>
-                </div-->
+                </div>
                 <!--div id="boxes-game" style="display:none;">
                     <div id="boxes-instructions-screen" class="screen menu-screen">
                         <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
@@ -163,6 +168,7 @@
                     <li>Duración de cookies</li>
                     <li>Unlog</li>
                     <li>¿Guardar datos intermedios?</li>
+                    <li>Juego de las cartas, posibles colores</li>
                 </ul>
                 <h2>Todo</h2>
                 <ul>
