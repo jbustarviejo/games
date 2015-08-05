@@ -1,8 +1,9 @@
+//Una vez se haya cargado la página comprobar la cookie de usuario y ajustar la pantalla
 window.onload = function () {
     games.login.checkCookie();
     games.resized();
 };
-//Bind on resize
+//Estar atento a los cambios de tamaño de la pantalla
 window.onresize = function () {
     games.resized();
 };
@@ -14,31 +15,39 @@ var games = {
     debug: false,
     /**
      * Función games.displayMainMenu: Muestra el menú principal, escondiendo la pantalla del juego previo 
-     * @param string hide: Id de la pantalla a esconder
-     * @return null
+     * @param {string} hide | Id de la pantalla a esconder
+     * @returns {undefined} | No devuelve ningún valor
      **/
     displayMainMenu: function (hide) {
         $("#" + hide).hide();
         $('#main-menu').show();
+        var theme = $("#main-theme")[0];
+        theme.loop = true;
+        theme.currentTime = 0;
+        theme.play();
     },
     /**
      * Función games.resized: En caso de que el browser cambie de tamaño, se cambia el canvas de los juegos
-     * @param null
-     * @return null
+     * @returns {undefined} | No devuelve ningún valor
      **/
     resized: function () {
         var size = Math.round($("#fake-container").width() * 0.92);
-        $("#gameContainer").css("width", size + "px");
-        $("#gameContainer").css("height", Math.round(size * 0.5) + "px");
+        $("#game-container").css("width", size + "px");
+        $("#game-container").css("height", Math.round(size * 0.5) + "px");
     },
+    /**
+     * Función games.shuffle: Barajar de forma aleatoria un array recibido
+     * @param {array} array | El array a barajar 
+     * @returns {array} | No devuelve ningún valor
+     **/
     shuffle: function (array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
-        // While there remain elements to shuffle...
+        //Seguir barajando mientras hayan elementos pendientes de reordenar
         while (0 !== currentIndex) {
-            // Pick a remaining element...
+            //Coger un elemento de los restantes
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex -= 1;
-            // And swap it with the current element.
+            //Intercambiarlo por el actual
             temporaryValue = array[currentIndex];
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
@@ -60,9 +69,8 @@ var games = {
     createsoundbite: function (sound) {
         var html5_audiotypes = {//define list of audio file extensions and their associated audio types. Add to it if your specified audio file isn't on this list:
             "mp3": "audio/mpeg",
-            //"mp4": "audio/mp4",
             "ogg": "audio/ogg"
-                    //"wav": "audio/wav"
+            //"wav": "audio/wav"
         };
         var html5audio = document.createElement('audio');
         html5audio.setAttribute("id", arguments[arguments.length - 1]);
@@ -85,7 +93,25 @@ var games = {
             };
         }
     },
+    /**
+     * Función games.rotateRandom: Dar una inclinación aleatoria a la imagen recibida cada cierto periodo de tiempo
+     * @param {jQuery Object} $img | La imagen a inclinar
+     * @returns {int} | Devuelve la id del intervalo de tiempo para más tarde, eliminarlo
+     **/
+    rotateRandom: function ($img) {
+        //Repetir cada cierto periodo de tiempo
+        return setInterval(function () {
+            //Inclinación aleatoria
+            var degrees = Math.round(Math.random() * 10) - 10;
+            $img.css("-ms-transform", "rotate(" + degrees + "deg)")
+                    .css("-webkit-transform", "rotate(" + degrees + "deg)")
+                    .css("transform", "rotate(" + degrees + "deg)");
+        }, 250);
+    },
 };
+/**
+ * @Variable games.login: Contenedor de todas las funciones necesarias para la identificación de usuario en el servidor
+ **/
 games.login = {
     checkCookie: function () {
         var read = games.readCookie("games-username");
@@ -95,6 +121,10 @@ games.login = {
         } else {
             games.userId = read;
             document.getElementById('login-menu').style.display = "none";
+             var theme = $("#main-theme")[0];
+            theme.loop = true;
+            theme.currentTime = 0;
+            theme.play();
         }
     },
     start: function () {
@@ -149,95 +179,120 @@ games.login = {
     }
 };
 /**
- * @Variable games.sticksGame: Contenedor de todas las funciones necesarias para el juego de las cañas
+ * @Variable games.strawsGame: Contenedor de todas las funciones necesarias para el juego de las cañas
  **/
-games.sticksGame = {
+games.strawsGame = {
     /**
-     * Función games.sticksGame.init: Inicializa el juego de la caña más larga
-     * @param int sticksNumber: Número de cañas a mostrar
-     * @return null
+     * Función games.strawsGame.init: Inicializa el juego de la caña más larga
+     * @param {int} strawsNumber | Número de cañas a mostrar
+     * @returns {undefined} | No devuelve ningún valor
      **/
-    init: function (sticksNumber) {
+    init: function (strawsNumber) {
         var self = this;
         //Mostrar la pantalla de juego principal y la de instrucciones
-        $("#sticks-game").show();
-        $("#sticks-instructions-screen").show();
+        $("#straws-game").show();
+        $("#straws-instructions-screen").show();
+
         //Esconder las demás
         $("#main-menu").hide();
-        $("#sticks-lose-screen").hide();
-        $("#sticks-win-screen").hide();
+        $("#straws-lose-screen").hide();
+        $("#straws-win-screen").hide();
+
+        //Poner la música y pausar la del menú principal
+        $("#main-theme")[0].pause();
+        var theme=$("#theme-audio1")[0];
+        theme.loop = true;
+        theme.currentTime = 0;
+        theme.play();
 
         //Obtener el contenedor principal, borrar su contenido
-        var imagesContainer = $("#main-screen-game-sticks-container");
+        var imagesContainer = $("#main-screen-game-straws-container");
         imagesContainer.html("");
 
         //Crear el dibujo de 'Mano abierta'
-        var openHand = $('<img id="open-hand-back" class="open-hand" ondragstart="return false;" src="/images/largest-stick/open-hand-back.png"/><img id="open-hand-front" class="open-hand" ondragstart="return false;" src="/images/largest-stick/open-hand-front.png"/>')
+        $('<img id="open-hand-back" class="open-hand" ondragstart="return false;" src="/images/largest-straw/open-hand-back.png"/><img id="open-hand-front" class="open-hand" ondragstart="return false;" src="/images/largest-straw/open-hand-front.png"/>')
                 .hide()
                 .appendTo(imagesContainer);
 
         //Crear el dibujo de 'Mano cerrada'
-        var closeHand = $('<img id="close-hand-front" class="close-hand" ondragstart="return false;" src="/images/largest-stick/close-hand-front2.png"/><img id="close-hand-back" class="close-hand" ondragstart="return false;" src="/images/largest-stick/close-hand-back2.png"/>')
+        $('<img id="close-hand-front" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-front2.png"/><img id="close-hand-back" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-back2.png"/>')
+                .appendTo(imagesContainer);
+
+        //Crear texto de indicación 
+        $("<img class='straws-helper-arrow helper-tip' ondragstart='return false;' src='/images/largest-straw/helper-arrow.png'/><img id='straws-helper-text' class='helper-tip' ondragstart='return false;' src='/images/largest-straw/helper-text.png'/>")
                 .appendTo(imagesContainer);
 
         //Almacenar los datos que guardaremos al final
-        self.sticksNumber = sticksNumber;
-        self.winner_stick = Math.floor(Math.random() * sticksNumber) + 1;
-        games.debug && console.log("Número de cañas: " + sticksNumber, "Caña ganadora:" + self.winner_stick);
+        self.strawsNumber = strawsNumber;
+        self.winner_straw = Math.floor(Math.random() * strawsNumber) + 1;
+        games.debug && console.log("Número de cañas: " + strawsNumber, "Caña ganadora:" + self.winner_straw);
 
         //Dibujar las cañas sobre la pantalla
         var availableWidth = 20;
-        var leftInc = Math.round(availableWidth * 100 / sticksNumber) / 100;
+        var leftInc = Math.round(availableWidth * 100 / strawsNumber) / 100;
         var leftOffset = 45;
-        for (var i = 0; i < sticksNumber; i++) {
-            if (i === self.winner_stick - 1) {
+        //Obtener 5 cañas diferentes
+        var strawTypes = games.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+        for (var i = 0; i < strawsNumber; i++) {
+            if (i === self.winner_straw - 1) {
+                //La caña más larga medirá el 70% del alto de la pantalla
                 var height = 70;
             } else {
+                //El resto un valor entre el 50% y el 38%
                 var height = Math.floor(Math.random() * 12) + 38;
             }
-            imagesContainer.append($(games.createsoundbite('/audio/click.ogg', '/audio/click.mp3', "stickAudio" + (i + 1)).outerHTML));
-            imagesContainer.append($('<img class="stick" onclick="games.sticksGame.chooseStick(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-stick/straw' + (Math.floor(Math.random() * 10) + 1) + '.jpg" onmouseover="document.getElementById(\'stickAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
+            //Crear las cañas y sus sonidos. Se introduce un offset a cada una para no colisionar en el mismo espacio
+            imagesContainer.append(games.createsoundbite('/audio/click.ogg', '/audio/click.mp3', "strawAudio" + (i + 1)));
+            imagesContainer.append($('<img class="straw" onclick="games.strawsGame.chooseStraw(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-straw/straw' + strawTypes[i] + '.jpg" onmouseover="document.getElementById(\'strawAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
             leftOffset += leftInc;
         }
     },
     /**
-     * Función games.sticksGame.startSticksGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
-     * @param null
-     * @return null
+     * Función games.strawsGame.startstrawsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
+     * @returns {undefined} | No devuelve ningún valor
      */
-    startSticksGame: function () {
+    startstrawsGame: function () {
         this.start_decission = new Date().getTime();
-        document.getElementById('sticks-instructions-screen').style.display = 'none';
+        $("#straws-instructions-screen").hide();
+        //Hace girar el texto de ayuda de forma aleatoria
+        this.textInterval = games.rotateRandom($("#straws-helper-text"));
     },
     /**
-     * Función games.sticksGame.chooseStick: Elegir una caña
-     * @param int choosen: Número de la caña elegida
-     * @return null
+     * Función games.strawsGame.chooseStraw: Elegir una caña
+     * @param {int} choosen | Número de la caña elegida
+     * @returns {undefined} | No devuelve ningún valor
      */
-    chooseStick: function (choosen) {
+    chooseStraw: function (choosen) {
         var self = this;
         //Obtener tiempo consumido y enviar los datos al servidor
         var ellapsed_time = new Date().getTime() - this.start_decission;
         games.debug && console.log(ellapsed_time);
-        games.debug && console.log(this.winner_stick, choosen);
-        this.sendDataToServer(ellapsed_time, this.winner_stick, choosen, this.sticksNumber);
+        games.debug && console.log(this.winner_straw, choosen);
+        this.sendDataToServer(ellapsed_time, this.winner_straw, choosen, this.strawsNumber);
+
+        //Esconder texto de ayuda
+        clearInterval(self.textInterval);
+        $("#straws-game .helper-tip").fadeOut(700);
 
         //Cambiar mano cerrada por abierta
         $(".open-hand").show();
         $(".close-hand").hide();
 
         //Eliminar efectos previos
-        var sticks = $(".stick");
-        for (var i = 0; i < sticks.length; i++) {
+        var straws = $(".straw");
+        for (var i = 0; i < straws.length; i++) {
             if (i === (choosen - 1)) {
-                $(sticks[i]).addClass("selected");
+                $(straws[i]).addClass("selected");
             } else {
-                $(sticks[i]).addClass("no-selected");
+                $(straws[i]).addClass("no-selected");
             }
-            $(sticks[i]).removeAttr("onmouseover");
-            $(sticks[i]).removeAttr("onclick");
+            $(straws[i]).removeAttr("onmouseover");
+            $(straws[i]).removeAttr("onclick");
         }
 
+        //Sonido
+        $("#woosh-sound")[0].play();
         //Comenzar a desvanecer la mano
         $(".open-hand").animate({opacity: 0, left: "-50%"}, 1500, function () {
             // Animación completa
@@ -245,35 +300,38 @@ games.sticksGame = {
         });
     },
     /**
-     * Función games.sticksGame.finish: Mostrar pantalla final
-     * @param int choosen: Número de la caña elegida
-     * @return null
+     * Función games.strawsGame.finish: Mostrar pantalla final y parar la música
+     * @param {int} choosen | Número de la caña elegida
+     * @returns {undefined} | No devuelve ningún valor
      */
     finish: function (choosen) {
-        if (this.winner_stick === choosen) {
-            $("#sticks-win-screen").show();
+         $("#theme-audio1")[0].pause();
+        if (this.winner_straw === choosen) {
+            $("#straws-win-screen").show();
+            $("#winner-sound")[0].play();
         } else {
-            $("#sticks-lose-screen").show();
+            $("#straws-lose-screen").show();
+            $("#lose-sound")[0].play();
         }
     },
     /**
      * Función games.sendDataToServer: Enviar datos al servidor del juego de las cañas
-     * @param int time: Tiempo en ms hasta elegir la caña
-     * @param int winner: Número de la caña ganadora
-     * @param int selected: Número de la caña seleccionada
-     * @param int sticksNumber: Número de cañas mostradas
-     * @return null
+     * @param {int} time | Tiempo en ms hasta elegir la caña
+     * @param {int} winner | Número de la caña ganadora
+     * @param {int} selected | Número de la caña seleccionada
+     * @param {int} strawsNumber | Número de cañas mostradas
+     * @returns {undefined} | No devuelve ningún valor
      */
-    sendDataToServer: function (time, winner, selected, sticksNumber) {
+    sendDataToServer: function (time, winner, selected, strawsNumber) {
         $.ajax({
             type: "POST",
-            url: "store-data/sticks-game",
+            url: "store-data/straws-game",
             data: {
                 userId: games.userId,
                 time: time,
                 winner: winner,
                 selected: selected,
-                sticksNumber: sticksNumber,
+                strawsNumber: strawsNumber,
             },
             success: function (data) {
                 console.log(data);
@@ -290,8 +348,8 @@ games.sticksGame = {
 games.cardsGame = {
     /**
      * Función games.cardsGame.init: Inicializa el juego de las cartas
-     * @param int cardsNumber: Número de cartas a mostrar
-     * @return null
+     * @param {int} cardsNumber | Número de cartas a mostrar
+     * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (cardsNumber) {
         var self = this;
@@ -303,11 +361,19 @@ games.cardsGame = {
         $("#cards-play-button").show();
         $("#cards-instructions-screen").show();
 
+        //Poner la música y pausar la del menú principal
+         //Poner la música y pausar la del menú principal
+        $("#main-theme")[0].pause();
+        var theme=$("#theme-audio2")[0];
+        theme.loop = true;
+        theme.currentTime = 0;
+        theme.play();
+
         //Devolver la carta final mostrada a su estado original
         var final_card = $("#final-card")
                 .removeAttr("style")
                 .attr("class", "smaller")
-        final_card.find(".card")[0].className = "card";
+        .find(".card").first().attr("class", "card");
         $("#final-card-front").attr("class", "front");
         $("#final-card-back").attr("class", "back");
 
@@ -347,14 +413,15 @@ games.cardsGame = {
         var container = $('#main-screen-cards-container');
         var offsetIncrement = 20;
         for (var i = 0; i < cardsNumber; i++) {
-            container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" onclick="this.classList.toggle(\'flipped\')"><div class="front ' + self.cardsArray[i][0] + '"></div><div class="back ' + self.cardsArray[i][1] + '"></div></div></div>'));
+            container.append(games.createsoundbite('/audio/card-flip.ogg', '/audio/card-flip.mp3', "flipCardAudio" + (i + 1)));
+            container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" onclick="this.classList.toggle(\'flipped\');$(\'#flipCardAudio' + (i + 1) + '\')[0].play();"><div class="front ' + self.cardsArray[i][0] + '"></div><div class="back ' + self.cardsArray[i][1] + '"></div></div></div>'));
+            //Las cartas tienen un offset para no colisionar en el mismo espacio. 
             offsetLeft += offsetIncrement;
         }
     },
     /**
-     * Función games.sticksGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
-     * @param null
-     * @return null
+     * Función games.strawsGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
+     * @returns {undefined} | No devuelve ningún valor
      */
     startCardsGame: function () {
         this.start_memory = new Date().getTime();
@@ -362,32 +429,33 @@ games.cardsGame = {
     },
     /**
      * Función games.cardsGame.animateCardsToCenter: Meter las cartas en el sombrero
-     * @param null
-     * @return null
+     * @returns {undefined} | No devuelve ningún valor
      */
     animateCardsToHat: function () {
         var self = this;
+        //Tomar el tiempo que ha llevado la memorización
         self.ellapsed_time_memory = new Date().getTime() - self.start_memory;
         games.debug && console.log("Time memory:" + self.ellapsed_time_memory);
 
-        //Make cards smaller
-        this.shrinkCards(21, 15, true);
+        //Encoger las cartas y llevarlas al centro
+        this.shrinkCards();
         $("#cards-play-button").hide();
-        $("#cards-hat").css("margin-top", "6%");
-
-        setTimeout(function () {
-            var cards = document.getElementsByClassName("card-container");
-            for (var j = 0; j < cards.length; j++) {
-                cards[j].style.display = "none";
-                cards[j].style.display = "none";
-            }
+        //Mover el sombrero al centro de la pantalla
+        $("#cards-hat").animate({"margin-top": "4%"}, 2000, function () {
+            // Animación del sombrero completa
+            $(".card-container").hide(); 
+            //Esconder las cartas y esperar 1 segundo
             setTimeout(function () {
+                //Elegir una carta aleatoria
                 var card = games.shuffle(self.cardsArray)[0];
                 var choose = Math.floor(Math.random() * 2);
                 var selected_side = card[choose];
                 var winner_side = (choose == 0 ? card[1] : card[0]);
+                //Almacenar los lados escondido y mostrado de la carta
                 self.displayed = selected_side;
                 self.winner = winner_side;
+
+                //
                 var final_card = document.getElementById("final-card");
                 final_card.style.display = "block";
                 var final_card_front = document.getElementById("final-card-front");
@@ -395,10 +463,11 @@ games.cardsGame = {
                 var final_card_back = document.getElementById("final-card-back");
                 final_card_back.classList.add(winner_side);
                 console.log(card, selected_side, winner_side);
-                document.getElementById("cards-hat").style.margin = "45% 0 0 0";
+                $("#cards-hat").animate({"margin-top": "45%"}, 2000);
+                //Todo: agitar el sombrero
                 document.getElementById("cards-title").innerHTML = "¿De qué color es el reverso?";
                 setTimeout(function () {
-                    final_card.style.margin = "0";
+                     $("#final-card").animate({"top": "16%"}, 1000); //Usar id superior
                     var right_card = document.getElementById("card-to-choose-right");
                     var left_card = document.getElementById("card-to-choose-left");
                     right_card.style.display = "block";
@@ -418,17 +487,14 @@ games.cardsGame = {
                     }, 100);
                 }, 500);
             }, 1000);
-        }, 2500);
+        });
     },
     shrinkCards: function () {
         var cards = $(".card-container");
-        for (var j = 0; j < cards.length; j++) {
-            cards[j].classList.add("smaller");
-            cards[j].style.width = "7%";
-            cards[j].style.height = "17%";
-            cards[j].style.cursor = "default";
-            cards[j].getElementsByClassName("card")[0].removeAttribute("onclick");
-        }
+        cards.css("cursor", "default");
+        cards.find(".card").removeAttr("onclick");
+        cards.animate({"margin-top": "6%","margin-left": "46%", "width": "7%", "height": "17%"}, 1500);
+
     },
     finishCardGame: function (win, selected_side) {
         this.ellapsed_time_decission = new Date().getTime() - this.start_decission;
@@ -449,6 +515,7 @@ games.cardsGame = {
                 document.getElementById('cards-lose-screen').style.display = 'block';
             }
             self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
+                     $("#theme-audio2")[0].pause();
         }, 1500);
     },
     sendDataToServer: function (time_memory, time_decission, displayed_side, winner_side, selected_side, cards_number, cards_array) {
@@ -493,8 +560,7 @@ games.boxesGame = {
         }
 
         for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '" onmouseover="document.getElementById(\'boxAudio' + (i + 1) + '\').play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">' + games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1)).outerHTML;
-            ;
+            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">' + games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1));
             leftOffset += leftInc;
         }
         self.winner_box = (Math.ceil(Math.random() * boxesNumber));
@@ -561,8 +627,7 @@ games.boxesGame = {
         if (self.winner_box == choose) {
             var winner_box = document.getElementById('box-' + choose);
             winner_box.setAttribute("src", "/images/boxes/open-box-win.png");
-            winner_box.outerHTML += games.createsoundbite('/audio/tada.ogg', '/audio/tada.mp3', "winner_audio").outerHTML;
-            document.getElementById('winner_audio').play();
+            document.getElementById('winner-sound').play();
         } else {
             document.getElementById('box-' + choose).setAttribute("src", "/images/boxes/open-box.png");
         }

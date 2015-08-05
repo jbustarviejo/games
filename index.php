@@ -16,60 +16,66 @@
 
         <div class="fake-container" id="fake-container">
             <h1 class="fake-title">Juegos:</h1>
+
             <!--Contentedor principal del juego-->    
-            <div id="gameContainer" class="">
+            <div id="game-container">
+
                 <!--Menú de acceso, sólo presente cuando no se detecta la cookie de usuario--> 
                 <div id="login-menu" class="screen menu-screen login-menu">
                     <div>
                         <h2 class="h2-title">Introduce tus datos de acceso</h2>
                         <input id="login-username" class="input-login" onkeypress="games.login.keypressed(event);" placeholder="Introduce tu id de usuario"/> 
                         <input id="login-password" type="password" onkeypress="games.login.keypressed(event);" class="input-login" placeholder="Introduce tu contraseña"/><br>
-                            <button class="login-button" onclick="games.login.start()">Entrar</button>
+                        <button class="login-button" onclick="games.login.start()">Entrar</button>
                     </div>
                 </div>
+
                 <!--Menú principal-->
                 <div id="main-menu" class="screen menu-screen">
                     <div>
                         <h2 class="h2-title">Elige un juego:</h2>
-                        <button class="play-button" onclick="games.sticksGame.init(Math.floor(Math.random() * 3) + 3);">La caña más larga</button><br/>
+                        <button class="play-button" onclick="games.strawsGame.init(Math.floor(Math.random() * 3) + 3);">La caña más larga</button><br/>
                         <button class="play-button" onclick="games.cardsGame.init(Math.floor(Math.random() * 3) + 3);">Adivina el color</button><br/>
                         <button class="play-button" onclick="games.boxesGame.init(Math.floor(Math.random() * 3) + 3);">Elige la caja</button>
                     </div>
                 </div>
+
                 <!--Juego 1: La caña más larga-->
-                <div id="sticks-game" style="display:none">
+                <div id="straws-game" style="display:none">
                     <!--Juego 1: Página de instrucciones-->
-                    <div id="sticks-instructions-screen" class="screen menu-screen">
-                        <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
+                    <div id="straws-instructions-screen" class="screen menu-screen">
+                        <span class="close-button" onclick="games.displayMainMenu('straws-game');">X</span>
                         <div>
                             <h2 class="h2-title">La caña más larga</h2>
                             <p class="screen-msg">Elige una de las cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
                         </div>
-                        <button class="play-button" onclick="games.sticksGame.startSticksGame();">Jugar</button>
+                        <button class="play-button" onclick="games.strawsGame.startstrawsGame();">Jugar</button>
                     </div>
                     <!--Juego 1: Contenedor principal-->
-                    <div id="main-screen-game-sticks" class="screen">
-                        <div id="main-screen-game-sticks-container"></div>
+                    <div id="main-screen-game-straws" class="screen">
+                        <div id="main-screen-game-straws-container"></div>
                     </div>
                     <!--Juego 1: Página de has ganado-->
-                    <div id="sticks-win-screen" class="screen menu-screen" style="display:none;">
-                        <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
+                    <div id="straws-win-screen" class="screen menu-screen" style="display:none;">
+                        <span class="close-button" onclick="games.displayMainMenu('straws-game');">X</span>
                         <div style="color: #fff; margin-top: 22%;">
                             <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                             <p class="screen-msg">Has conseguido X puntos</p>
                         </div>
                     </div>
                     <!--Juego 1: Página de has perdido-->
-                    <div id="sticks-lose-screen" class="screen menu-screen" style="display:none;">
-                        <span class="close-button" onclick="games.displayMainMenu('sticks-game');">X</span>
+                    <div id="straws-lose-screen" class="screen menu-screen" style="display:none;">
+                        <span class="close-button" onclick="games.displayMainMenu('straws-game');">X</span>
                         <div style="color: #fff; margin-top: 22%;">
                             <h2 class="h2-title">Vaya... No has ganado...</h2>
                             <p class="screen-msg">Has perdido Y puntos</p>
                         </div>
                     </div>
                 </div>
+
                 <!--Juego 2: Adivina el color de la carta-->
                 <div id="cards-game" style="display:none;">
+                <!--Juego 2: Página de instrucciones-->
                     <div id="cards-instructions-screen" class="screen menu-screen">
                         <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
                         <div>
@@ -78,7 +84,8 @@
                         </div>
                         <button class="play-button" onclick="games.cardsGame.startCardsGame();">Jugar</button>
                     </div>
-                    <div id="main-screen-game-cards" class="screen">
+                     <!--Juego 2: Contenedor principal-->
+                    <div id="main-screen-cards-game" class="screen">
                         <div id="main-screen-cards-container">
                             <h2 id="cards-title" class="h2-title">Memoriza las cartas</h2>
                             <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToHat();">¡Hecho!</button>
@@ -93,6 +100,7 @@
                             <div id="card-to-choose-right" class="black-card card-to-choose" style="display:none"><span class="span-explain">Es negro</span></div>
                         </div>                    
                     </div>
+                    <!--Juego 2: Página de has ganado-->
                     <div id="cards-win-screen" class="screen menu-screen" style="display:none;">
                         <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
                         <div style="color: #fff; margin-top: 22%;">
@@ -100,6 +108,7 @@
                             <p class="screen-msg">Has conseguido Z puntos</p>
                         </div>
                     </div>
+                    <!--Juego 1: Página de has perdido-->
                     <div id="cards-lose-screen" class="screen menu-screen" style="display:none;">
                         <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
                         <div style="color: #fff; margin-top: 22%;">
@@ -108,6 +117,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!--div id="boxes-game" style="display:none;">
                     <div id="boxes-instructions-screen" class="screen menu-screen">
                         <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
@@ -141,17 +151,22 @@
                     <img src="/images/boxes/open-box-win.png"/>
                     <img src="/images/boxes/open-box.png"/>
                     <img src="/images/cards/hat.png"/>
-                    <img src="/images/largest-stick/close-hand.png"/>
-                    <img src="/images/largest-stick/open-hand.png"/>
-                    <img src="/images/largest-stick/straw1.jpg"/>
-                    <img src="/images/largest-stick/straw2.jpg"/>
-                    <img src="/images/largest-stick/straw3.jpg"/>
-                    <img src="/images/largest-stick/straw4.jpg"/>
-                    <img src="/images/largest-stick/straw5.jpg"/>
-                    <img src="/images/largest-stick/straw6.jpg"/>
-                    <img src="/images/largest-stick/straw7.jpg"/>
+                    <img src="/images/largest-straw/close-hand.png"/>
+                    <img src="/images/largest-straw/open-hand.png"/>
+                    <img src="/images/largest-straw/straw1.jpg"/>
+                    <img src="/images/largest-straw/straw2.jpg"/>
+                    <img src="/images/largest-straw/straw3.jpg"/>
+                    <img src="/images/largest-straw/straw4.jpg"/>
+                    <img src="/images/largest-straw/straw5.jpg"/>
+                    <img src="/images/largest-straw/straw6.jpg"/>
+                    <img src="/images/largest-straw/straw7.jpg"/>
                     <audio><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
-                    <audio><source src="/audio/tada.ogg" type="audio/ogg"></source><source src="/audio/tada.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="lose-sound"><source src="/audio/lose.ogg" type="audio/ogg"></source><source src="/audio/lose.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="winner-sound"><source src="/audio/winner.ogg" type="audio/ogg"></source><source src="/audio/winner.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="woosh-sound"><source src="/audio/woosh.ogg" type="audio/ogg"></source><source src="/audio/woosh.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="main-theme"><source src="/audio/main-theme.ogg" type="audio/ogg"></source><source src="/audio/main-theme.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="theme-audio1"><source src="/audio/theme1.ogg" type="audio/ogg"></source><source src="/audio/theme1.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="theme-audio2"><source src="/audio/theme2.ogg" type="audio/ogg"></source><source src="/audio/theme2.mp3" type="audio/mpeg"></source></audio>
                 </div>
             </div>
 
@@ -169,7 +184,13 @@
                     <li>Unlog</li>
                     <li>¿Guardar datos intermedios?</li>
                     <li>Juego de las cartas, posibles colores</li>
+                    <li>Cmabiar nombres a los juegos: '¿Quién se libra de pagar la cena?' (Motivo para jugar)</li>
                 </ul>
+                https://www.youtube.com/watch?v=uIYBnfsB37k
+                ¿¿¿ https://www.youtube.com/watch?v=H84sldKc6aE
+                https://www.youtube.com/watch?v=rR1BX-qW7n0
+
+                Menu: https://www.youtube.com/watch?v=WZkOWliNa9o   1:58
                 <h2>Todo</h2>
                 <ul>
                     <li>Error en caja, al elegir la final se envían dos veces</li>
@@ -179,6 +200,11 @@
                     <li>Nuevos gráficos</li>
                     <li>Fondos</li>
                     <li>Preload</li>
+                    <li>Return to main menu button instead of 'x'</li>
+                    <li>Credits with music. https://www.youtube.com/watch?v=uIYBnfsB37k </li>
+                    <li>Comprimir imágenes</li>
+                    <li>Avisar de giro de pantalla de movil</li>
+                    <li>Mis estadísticas</li>
                 </ul>
             </div>
 
