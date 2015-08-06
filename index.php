@@ -20,13 +20,16 @@
             <!--Contentedor principal del juego-->    
             <div id="game-container">
 
+                <!--Sonido on/off-->
+                <img id="toggle-sound" onclick="games.toogleSound();" ondragstart="return false;" src="/images/general/sound.png"/>
+
                 <!--Menú de acceso, sólo presente cuando no se detecta la cookie de usuario--> 
                 <div id="login-menu" class="screen menu-screen login-menu">
                     <div>
                         <h2 class="h2-title">Introduce tus datos de acceso</h2>
                         <input id="login-username" class="input-login" onkeypress="games.login.keypressed(event);" placeholder="Introduce tu id de usuario"/> 
                         <input id="login-password" type="password" onkeypress="games.login.keypressed(event);" class="input-login" placeholder="Introduce tu contraseña"/><br>
-                        <button class="login-button" onclick="games.login.start()">Entrar</button>
+                            <button class="login-button" onclick="games.login.start()">Entrar</button>
                     </div>
                 </div>
 
@@ -75,7 +78,7 @@
 
                 <!--Juego 2: Adivina el color de la carta-->
                 <div id="cards-game" style="display:none;">
-                <!--Juego 2: Página de instrucciones-->
+                    <!--Juego 2: Página de instrucciones-->
                     <div id="cards-instructions-screen" class="screen menu-screen">
                         <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
                         <div>
@@ -84,7 +87,7 @@
                         </div>
                         <button class="play-button" onclick="games.cardsGame.startCardsGame();">Jugar</button>
                     </div>
-                     <!--Juego 2: Contenedor principal-->
+                    <!--Juego 2: Contenedor principal-->
                     <div id="main-screen-cards-game" class="screen">
                         <div id="main-screen-cards-container">
                             <h2 id="cards-title" class="h2-title">Memoriza las cartas</h2>
@@ -147,26 +150,27 @@
                     </div>
                 </div-->
                 <div style="display: none;">
-                    <img src="/images/boxes/box.png"/>
-                    <img src="/images/boxes/open-box-win.png"/>
-                    <img src="/images/boxes/open-box.png"/>
-                    <img src="/images/cards/hat.png"/>
-                    <img src="/images/largest-straw/close-hand.png"/>
-                    <img src="/images/largest-straw/open-hand.png"/>
-                    <img src="/images/largest-straw/straw1.jpg"/>
-                    <img src="/images/largest-straw/straw2.jpg"/>
-                    <img src="/images/largest-straw/straw3.jpg"/>
-                    <img src="/images/largest-straw/straw4.jpg"/>
-                    <img src="/images/largest-straw/straw5.jpg"/>
-                    <img src="/images/largest-straw/straw6.jpg"/>
-                    <img src="/images/largest-straw/straw7.jpg"/>
-                    <audio><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
-                    <audio id="lose-sound"><source src="/audio/lose.ogg" type="audio/ogg"></source><source src="/audio/lose.mp3" type="audio/mpeg"></source></audio>
-                    <audio id="winner-sound"><source src="/audio/winner.ogg" type="audio/ogg"></source><source src="/audio/winner.mp3" type="audio/mpeg"></source></audio>
-                    <audio id="woosh-sound"><source src="/audio/woosh.ogg" type="audio/ogg"></source><source src="/audio/woosh.mp3" type="audio/mpeg"></source></audio>
+                    <!--Themes-->
                     <audio id="main-theme"><source src="/audio/main-theme.ogg" type="audio/ogg"></source><source src="/audio/main-theme.mp3" type="audio/mpeg"></source></audio>
                     <audio id="theme-audio1"><source src="/audio/theme1.ogg" type="audio/ogg"></source><source src="/audio/theme1.mp3" type="audio/mpeg"></source></audio>
                     <audio id="theme-audio2"><source src="/audio/theme2.ogg" type="audio/ogg"></source><source src="/audio/theme2.mp3" type="audio/mpeg"></source></audio>
+                    <!--Generic sounds-->
+                    <audio id="lose-sound"><source src="/audio/lose.ogg" type="audio/ogg"></source><source src="/audio/lose.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="winner-sound"><source src="/audio/winner.ogg" type="audio/ogg"></source><source src="/audio/winner.mp3" type="audio/mpeg"></source></audio>
+                    <!--Straws game-->
+                    <audio id="strawAudio1"><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="strawAudio2"><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="strawAudio3"><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="strawAudio4"><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="strawAudio5"><source src="/audio/click.ogg" type="audio/ogg"></source><source src="/audio/click.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="woosh-sound"><source src="/audio/woosh.ogg" type="audio/ogg"></source><source src="/audio/woosh.mp3" type="audio/mpeg"></source></audio>
+                    <!--Cards game-->
+                    <audio id="flipCardAudio1"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="flipCardAudio2"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="flipCardAudio3"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="flipCardAudio4"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="flipCardAudio5"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="move-hat-sound"><source src="/audio/move-hat.ogg" type="audio/ogg"></source><source src="/audio/move-hat.mp3" type="audio/mpeg"></source></audio>
                 </div>
             </div>
 
@@ -205,6 +209,7 @@
                     <li>Comprimir imágenes</li>
                     <li>Avisar de giro de pantalla de movil</li>
                     <li>Mis estadísticas</li>
+                    <li>Aviso de compatibilidad</li>
                 </ul>
             </div>
 
