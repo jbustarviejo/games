@@ -90,7 +90,7 @@
                     <!--Juego 2: Contenedor principal-->
                     <div id="main-screen-cards-game" class="screen">
                         <div id="main-screen-cards-container">
-                            <h2 id="cards-title" class="h2-title">Memoriza las cartas</h2>
+                            <img id="cards-title" src="/images/cards/title1.png"/>
                             <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToHat();">¡Hecho!</button>
                             <img id="cards-hat" ondragstart="return false;" src="/images/cards/hat.png"/>
                             <div id="final-card" class="card-container smaller">
@@ -99,8 +99,8 @@
                                     <div id="final-card-back" class="back"></div>
                                 </div>
                             </div>
-                            <div id="card-to-choose-left" class="red-card card-to-choose" style="display:none"><span class="span-explain">Es rojo</span></div>
-                            <div id="card-to-choose-right" class="black-card card-to-choose" style="display:none"><span class="span-explain">Es negro</span></div>
+                            <div id="card-to-choose-left" class="red-card card-to-choose" style="display:none"><span class="span-explain"></span><img src="/images/cards/red.png" class="cards-choose-title"></div>
+                            <div id="card-to-choose-right" class="black-card card-to-choose" style="display:none"><span class="span-explain"></span><img src="/images/cards/black.png" class="cards-choose-title"></div>
                         </div>                    
                     </div>
                     <!--Juego 2: Página de has ganado-->
@@ -171,6 +171,7 @@
                     <audio id="flipCardAudio4"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
                     <audio id="flipCardAudio5"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
                     <audio id="move-hat-sound"><source src="/audio/move-hat.ogg" type="audio/ogg"></source><source src="/audio/move-hat.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="fast-woosh-sound"><source src="/audio/fast-woosh.ogg" type="audio/ogg"></source><source src="/audio/fast-woosh.mp3" type="audio/mpeg"></source></audio>
                 </div>
             </div>
 

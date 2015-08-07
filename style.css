@@ -29,6 +29,10 @@ header, footer{
     margin-left: 20px;
 }
 
+#game-container #straws-instructions-screen > div,#game-container #cards-instructions-screen > div,#game-container #boxes-instructions-screen > div{
+    color: #fff; margin-top: 19%;
+}
+
 /*Contenedor y estilos del menú principal de login*/
 
 #game-container{
@@ -173,10 +177,15 @@ header, footer{
     z-index: 8;
 }
 
-
-#game-container #straws-instructions-screen > div,#game-container #cards-instructions-screen > div,#game-container #boxes-instructions-screen > div{
-    color: #fff; margin-top: 19%;
+#game-container #cards-title{
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 25px;
+    left: 19%;
+    position: absolute;
+    top: 2%;
+    width: 61%;
 }
+
 #game-container .menu-screen{
     z-index: 9;
     background-color:rgba(0, 50, 69,0.95);
@@ -270,6 +279,7 @@ header, footer{
     perspective: 800px;
     float: left;
     cursor: pointer;
+    top: 28%;
 }
 
 #game-container .card {
@@ -370,6 +380,11 @@ header, footer{
     position: absolute;
     width: 7%;
     top: 40%;
+}
+
+#cards-game .cards-choose-title{
+    width: 86%; 
+    margin-top: 48%;
 }
 
 #cards-game .card-to-choose{

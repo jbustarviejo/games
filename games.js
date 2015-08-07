@@ -304,7 +304,7 @@ games.strawsGame = {
         }
     },
     /**
-     * Función games.sendDataToServer: Enviar datos al servidor del juego de las cañas
+     * Función games.strawsGame.sendDataToServer: Enviar datos al servidor del juego de las cañas
      * @param {int} time | Tiempo en ms hasta elegir la caña
      * @param {int} winner | Número de la caña ganadora
      * @param {int} selected | Número de la caña seleccionada
@@ -373,10 +373,11 @@ games.cardsGame = {
         var left_card = $("#card-to-choose-left")
                 .removeAttr("style")
                 .removeAttr("onclick");
-        $("cards-title").text("Memoriza las cartas");
 
+        //Restablecer título
+        $("#cards-title").attr("src", "/images/cards/title1.png").show();
         //Borrar posibles cartas antiguas
-        $("card-container").remove();
+        $(".card-container").remove();
         //Borrar estilo del sombrero
         $("#cards-hat").removeAttr("style");
 
@@ -428,7 +429,10 @@ games.cardsGame = {
         games.debug && console.log("Time memory:" + self.ellapsed_time_memory);
 
         //Encoger las cartas y llevarlas al centro
-        this.shrinkCards();
+        self.shrinkCards();
+
+        //Esconder el título y el botón
+        $("#cards-title").fadeOut(500);
         $("#cards-play-button").hide();
         //Mover el sombrero al centro de la pantalla
         var $hat = $("#cards-hat");
@@ -460,7 +464,11 @@ games.cardsGame = {
                 $hat.removeClass("fast-transition").animate({"top": "100%"}, 2000);
 
                 //Cambiar el título de la pantalla
-                $("#cards-title").text("¿De qué color es el reverso?");
+                $("#cards-title").attr("src", "/images/cards/title2.png").fadeIn(500);
+
+                //Rotar
+                self.textInterval1 = games.rotateRandom($("#card-to-choose-left img"));
+                self.textInterval2 = games.rotateRandom($("#card-to-choose-right img"));
 
                 //Esperar medio segundo
                 setTimeout(function () {
@@ -485,7 +493,7 @@ games.cardsGame = {
         });
     },
     /**
-     * Animación de agitar el sombrero
+     * Función games.cardsGame.shakeHat: Animación de agitar el sombrero
      * @param {int} times | Número de veces que se agita el sombrero
      * @param {int} degrees | Número de grados que se voltea el sombrero 
      * @param {function} callback | función a la uqe llamr una vez finalizada la animación
@@ -520,7 +528,7 @@ games.cardsGame = {
         }, 300);
     },
     /**
-     * Reducir las cartas y moverlas hasta el centro
+     * Función games.cardsGame.shrinkCards: Reducir las cartas y moverlas hasta el centro
      * @returns {undefined} | No devuelve ningún valor
      */
     shrinkCards: function () {
@@ -528,43 +536,78 @@ games.cardsGame = {
         cards.find(".card").removeAttr("onclick");
         cards.animate({"margin-top": "6%", "margin-left": "46%", "width": "7%", "height": "17%"}, 1500);
     },
+    /**
+     * Función games.cardsGame.finishCardGame: Se ha elegido un color del reverso, acabar el juego
+     * @param {type} win
+     * @param {type} selected_side
+     * @returns {undefined} | No devuelve ningún valor
+     */
     finishCardGame: function (win, selected_side) {
         this.ellapsed_time_decission = new Date().getTime() - this.start_decission;
         var self = this;
-        var final_card = document.getElementById("final-card");
-        final_card.getElementsByClassName("card")[0].classList.add("flipped");
-        if (selected_side == "red-card") {
-            var no_selected = document.getElementById("card-to-choose-right");
+        //Reproducir sonido de girado de carta y darle la vuelta
+        $("#fast-woosh-sound")[0].play();
+        $("#final-card .card").addClass("flipped");
+
+        //Volver la carta no elegida transparente
+        if (selected_side === "red-card") {
+            $("#card-to-choose-right").css("opacity", 0.5).css("cursor", "default");
         } else {
-            var no_selected = document.getElementById("card-to-choose-left");
+            $("#card-to-choose-left").css("opacity", 0.5).css("cursor", "default");
         }
-        no_selected.style.opacity = 0.5;
-        no_selected.style.cursor = "default";
+
+        //Parar movimiento de los textos
+        clearInterval(self.textInterval1);
+        clearInterval(self.textInterval2);
+
+        //Enviar los datos al servidor
+        self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
+
+        //Pasado un segundo y medio acabar el juego
         setTimeout(function () {
             if (win) {
-                document.getElementById('cards-win-screen').style.display = 'block';
+                $("#winner-sound")[0].play();
+                $("#cards-win-screen").show();
             } else {
-                document.getElementById('cards-lose-screen').style.display = 'block';
+                $("#lose-sound")[0].play();
+                $("#cards-lose-screen").show();
             }
-            self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
             $("#theme-audio2")[0].pause();
         }, 1500);
     },
+    /**
+     * Función games.cardsGame.sendDataToServer: Enviar datos al servidor del juego de las cañas
+     * @param {type} time_memory
+     * @param {type} time_decission
+     * @param {type} displayed_side
+     * @param {type} winner_side
+     * @param {type} selected_side
+     * @param {type} cards_number
+     * @param {type} cards_array
+     * @returns {undefined}
+     */
     sendDataToServer: function (time_memory, time_decission, displayed_side, winner_side, selected_side, cards_number, cards_array) {
-        //console.log("Time memory: "+time_memory, "Time decission: "+time_decission, "Displayed side: "+displayed_side, "Winner side: "+winner_side, "Selected: "+selected_side, "Card numbers: "+cards_number)
-        var xhr = new XMLHttpRequest();
-
-        xhr.open('POST', encodeURI('store-data/cards-game'));
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200 && xhr.responseText !== "todook") {
-                console.log('Something went wrong.  Name is now ' + xhr.responseText);
+        games.debug && console.log("Time memory: " + time_memory, "Time decission: " + time_decission, "Displayed side: " + displayed_side, "Winner side: " + winner_side, "Selected: " + selected_side, "Card numbers: " + cards_number)
+        $.ajax({
+            type: "POST",
+            url: "store-data/cards-game",
+            data: {
+                userId: games.userId,
+                time_memory: time_memory,
+                time_decission: time_decission,
+                selected_side: selected_side,
+                displayed_side: displayed_side,
+                winner_side: winner_side,
+                cards_number: cards_number,
+                cards_array: cards_array
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log("Algo ha ido mal", data);
             }
-            else if (xhr.status !== 200) {
-                console.log('Request failed.  Returned status of ' + xhr.status);
-            }
-        };
-        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('time_memory=' + time_memory) + "&" + encodeURI('time_decission=' + time_decission) + "&" + encodeURI('selected_side=' + selected_side) + "&" + encodeURI('displayed_side=' + displayed_side) + "&" + encodeURI('winner_side=' + winner_side) + "&" + encodeURI('cards_number=' + cards_number) + "&" + encodeURI('cards_array=' + cards_array));
+        });
     }
 };
 games.boxesGame = {
