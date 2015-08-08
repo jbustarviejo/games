@@ -414,7 +414,8 @@ header, footer{
 /*Cajas*/
 #game-container #main-screen-game-boxes{
     background-color: rgb(117, 117, 219);
-    z-index: 8;
+    background-image: url("/images/boxes/boxes_background.jpg");
+    background-position: 100% 0;
 }
 
 #boxes-game .box{
@@ -423,6 +424,15 @@ header, footer{
     margin-left: 2%;
     cursor: pointer;
     position: absolute;
+    z-index: 8;
+}
+
+#boxes-game .table{
+    left: -26%;
+    position: absolute;
+    top: 8%;
+    width: 150%;
+    z-index: 7;
 }
 
 #boxes-game .box:hover{

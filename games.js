@@ -24,7 +24,6 @@ var games = {
         $("#" + hide).hide();
         $('#main-menu').show();
         var theme = $("#main-theme")[0];
-        theme.loop = true;
         theme.currentTime = 0;
         theme.play();
     },
@@ -112,7 +111,6 @@ games.login = {
             games.userId = read;
             document.getElementById('login-menu').style.display = "none";
             var theme = $("#main-theme")[0];
-            theme.loop = true;
             theme.currentTime = 0;
             theme.play();
         }
@@ -191,7 +189,6 @@ games.strawsGame = {
         //Poner la música y pausar la del menú principal
         $("#main-theme")[0].pause();
         var theme = $("#theme-audio1")[0];
-        theme.loop = true;
         theme.currentTime = 0;
         theme.play();
 
@@ -351,10 +348,8 @@ games.cardsGame = {
         $("#cards-instructions-screen").show();
 
         //Poner la música y pausar la del menú principal
-        //Poner la música y pausar la del menú principal
         $("#main-theme")[0].pause();
         var theme = $("#theme-audio2")[0];
-        theme.loop = true;
         theme.currentTime = 0;
         theme.play();
 
@@ -610,19 +605,31 @@ games.cardsGame = {
         });
     }
 };
+/**
+ * @Variable games.boxesGame: Contenedor de todas las funciones necesarias para el juego de las cajas
+ **/
 games.boxesGame = {
     init: function (boxesNumber) {
         var self = this;
-        document.getElementById('boxes-game').style.display = "block";
-        document.getElementById('main-menu').style.display = "none";
-        document.getElementById("boxes-lose-screen").style.display = "none";
-        document.getElementById("boxes-win-screen").style.display = "none";
-        document.getElementById("boxes-instructions-screen").style.display = "block";
+        $('#boxes-game').show();
+        $('#main-menu').hide();
+        $("#boxes-lose-screen").hide();
+        $("#boxes-win-screen").hide();
+        $("#boxes-instructions-screen").show();
+        $("#main-screen-boxes-container").html("");
 
-        var boxesContainer = document.getElementById('main-screen-boxes-container');
-        boxesContainer.innerHTML = '<h2 id="boxes-title" class="h2-title">Elige una caja</h2>';
-        boxesContainer.innerHTML += '<h2 id="choosen-box-title" class="h2-title choosen-box-title">Tu caja -></h2>';
-        console.log("Boxes Number: " + boxesNumber);
+        //Poner la música y pausar la del menú principal
+        $("#main-theme")[0].pause();
+        var theme = $("#theme-audio3")[0];
+        theme.currentTime = 0;
+        theme.play();
+
+        var boxesContainer = $('#main-screen-boxes-container')
+                .append('<h2 id="boxes-title" class="h2-title">Elige una caja</h2>')
+                .append('<h2 id="choosen-box-title" class="h2-title choosen-box-title">Tu caja -></h2>');
+
+        games.debug && console.log("Boxes Number: " + boxesNumber);
+
         var availableWidth = 80;
         var leftInc = Math.round(availableWidth * 100 / boxesNumber) / 100;
         var leftOffset = 15;
@@ -635,11 +642,13 @@ games.boxesGame = {
         }
 
         for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.innerHTML += '<img id="box-' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">' /*+ games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1))*/;
+            boxesContainer.append('<img id="box-' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">' /*+ games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1))*/);
             leftOffset += leftInc;
         }
+
         self.winner_box = (Math.ceil(Math.random() * boxesNumber));
-        console.log("Winner:" + self.winner_box);
+
+        games.debug && console.log("Winner:" + self.winner_box);
     },
     startBoxesGame: function () {
         this.start_decission = new Date().getTime();

@@ -121,7 +121,9 @@
                     </div>
                 </div>
 
-                <!--div id="boxes-game" style="display:none;">
+                <!--Juego 3: Elige la caja-->
+                <div id="boxes-game" style="display:none;">
+                    <!--Juego 3: Página de instrucciones-->
                     <div id="boxes-instructions-screen" class="screen menu-screen">
                         <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
                         <div>
@@ -130,10 +132,13 @@
                         </div>
                         <button class="play-button" onclick="games.boxesGame.startBoxesGame();">Jugar</button>
                     </div>
+                    <!--Juego 3: Contenedor principal-->
                     <div id="main-screen-game-boxes" class="screen">
                         <div id="main-screen-boxes-container">
-                        </div>                    
+                        </div>     
+                        <img src="/images/boxes/table.png" ondragstart="return false;" class="table">               
                     </div>
+                    <!--Juego 3: Página de has ganado-->
                     <div id="boxes-win-screen" class="screen menu-screen" style="display:none;">
                         <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
                         <div style="color: #fff; margin-top: 22%;">
@@ -141,6 +146,7 @@
                             <p class="screen-msg">Has conseguido F puntos</p>
                         </div>
                     </div>
+                    <!--Juego 3: Página de has perdido-->
                     <div id="boxes-lose-screen" class="screen menu-screen" style="display:none;">
                         <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
                         <div style="color: #fff; margin-top: 22%;">
@@ -148,12 +154,15 @@
                             <p class="screen-msg">Has perdido G puntos</p>
                         </div>
                     </div>
-                </div-->
+                </div>
+
+                <!--Audio-->
                 <div style="display: none;">
                     <!--Themes-->
-                    <audio id="main-theme"><source src="/audio/main-theme.ogg" type="audio/ogg"></source><source src="/audio/main-theme.mp3" type="audio/mpeg"></source></audio>
-                    <audio id="theme-audio1"><source src="/audio/theme1.ogg" type="audio/ogg"></source><source src="/audio/theme1.mp3" type="audio/mpeg"></source></audio>
-                    <audio id="theme-audio2"><source src="/audio/theme2.ogg" type="audio/ogg"></source><source src="/audio/theme2.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="main-theme" loop="loop"><source src="/audio/main-theme.ogg" type="audio/ogg"></source><source src="/audio/main-theme.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="theme-audio1" loop="loop"><source src="/audio/theme1.ogg" type="audio/ogg"></source><source src="/audio/theme1.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="theme-audio2" loop="loop"><source src="/audio/theme2.ogg" type="audio/ogg"></source><source src="/audio/theme2.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="theme-audio3" loop="loop"><source src="/audio/theme3.ogg" type="audio/ogg"></source><source src="/audio/theme3.mp3" type="audio/mpeg"></source></audio>
                     <!--Generic sounds-->
                     <audio id="lose-sound"><source src="/audio/lose.ogg" type="audio/ogg"></source><source src="/audio/lose.mp3" type="audio/mpeg"></source></audio>
                     <audio id="winner-sound"><source src="/audio/winner.ogg" type="audio/ogg"></source><source src="/audio/winner.mp3" type="audio/mpeg"></source></audio>
@@ -172,6 +181,12 @@
                     <audio id="flipCardAudio5"><source src="/audio/card-flip.ogg" type="audio/ogg"></source><source src="/audio/card-flip.mp3" type="audio/mpeg"></source></audio>
                     <audio id="move-hat-sound"><source src="/audio/move-hat.ogg" type="audio/ogg"></source><source src="/audio/move-hat.mp3" type="audio/mpeg"></source></audio>
                     <audio id="fast-woosh-sound"><source src="/audio/fast-woosh.ogg" type="audio/ogg"></source><source src="/audio/fast-woosh.mp3" type="audio/mpeg"></source></audio>
+                    <!--Boxes game-->
+                    <audio id="boxAudio1"><source src="/audio/blob.ogg" type="audio/ogg"></source><source src="/audio/blob.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="boxAudio2"><source src="/audio/blob.ogg" type="audio/ogg"></source><source src="/audio/blob.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="boxAudio3"><source src="/audio/blob.ogg" type="audio/ogg"></source><source src="/audio/blob.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="boxAudio4"><source src="/audio/blob.ogg" type="audio/ogg"></source><source src="/audio/blob.mp3" type="audio/mpeg"></source></audio>
+                    <audio id="boxAudio5"><source src="/audio/blob.ogg" type="audio/ogg"></source><source src="/audio/blob.mp3" type="audio/mpeg"></source></audio>
                 </div>
             </div>
 
