@@ -427,6 +427,37 @@ header, footer{
     z-index: 8;
 }
 
+#boxes-game .box.final-box{
+     width: 18%;
+     margin: 0;
+}
+
+#boxes-game #your-box-container{
+    background-color: #ffffff;
+    border-top-left-radius: 15px;
+    bottom: 0;
+    height: 37%;
+    position: absolute;
+    right: 0;
+    width: 24%;
+    z-index: 7;
+}
+
+#boxes-game #your-box-container > div{
+     background-color: #ccc;
+    border-radius: 7px;
+    bottom: 3%;
+    height: 18%;
+    left: 8%;
+    position: absolute;
+    width: 85%;
+}
+
+#boxes-game #your-box-container img{
+   height: 96%;
+    width: 92%;
+}
+
 #boxes-game .table{
     left: -26%;
     position: absolute;
@@ -452,21 +483,20 @@ header, footer{
     cursor: auto;
 }
 
-#boxes-game .choosen-box{
-    -webkit-transition: 1s;
+/*#boxes-game .choosen-box{
+    /*-webkit-transition: 1s;
     -moz-transition: 1s;
     -o-transition: 1s;
     transition: 1s;
     bottom: 2%;
     left: 80% !important;
     cursor: auto;
-}
+}*/
 
 #boxes-game .choosen-box:hover{
-    width: 13%;
-    margin-left: 2%;
-    cursor: auto;
-    bottom: 2%;
+    width: 17%;
+    cursor: pointer;
+    /*bottom: 3%;*/
 }
 
 #boxes-game .choosen-box-title{
@@ -474,33 +504,33 @@ header, footer{
     position: absolute;
     right: 21%;
     opacity: 0;
-    -webkit-transition: 2.5s;
+    /*-webkit-transition: 2.5s;
     -moz-transition: 2.5s;
     -o-transition: 2.5s;
-    transition: 2.5s;
+    transition: 2.5s;*/
 }
 
 #boxes-game .box-to-hide{
-    -webkit-transition: 1s;
+    /*-webkit-transition: 1s;
     -moz-transition: 1s;
     -o-transition: 1s;
-    transition: 1s;
+    transition: 1s;*/
     opacity: 0;
 }
 
 #boxes-game .box-to-change{
     left: 40% !important;
-    -webkit-transition: 2s;
+    /*-webkit-transition: 2s;
     -moz-transition: 2s;
     -o-transition: 2s;
-    transition: 2s;
+    transition: 2s;*/
 }
 
 #boxes-game .box.box-to-change-finish{
-    -webkit-transition: none;
+    /*-webkit-transition: none;
     -moz-transition: none;
     -o-transition: none;
-    transition: none;
+    transition: none;*/
     cursor: pointer;
     pointer-events: auto;
 }
@@ -513,14 +543,27 @@ header, footer{
 }
 
 #boxes-game .box.choosen-box-change{
-    -webkit-transition: none;
+    /*-webkit-transition: none;
     -moz-transition: none;
     -o-transition: none;
-    transition: none;
+    transition: none;*/
 }
 
 #boxes-game .box.choosen-box-change:hover{
     width: 14%;
     cursor: pointer;
     margin-left: 1.5%;
+}
+
+#boxes-game .boxes-title-background{
+    position: absolute;
+     width: 66%; 
+     left: 14%; 
+     top: 0%;
+}
+#boxes-game .boxes-title-text{
+    position: absolute; 
+    top: 2%;
+    width: 50%;
+    left: 20%;
 }

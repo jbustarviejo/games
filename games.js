@@ -12,7 +12,7 @@ window.onresize = function () {
  **/
 var games = {
     //Debug. true para mostrar por consola el debug
-    debug: false,
+    debug: true,
     //Sound. true para que se oiga la música y los efectos
     sound: true,
     /**
@@ -72,11 +72,11 @@ var games = {
      * @param {jQuery Object} $img | La imagen a inclinar
      * @returns {int} | Devuelve la id del intervalo de tiempo para más tarde, eliminarlo
      **/
-    rotateRandom: function ($img) {
+    rotateRandom: function ($img, deg1, deg2) {
         //Repetir cada cierto periodo de tiempo
         return setInterval(function () {
             //Inclinación aleatoria
-            var degrees = Math.round(Math.random() * 10) - 10;
+            var degrees = Math.round(Math.random() * deg1) - deg2;
             $img.css("-ms-transform", "rotate(" + degrees + "deg)")
                     .css("-webkit-transform", "rotate(" + degrees + "deg)")
                     .css("transform", "rotate(" + degrees + "deg)");
@@ -218,8 +218,6 @@ games.strawsGame = {
         var availableWidth = 20;
         var leftInc = Math.round(availableWidth * 100 / strawsNumber) / 100;
         var leftOffset = 45;
-        //Obtener 5 cañas diferentes
-        var strawTypes = games.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
         for (var i = 0; i < strawsNumber; i++) {
             if (i === self.winner_straw - 1) {
@@ -230,7 +228,7 @@ games.strawsGame = {
                 var height = Math.floor(Math.random() * 12) + 38;
             }
             //Crear las cañas. Se introduce un offset a cada una para no colisionar en el mismo espacio
-            imagesContainer.append($('<img class="straw" onclick="games.strawsGame.chooseStraw(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-straw/straw' + strawTypes[i] + '.jpg" onmouseover="document.getElementById(\'strawAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
+            imagesContainer.append($('<img class="straw" onclick="games.strawsGame.chooseStraw(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-straw/straw' + (i + 1) + '.jpg" onmouseover="document.getElementById(\'strawAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
             leftOffset += leftInc;
         }
     },
@@ -242,7 +240,7 @@ games.strawsGame = {
         this.start_decission = new Date().getTime();
         $("#straws-instructions-screen").hide();
         //Hace girar el texto de ayuda de forma aleatoria
-        this.textInterval = games.rotateRandom($("#straws-helper-text"));
+        this.textInterval = games.rotateRandom($("#straws-helper-text"), 10, 10);
     },
     /**
      * Función games.strawsGame.chooseStraw: Elegir una caña
@@ -370,7 +368,7 @@ games.cardsGame = {
                 .removeAttr("onclick");
 
         //Restablecer título
-        $("#cards-title").attr("src", "/images/cards/title1.png").show();
+        $("#cards-title").attr("src", "/images/cards/title13.png").show();
         //Borrar posibles cartas antiguas
         $(".card-container").remove();
         //Borrar estilo del sombrero
@@ -462,8 +460,8 @@ games.cardsGame = {
                 $("#cards-title").attr("src", "/images/cards/title2.png").fadeIn(500);
 
                 //Rotar
-                self.textInterval1 = games.rotateRandom($("#card-to-choose-left img"));
-                self.textInterval2 = games.rotateRandom($("#card-to-choose-right img"));
+                self.textInterval1 = games.rotateRandom($("#card-to-choose-left img"), 10, 10);
+                self.textInterval2 = games.rotateRandom($("#card-to-choose-right img"), 10, 10);
 
                 //Esperar medio segundo
                 setTimeout(function () {
@@ -609,7 +607,13 @@ games.cardsGame = {
  * @Variable games.boxesGame: Contenedor de todas las funciones necesarias para el juego de las cajas
  **/
 games.boxesGame = {
+    /**
+     * Función games.boxesGame.init: Inicializa el juego de las cartas
+     * @param {int} cardsNumber | Número de cartas a mostrar
+     * @returns {undefined} | No devuelve ningún valor
+     **/
     init: function (boxesNumber) {
+        //Mostrar las instrucciones escondiendo todo lo demás
         var self = this;
         $('#boxes-game').show();
         $('#main-menu').hide();
@@ -624,120 +628,214 @@ games.boxesGame = {
         theme.currentTime = 0;
         theme.play();
 
+        //Restablecer el contenedor de caja
+        $("#your-box-container").hide();
+
+        //Inicializar el título
         var boxesContainer = $('#main-screen-boxes-container')
-                .append('<h2 id="boxes-title" class="h2-title">Elige una caja</h2>')
-                .append('<h2 id="choosen-box-title" class="h2-title choosen-box-title">Tu caja -></h2>');
+                .append('<img class="boxes-title boxes-title-background" ondragstart="return false;" src="/images/boxes/boxes-top.png">')
+                .append('<img class="boxes-title boxes-title-text" ondragstart="return false;" src="/images/boxes/boxes-top-title.png">');
 
-        games.debug && console.log("Boxes Number: " + boxesNumber);
-
-        var availableWidth = 80;
-        var leftInc = Math.round(availableWidth * 100 / boxesNumber) / 100;
-        var leftOffset = 15;
-        self.boxesNumber = boxesNumber;
-
-        if (boxesNumber == 4) {
-            leftOffset = 10;
-        } else if (boxesNumber == 5) {
-            leftOffset = 10;
-        }
-
+        //Pintar las cajas en el contenedor principal
         for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.append('<img id="box-' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box.png" style="left:' + leftOffset + '%;">' /*+ games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1))*/);
-            leftOffset += leftInc;
+            boxesContainer.append('<img id="box-' + (i + 1) + '" box-number="' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box'+(i+1)+'.png" style="bottom:36%">' /*+ games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1))*/);
+
         }
 
+        //Almacenar la caja ganadora, el número de ellas y crear array para guardar las cajas disponibles mostradas
         self.winner_box = (Math.ceil(Math.random() * boxesNumber));
+        self.boxesNumber=boxesNumber;
+        this.boxesAvailable=[];
+
+        //Centrar las cajas y espaciarlas sobre la mesa
+        self.updateBoxes(false);
 
         games.debug && console.log("Winner:" + self.winner_box);
+        games.debug && console.log("Boxes Number: " + boxesNumber);
     },
+   /**
+     * Función games.boxesGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
+     * @returns {undefined} | No devuelve ningún valor
+     */
     startBoxesGame: function () {
-        this.start_decission = new Date().getTime();
-        document.getElementById("boxes-instructions-screen").style.display = "none";
+        this.times=[];
+        this.choosenBoxes=[];
+
+        //Rotar el título aleatoriamente
+        this.textInterval = games.rotateRandom($(".boxes-title-text"), 20, 10);
+
+        this.start_iteration_time = new Date().getTime();
+        $("#boxes-instructions-screen").hide();
     },
+   /**
+     * Función games.boxesGame.updateBoxes: Atribuye a cada caja un offset para centrarlas sobre la mesa
+     * @param {boolean} withAnimation | Si true, no sólo asigna los offsets, si no que también mueve las cajas hasta sus posiciones
+     * @returns {undefined} | No devuelve ningún valor
+     */
+    updateBoxes: function(withAnimation){
+        var boxes = $(".box:not(.choosen-box):not(.removing)");
+        var boxesNumber=boxes.length;
+        
+        var availableWidth = 80;
+        var leftInc = Math.round(availableWidth * 100 / boxesNumber) / 100;
+        var leftOffset = 10;
+
+        if (boxesNumber == 1) {
+            leftOffset = 40;
+        }if (boxesNumber == 2) {
+            leftOffset = 20;
+        }else if (boxesNumber == 3) {
+            leftOffset = 13;
+        }
+        
+        //Array de las cajas disponibles
+        var boxesAvailable="";
+
+        if(withAnimation){
+            for (var i = 0; i < boxesNumber; i++) {
+                boxesAvailable+=$(boxes[i]).animate({"left": leftOffset + "%"}, 1000, function(){}).attr("number")+",";
+                leftOffset += leftInc;
+            }
+        }else{
+            for (var i = 0; i < boxesNumber; i++) {
+                boxesAvailable+=$(boxes[i]).css("left", leftOffset + "%").attr("number")+",";
+                leftOffset += leftInc;
+            }
+        }
+
+        this.boxesAvailable[this.boxesAvailable.length]=boxesAvailable.substring(0, boxesAvailable.length-1);  
+    },
+   /**
+     * Función games.boxesGame.chooseBox: EL usuario ha elegido una caja 
+     * @param {int} choosen | Número de la caja elegida
+     * @returns {undefined} | No devuelve ningún valor
+     */
     chooseBox: function (choosen) {
+        //Registrar el tiempo tomado en la decisión        
+        if(this.animatingBoxes){
+            return;
+        }
+        this.animatingBoxes=true;
+
+        this.times[this.times.length]= new Date().getTime() - this.start_iteration_time;
+
+        console.log("Registrar",this.times);
         var self = this;
-        self.ellapsed_time_decission = new Date().getTime() - this.start_decission;
-        console.log("Elegida: " + choosen);
+        self.choosenBoxes[self.choosenBoxes.length]=choosen;
+                
+        $(".box").addClass("box-unselectable");                
+        //Mostrar el contenedor de caja
+        $("#your-box-container").show();
+        var previous_choose=$(".choosen-box").removeClass("choosen-box");
+
+        games.debug && console.log("Elegida: " + choosen);
+
         self.first_choose = choosen;
-        var box = document.getElementById("box-" + choosen);
-        box.className += " choosen-box";
-        box.removeAttribute("onclick");
-        document.getElementById("choosen-box-title").style.opacity = 1;
 
-        var boxes = document.getElementsByClassName("box");
-        for (var j = 0; j < boxes.length; j++) {
-            if (j != (choosen - 1)) {
-                boxes[j].className += " box-unselectable to-be-removed";
-            }
-        }
-        document.getElementById("box-" + self.winner_box).classList.remove("to-be-removed");
+        //Caja elegida
+        var choosen=$("#box-" + choosen)
+        .addClass("choosen-box");
 
-        if (choosen == self.winner_box) {
-            var boxes_to_be_removed = document.getElementsByClassName("to-be-removed");
-            do {
-                var box_to_change = (Math.ceil(Math.random() * boxes_to_be_removed.length));
-            } while (box_to_change == self.winner_box);
-            document.getElementById("box-" + box_to_change).classList.remove("to-be-removed");
-        }
+        $("#choosen-box-title").hide();
 
-        var boxes_to_be_removed = document.getElementsByClassName("to-be-removed");
-        for (var j = 0; j < boxes_to_be_removed.length; j++) {
-            boxes_to_be_removed[j].classList.add("box-to-hide");
-        }
+        var boxes_to_remove=$(".box:not(.choosen-box):not(#box-"+self.winner_box+")").addClass("to-be-removed");
+        var box_to_delete=(Math.ceil(Math.random() * (boxes_to_remove.length-1)));
+        games.debug && console.log("A borrar entre...",boxes_to_remove, "Borrada", box_to_delete);
+        $(boxes_to_remove[box_to_delete]).addClass("removing").animate({"height":0, "opacity": 0}, 1000, function(){$(boxes_to_remove[box_to_delete]).remove()});
+        boxes_to_remove.removeClass("to-be-removed");
 
-        var boxes = document.getElementsByClassName("box");
-        for (var j = 0; j < boxes.length; j++) {
-            if (!boxes[j].classList.contains("to-be-removed") && !boxes[j].classList.contains("choosen-box")) {
-                boxes[j].classList.add("box-to-change");
-            }
-        }
-        document.getElementById("boxes-title").textContent = "¿Cambiarías de caja?";
+        $(".boxes-title-text").attr("src", "/images/boxes/box-title-change.png");
+        self.updateBoxes(true);
+
+        //Mover la elegida al marco de caja elegida
+        choosen.animate({"left": "80%", "bottom": "8%"}, 1000, function(){});
+        
+        if(previous_choose.attr("id") == choosen.attr("id")){
+            //Si la caja elegida es la misma, no hacer nada
+        } else if(previous_choose){
+            previous_choose.animate({"bottom": "36%"}, 1000, function(){});
+        } 
 
         setTimeout(function () {
-            var box_to_change = document.getElementsByClassName("box-to-change")[0];
-            box_to_change.classList.add("box-to-change-finish");
-            self.box_available_to_change = box_to_change.getAttribute("number");
-            box_to_change.setAttribute("onclick", "games.boxesGame.finalChoose('" + self.box_available_to_change + "')");
-            var choosen_box = document.getElementsByClassName("choosen-box")[0];
-            choosen_box.classList.add("choosen-box-change");
-            choosen_box.setAttribute("onclick", "games.boxesGame.finalChoose('" + choosen_box.getAttribute("number") + "')");
-            self.start_decission_change = new Date().getTime();
-        }, 2100);
-    },
-    finalChoose: function (choose) {
-        var self = this;
-        self.ellapsed_time_decission_change = new Date().getTime() - this.start_decission_change;
-        console.log("Winner " + self.winner_box, "choose" + choose);
-        if (self.winner_box == choose) {
-            var winner_box = document.getElementById('box-' + choose);
-            winner_box.setAttribute("src", "/images/boxes/open-box-win.png");
-            document.getElementById('winner-sound').play();
-        } else {
-            document.getElementById('box-' + choose).setAttribute("src", "/images/boxes/open-box.png");
-        }
-        setTimeout(function () {
-            if (self.winner_box == choose) {
-                document.getElementById('boxes-win-screen').style.display = 'block';
-            } else {
-                document.getElementById('boxes-lose-screen').style.display = 'block';
+            var now_boxes=$(".box:not(.removing)").removeClass("box-unselectable"); 
+            console.log("quedan",now_boxes.length);
+            if(now_boxes.length==2){
+                $(now_boxes[0]).attr("onclick", 'games.boxesGame.finalChoose('+$(now_boxes[0]).attr("box-number")+')');
+                $(now_boxes[1]).attr("onclick", 'games.boxesGame.finalChoose('+$(now_boxes[1]).attr("box-number")+')');
             }
-            console.log("NumBoxes: " + self.boxesNumber, "Winner: " + self.winner_box, "First choose: " + self.first_choose, "Available to change: " + self.box_available_to_change, "final_choose: " + choose, "time_to_first_choose" + self.ellapsed_time_decission, "time_to_change" + self.ellapsed_time_decission_change);
-            self.sendDataToServer(self.boxesNumber, self.winner_box, self.first_choose, self.box_available_to_change, choose, self.ellapsed_time_decission, self.ellapsed_time_decission_change);
+            self.animatingBoxes=false;
+            self.start_iteration_time = new Date().getTime();
         }, 1000);
     },
-    sendDataToServer: function (boxesNumber, winnerBox, firstChoose, availableToChange, finalChoose, timeToFirstChoose, timeToChange) {
-        var xhr = new XMLHttpRequest();
+    finalChoose: function (choosen) {
+        this.times[this.times.length]= new Date().getTime() - this.start_iteration_time;
+        this.choosenBoxes[this.choosenBoxes.length]=choosen;
+        $(".box").removeAttr("onclick").addClass("box-unselectable");
+        var self = this;
+        
+        $("#theme-audio3")[0].pause();
 
-        xhr.open('POST', encodeURI('store-data/boxes-game'));
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200 && xhr.responseText !== "todook") {
-                console.log('Something went wrong.  Name is now ' + xhr.responseText);
+        //Esconder texto de ayuda
+        clearInterval(self.textInterval);
+        $(".boxes-title").fadeOut(200);
+
+        games.debug && console.log("Winner " + self.winner_box, "choose" + choosen);
+        if (self.winner_box == choosen) {
+            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win.png");
+            $('#winner-sound')[0].play();
+        } else {
+            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box.png");
+            $("#lose-sound")[0].play();
+        }
+        setTimeout(function () {
+            if (self.winner_box == choosen) {
+                $('#boxes-win-screen').show();
+            } else {
+                $('#boxes-lose-screen').show();
             }
-            else if (xhr.status !== 200) {
-                console.log('Request failed.  Returned status of ' + xhr.status);
+            games.debug && console.log("NumBoxes: " + self.boxesNumber, "Winner: " + self.winner_box, "First choose: " + self.first_choose, "Available to change: " + self.box_available_to_change, "final_choose: " + choosen, "time_to_first_choose" + self.ellapsed_time_decission, "time_to_change" + self.ellapsed_time_decission_change);
+            self.sendDataToServer(self.boxesNumber, self.winner_box, self.boxesAvailable, self.times, self.choosenBoxes);
+        }, 1000);
+    },
+    sendDataToServer: function (boxes_number, winner_box, boxes_available, times, choosen_boxes) {
+        var availableBoxes3=boxes_available[2];
+        if(availableBoxes3){
+            availableBoxes3="'"+availableBoxes3+"'";
+        }else{
+            availableBoxes3="NULL";
+        }
+        var availableBoxes4=boxes_available[3];
+        if(availableBoxes4){
+            availableBoxes4="'"+availableBoxes4+"'";
+        }else{
+            availableBoxes4="NULL";
+        }
+        $.ajax({
+            type: "POST",
+            url: "store-data/boxes-game",
+            data: {
+                id_user: games.userId,
+                boxes_number: boxes_number,
+                winner_box: winner_box,
+                first_box_choose: choosen_boxes[0],
+                first_available_boxes_to_change: boxes_available[0],
+                first_time_choosing: times[0],
+                second_box_choose: choosen_boxes[1],
+                second_available_boxes_to_change: boxes_available[1],
+                second_time_choosing: times[1],
+                third_box_choose: choosen_boxes[2] || "NULL",
+                third_available_boxes_to_change: availableBoxes3,
+                third_time_choosing: times[2] || "NULL",
+                fourth_box_choose: choosen_boxes[3] || "NULL",
+                fourth_available_boxes_to_change: availableBoxes4,
+                fourth_time_choosing: times[3] || "NULL",
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log("Algo ha ido mal", data);
             }
-        };
-        xhr.send(encodeURI('userId=' + games.userId) + "&" + encodeURI('boxes_number=' + boxesNumber) + "&" + encodeURI('winner_box=' + winnerBox) + "&" + encodeURI('first_box_choose=' + firstChoose) + "&" + encodeURI('available_box_to_change=' + availableToChange) + "&" + encodeURI('final_box_choose=' + finalChoose) + "&" + encodeURI('time_to_first_choose=' + timeToFirstChoose) + "&" + encodeURI('time_to_change_box=' + timeToChange));
+        });
     }
 };

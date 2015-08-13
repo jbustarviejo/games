@@ -90,7 +90,7 @@
                     <!--Juego 2: Contenedor principal-->
                     <div id="main-screen-cards-game" class="screen">
                         <div id="main-screen-cards-container">
-                            <img id="cards-title" src="/images/cards/title1.png"/>
+                            <img id="cards-title" src="/images/cards/title13.png"/>
                             <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToHat();">¡Hecho!</button>
                             <img id="cards-hat" ondragstart="return false;" src="/images/cards/hat.png"/>
                             <div id="final-card" class="card-container smaller">
@@ -137,6 +137,7 @@
                         <div id="main-screen-boxes-container">
                         </div>     
                         <img src="/images/boxes/table.png" ondragstart="return false;" class="table">               
+                        <div id="your-box-container"><div><img src="/images/boxes/yourbox.png" ondragstart="return false;"></div></div>
                     </div>
                     <!--Juego 3: Página de has ganado-->
                     <div id="boxes-win-screen" class="screen menu-screen" style="display:none;">
@@ -226,6 +227,7 @@
                     <li>Avisar de giro de pantalla de movil</li>
                     <li>Mis estadísticas</li>
                     <li>Aviso de compatibilidad</li>
+                    <li>Cambiar los self por this solo si necesario</li>
                 </ul>
             </div>
 
