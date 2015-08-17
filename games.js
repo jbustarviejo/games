@@ -109,10 +109,7 @@ games.login = {
             return;
         } else {
             games.userId = read;
-            document.getElementById('login-menu').style.display = "none";
-            var theme = $("#main-theme")[0];
-            theme.currentTime = 0;
-            theme.play();
+            games.displayMainMenu("login-menu");
         }
     },
     start: function () {
@@ -150,7 +147,7 @@ games.login = {
             if (xhr.status === 200) {
                 console.log('Todo ok: ' + xhr.responseText);
                 if (xhr.responseText == "ok") {
-                    document.getElementById('login-menu').style.display = "none";
+                    games.displayMainMenu("login-menu");
                     games.userId = username;
                     expiry = new Date();
                     expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
@@ -662,7 +659,7 @@ games.boxesGame = {
         this.choosenBoxes=[];
 
         //Rotar el título aleatoriamente
-        this.textInterval = games.rotateRandom($(".boxes-title-text"), 20, 10);
+        this.textInterval = games.rotateRandom($(".boxes-title-text"), 10, 10);
 
         this.start_iteration_time = new Date().getTime();
         $("#boxes-instructions-screen").hide();
@@ -800,13 +797,13 @@ games.boxesGame = {
     sendDataToServer: function (boxes_number, winner_box, boxes_available, times, choosen_boxes) {
         var availableBoxes3=boxes_available[2];
         if(availableBoxes3){
-            availableBoxes3="'"+availableBoxes3+"'";
+            availableBoxes3=availableBoxes3;
         }else{
             availableBoxes3="NULL";
         }
         var availableBoxes4=boxes_available[3];
         if(availableBoxes4){
-            availableBoxes4="'"+availableBoxes4+"'";
+            availableBoxes4=availableBoxes4;
         }else{
             availableBoxes4="NULL";
         }

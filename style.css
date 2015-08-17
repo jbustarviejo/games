@@ -74,9 +74,15 @@ header, footer{
 }
 #game-container #main-menu{
     color: #fff;
+    background-image: url("/images/general/grass.jpg");
+    background-size: 100% auto;
 }
 #game-container #main-menu button{
     width: 250px;
+}
+#game-container #main-menu button:hover{
+    width: 300px;
+    font-size: 25px;
 }
 #game-container button{
     cursor:pointer;
