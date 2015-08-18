@@ -55,7 +55,39 @@ header, footer{
 }
 #game-container #login-menu{
     z-index: 10;
-    background-color:rgb(0, 50, 69);
+    background-color: #0A5D83;
+}
+#game-container #error-screen{
+    z-index: 12;
+    background-color: #0A5D83;
+    display: none;
+}
+#game-container #error-screen > img{
+    width: 60%;
+}
+#game-container #loading-screen{
+    z-index: 11;
+    background-color: #0A5D83;
+}
+#loading-screen .loading-title{
+    left: 31%;
+    position: absolute;
+    width: 55%;
+}
+#loading-screen .loading-icon{
+    animation: 2s linear 0s normal none infinite running fa-spin;
+    bottom: 4%;
+    left: 31%;
+    position: absolute;
+    width: 36%;
+}
+@keyframes fa-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(359deg);
+    }
 }
 #game-container #login-username{
     margin-top: 8%;
@@ -194,7 +226,7 @@ header, footer{
 
 #game-container .menu-screen{
     z-index: 9;
-    background-color:rgba(0, 50, 69,0.95);
+    background-color: rgba(10, 93, 131, 0.95);
     border: 1px solid black;
 }
 #game-container .straw:hover, #game-container .straw.selected{
@@ -434,8 +466,8 @@ header, footer{
 }
 
 #boxes-game .box.final-box{
-     width: 18%;
-     margin: 0;
+    width: 18%;
+    margin: 0;
 }
 
 #boxes-game #your-box-container{
@@ -450,7 +482,7 @@ header, footer{
 }
 
 #boxes-game #your-box-container > div{
-     background-color: #ccc;
+    background-color: #ccc;
     border-radius: 7px;
     bottom: 3%;
     height: 18%;
@@ -460,7 +492,7 @@ header, footer{
 }
 
 #boxes-game #your-box-container img{
-   height: 96%;
+    height: 96%;
     width: 92%;
 }
 
@@ -563,9 +595,9 @@ header, footer{
 
 #boxes-game .boxes-title-background{
     position: absolute;
-     width: 66%; 
-     left: 14%; 
-     top: 0%;
+    width: 66%; 
+    left: 14%; 
+    top: 0%;
 }
 #boxes-game .boxes-title-text{
     position: absolute; 

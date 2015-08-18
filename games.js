@@ -1,7 +1,6 @@
-//Una vez se haya cargado la página comprobar la cookie de usuario y ajustar la pantalla
+//Una vez se haya cargado la página, inicar los juegos
 window.onload = function () {
-    games.login.checkCookie();
-    games.resized();
+    games.initGames();
 };
 //Estar atento a los cambios de tamaño de la pantalla
 window.onresize = function () {
@@ -55,9 +54,15 @@ var games = {
         }
         return array;
     },
+    /**
+     * Función games.readCookie: Leer una cookie del navegador
+     * @param {string} name | El nombre de la cookie
+     * @returns {string} | Devuelve el contenido de la cookie o null si no se encuentra
+     **/
     readCookie: function (name) {
         var nameEQ = name + "=";
         var ca = document.cookie.split(';');
+        //Obtener todas las cookies y buscar en ellas la nuestra
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
             while (c.charAt(0) == ' ')
@@ -84,7 +89,6 @@ var games = {
     },
     /**
      * Función games.toggleSound: Apagar/encender el sonido
-     * @param {jQuery Object} $img | La imagen a inclinar
      * @returns {undefined} | No devuelve ningún valor
      **/
     toogleSound: function () {
@@ -96,37 +100,121 @@ var games = {
             $("audio").prop("volume", 1);
         }
         this.sound = !this.sound;
+    },
+    /**
+     * Función games.initLoadResources: Comprobar que todos los recursos estén cargados
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    initLoadResources: function () {
+        var images = $("#resources-to-load > .games-images > img:not(.loaded)");
+        games.debug && console.log("Cargando imágenes..., quedan :" + images.length);
+        //Para cada imagen esperar a que haya cargado y señalarlo
+        for (var i = 0; i < images.length; i++) {
+            //console.log(images[i])
+            if (images[i].complete) {
+                $(images[i]).addClass("loaded");
+            } else {
+                setTimeout(function () {
+                    //Si no ha cargado esperar 0.1 s
+                    games.initLoadResources();
+                }, 100);
+                return;
+            }
+        }
+        var audios = $("#resources-to-load > .games-audios > audio:not(.loaded)");
+        games.debug && console.log("Cargando audios..., quedan :" + audios.length);
+        //Para cada audio esperar a que haya cargado y señalarlo
+        for (var i = 0; i < audios.length; i++) {
+            //console.log(audios[i]);
+            if (audios[i].readyState = 4) {
+                $(audios[i]).addClass("loaded");
+            } else {
+                setTimeout(function () {
+                    //Si no ha cargado esperar 0.1 s
+                    games.initLoadResources();
+                }, 100);
+                return;
+            }
+        }
+        games.debug && console.log("Audios cargados");
+        //Todo cargado. Eliminar página de cargado y comprobar cookie de usuario
+        $("#loading-screen").hide();
+        games.login.checkCookie();
+    },
+    /**
+     * Función games.initGames: Iniciar el contenedor de los juegos
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    initGames: function () {
+        //Ajustar a tamaño de pantalla
+        games.resized();
+        //Comprobar conexión con el servidor
+        $.ajax({
+            type: "POST",
+            url: "/store-data/check-internet",
+            cache: false,
+            dataType: "json",
+            //En caso de éxito imprimirlo por pantalla
+            success: function (data) {
+                if (data.ok) {
+                    //Comprobar que todos los recursos hayan cargado
+                    games.initLoadResources();
+                } else {
+                    //En caso de error imprimirlo por pantalla
+                    $("#error-screen").show();
+                }
+            },
+            //En caso de error imprimirlo por pantalla
+            error: function (data) {
+                $("#error-screen").show();
+            }
+        });
     }
 };
 /**
  * @Variable games.login: Contenedor de todas las funciones necesarias para la identificación de usuario en el servidor
  **/
 games.login = {
+    /**
+     * Función games.login.checkCookie: Buscar al usuario en las cookies para hacer el login automático
+     * @returns {undefined} | No devuelve ningún valor
+     **/
     checkCookie: function () {
+        //Leer el valor de la cookie games-username
         var read = games.readCookie("games-username");
-        console.log(read);
-        if (read == null) {
-            return;
-        } else {
+        games.debug && console.log("Usuario leído de cookie:" + read);
+        if (read) {
+            //Si se encontró, guardar su id y mostrar pantalla principal
             games.userId = read;
             games.displayMainMenu("login-menu");
         }
     },
+    /**
+     * Función games.login.start: Leer los valores del formulario de acceso a los juegos
+     * @returns {undefined} | No devuelve ningún valor
+     **/
     start: function () {
-        username = document.getElementById('login-username').value;
+        username = $('#login-username').val();
         if (username === "") {
+            //Usuario vacío
             alert("Introduce tu ID de usuario");
-            document.getElementById('login-username').focus();
+            $('#login-username').focus();
             return;
         }
-        password = document.getElementById('login-password').value;
+        password = $('#login-password').val();
         if (password === "") {
+            //Contraseña vacía
             alert("Introduce tu contraseña");
-            document.getElementById('login-password').focus();
+            $('#login-password').focus();
             return;
         }
+        //Enviar los datos al servidor para verificarlo
         this.sendDataToServer(username, password);
     },
+    /**
+     * Función games.login.keypressed: Esperar que se pulse la tecla de enter para hacer login
+     * @returns {undefined} | No devuelve ningún valor
+     **/
     keypressed: function (e) {
         var keynum;
         if (window.event) { // IE                 
@@ -134,33 +222,45 @@ games.login = {
         } else if (e.which) { // Netscape/Firefox/Opera                  
             keynum = e.which;
         }
+        //Si es la 13 (Enter), comenzar
         if (keynum == "13") {
             this.start();
         }
     },
+    /**
+     * Función games.login.sendDataToServer: Enviar datos al servidor para el login
+     * @param {string} username | Nombre de usuario (id_user)
+     * @param {string} password | Contraseña de usuario (password)
+     * @returns {undefined} | No devuelve ningún valor
+     */
     sendDataToServer: function (username, password) {
-        var xhr = new XMLHttpRequest();
 
-        xhr.open('POST', encodeURI('store-data/login'));
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log('Todo ok: ' + xhr.responseText);
-                if (xhr.responseText == "ok") {
+        $.ajax({
+            type: "POST",
+            url: "/store-data/login",
+            data: {
+                username: username,
+                password: password
+            },
+            //En caso de éxito, guardar una cookie con el usuario
+            success: function (data) {
+                if (data == "ok") {
+                    //Mostrar el menu
                     games.displayMainMenu("login-menu");
                     games.userId = username;
+                    //Almacenar la cookie
                     expiry = new Date();
                     expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
                     document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
                 } else {
                     alert("Usuario o contraseña incorrecta");
                 }
+            },
+            //En caso de error alertar
+            error: function (data) {
+                $("#error-screen").show();
             }
-            else if (xhr.status !== 200) {
-                console.log('Request failed.  Returned status of ' + xhr.status);
-            }
-        };
-        xhr.send(encodeURI('username=' + username) + "&" + encodeURI('password=' + password));
+        });
     }
 };
 /**
@@ -199,7 +299,7 @@ games.strawsGame = {
                 .appendTo(imagesContainer);
 
         //Crear el dibujo de 'Mano cerrada'
-        $('<img id="close-hand-front" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-front2.png"/><img id="close-hand-back" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-back2.png"/>')
+        $('<img id="close-hand-front" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-front.png"/><img id="close-hand-back" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-back.png"/>')
                 .appendTo(imagesContainer);
 
         //Crear texto de indicación 
@@ -304,9 +404,10 @@ games.strawsGame = {
      * @returns {undefined} | No devuelve ningún valor
      */
     sendDataToServer: function (time, winner, selected, strawsNumber) {
+        //POST al servidor con los datos
         $.ajax({
             type: "POST",
-            url: "store-data/straws-game",
+            url: "/store-data/straws-game",
             data: {
                 userId: games.userId,
                 time: time,
@@ -314,11 +415,13 @@ games.strawsGame = {
                 selected: selected,
                 strawsNumber: strawsNumber,
             },
+            //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
             },
+            //En caso de error imprimirlo por pantalla
             error: function (data) {
-                console.log("Algo ha ido mal", data);
+                $("#error-screen").show();
             }
         });
     }
@@ -365,7 +468,7 @@ games.cardsGame = {
                 .removeAttr("onclick");
 
         //Restablecer título
-        $("#cards-title").attr("src", "/images/cards/title13.png").show();
+        $("#cards-title").attr("src", "/images/cards/title1.png").show();
         //Borrar posibles cartas antiguas
         $(".card-container").remove();
         //Borrar estilo del sombrero
@@ -577,10 +680,11 @@ games.cardsGame = {
      * @returns {undefined}
      */
     sendDataToServer: function (time_memory, time_decission, displayed_side, winner_side, selected_side, cards_number, cards_array) {
-        games.debug && console.log("Time memory: " + time_memory, "Time decission: " + time_decission, "Displayed side: " + displayed_side, "Winner side: " + winner_side, "Selected: " + selected_side, "Card numbers: " + cards_number)
+        games.debug && console.log("Time memory: " + time_memory, "Time decission: " + time_decission, "Displayed side: " + displayed_side, "Winner side: " + winner_side, "Selected: " + selected_side, "Card numbers: " + cards_number);
+        //POST al servidor con los datos
         $.ajax({
             type: "POST",
-            url: "store-data/cards-game",
+            url: "/store-data/cards-game",
             data: {
                 userId: games.userId,
                 time_memory: time_memory,
@@ -591,11 +695,13 @@ games.cardsGame = {
                 cards_number: cards_number,
                 cards_array: cards_array
             },
+            //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
             },
+            //En caso de error imprimirlo por pantalla
             error: function (data) {
-                console.log("Algo ha ido mal", data);
+                $("#error-screen").show();
             }
         });
     }
@@ -606,7 +712,7 @@ games.cardsGame = {
 games.boxesGame = {
     /**
      * Función games.boxesGame.init: Inicializa el juego de las cartas
-     * @param {int} cardsNumber | Número de cartas a mostrar
+     * @param {int} boxesNumber | Número de cajas a mostrar
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (boxesNumber) {
@@ -617,6 +723,8 @@ games.boxesGame = {
         $("#boxes-lose-screen").hide();
         $("#boxes-win-screen").hide();
         $("#boxes-instructions-screen").show();
+
+        //Eliminar cajas antiguas
         $("#main-screen-boxes-container").html("");
 
         //Poner la música y pausar la del menú principal
@@ -635,14 +743,13 @@ games.boxesGame = {
 
         //Pintar las cajas en el contenedor principal
         for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.append('<img id="box-' + (i + 1) + '" box-number="' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box'+(i+1)+'.png" style="bottom:36%">' /*+ games.createsoundbite('/audio/blob.ogg', '/audio/blob.mp3', "boxAudio" + (i + 1))*/);
-
+            boxesContainer.append('<img id="box-' + (i + 1) + '" box-number="' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box' + (i + 1) + '.png" style="bottom:36%">');
         }
 
         //Almacenar la caja ganadora, el número de ellas y crear array para guardar las cajas disponibles mostradas
         self.winner_box = (Math.ceil(Math.random() * boxesNumber));
-        self.boxesNumber=boxesNumber;
-        this.boxesAvailable=[];
+        self.boxesNumber = boxesNumber;
+        this.boxesAvailable = [];
 
         //Centrar las cajas y espaciarlas sobre la mesa
         self.updateBoxes(false);
@@ -650,166 +757,232 @@ games.boxesGame = {
         games.debug && console.log("Winner:" + self.winner_box);
         games.debug && console.log("Boxes Number: " + boxesNumber);
     },
-   /**
+    /**
      * Función games.boxesGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
      * @returns {undefined} | No devuelve ningún valor
      */
     startBoxesGame: function () {
-        this.times=[];
-        this.choosenBoxes=[];
+        //Inicialización de arrays de toma de datos
+        this.times = [];
+        this.choosenBoxes = [];
 
         //Rotar el título aleatoriamente
         this.textInterval = games.rotateRandom($(".boxes-title-text"), 10, 10);
 
+        //Toma del tiempo inicial
         this.start_iteration_time = new Date().getTime();
         $("#boxes-instructions-screen").hide();
     },
-   /**
+    /**
      * Función games.boxesGame.updateBoxes: Atribuye a cada caja un offset para centrarlas sobre la mesa
-     * @param {boolean} withAnimation | Si true, no sólo asigna los offsets, si no que también mueve las cajas hasta sus posiciones
+     * @param {boolean} withAnimation | Si true, no sólo asigna los offsets, si no que también mueve las cajas hasta sus posiciones con una animación
      * @returns {undefined} | No devuelve ningún valor
      */
-    updateBoxes: function(withAnimation){
+    updateBoxes: function (withAnimation) {
+        //Coger las cajas que no se estén borrando
         var boxes = $(".box:not(.choosen-box):not(.removing)");
-        var boxesNumber=boxes.length;
-        
+        var boxesNumber = boxes.length;
+
+        //Ancho disponible 80%
         var availableWidth = 80;
+        //Dividir el ancho entre el número de cajas
         var leftInc = Math.round(availableWidth * 100 / boxesNumber) / 100;
+        //Offsets iniciales según los números de cajas
         var leftOffset = 10;
 
         if (boxesNumber == 1) {
             leftOffset = 40;
-        }if (boxesNumber == 2) {
+        }
+        if (boxesNumber == 2) {
             leftOffset = 20;
-        }else if (boxesNumber == 3) {
+        } else if (boxesNumber == 3) {
             leftOffset = 13;
         }
-        
-        //Array de las cajas disponibles
-        var boxesAvailable="";
 
-        if(withAnimation){
+        //Array de las cajas disponibles
+        var boxesAvailable = "";
+
+        //Si hay animación...
+        if (withAnimation) {
             for (var i = 0; i < boxesNumber; i++) {
-                boxesAvailable+=$(boxes[i]).animate({"left": leftOffset + "%"}, 1000, function(){}).attr("number")+",";
+                //Asignar para cada caja un offset y animarla hasta conseguirlo
+                boxesAvailable += $(boxes[i]).animate({"left": leftOffset + "%"}, 1000, function () {
+                }).attr("number") + ",";
                 leftOffset += leftInc;
             }
-        }else{
+        } else {
             for (var i = 0; i < boxesNumber; i++) {
-                boxesAvailable+=$(boxes[i]).css("left", leftOffset + "%").attr("number")+",";
+                //Asignar para cada caja un offset
+                boxesAvailable += $(boxes[i]).css("left", leftOffset + "%").attr("number") + ",";
                 leftOffset += leftInc;
             }
         }
 
-        this.boxesAvailable[this.boxesAvailable.length]=boxesAvailable.substring(0, boxesAvailable.length-1);  
+        //Registar las cajas disponibles
+        this.boxesAvailable[this.boxesAvailable.length] = boxesAvailable.substring(0, boxesAvailable.length - 1);
     },
-   /**
+    /**
      * Función games.boxesGame.chooseBox: EL usuario ha elegido una caja 
      * @param {int} choosen | Número de la caja elegida
      * @returns {undefined} | No devuelve ningún valor
      */
     chooseBox: function (choosen) {
-        //Registrar el tiempo tomado en la decisión        
-        if(this.animatingBoxes){
+        //Evitar que el usuario pulse varias veces la caja
+        if (this.animatingBoxes) {
             return;
         }
-        this.animatingBoxes=true;
+        this.animatingBoxes = true;
 
-        this.times[this.times.length]= new Date().getTime() - this.start_iteration_time;
+        //Registrar el tiempo tomado en la decisión     
+        this.times[this.times.length] = new Date().getTime() - this.start_iteration_time;
 
-        console.log("Registrar",this.times);
+        games.debug && console.log("Registrar", this.times);
+
         var self = this;
-        self.choosenBoxes[self.choosenBoxes.length]=choosen;
-                
-        $(".box").addClass("box-unselectable");                
+        //Registar la caja elegida
+        this.choosenBoxes[this.choosenBoxes.length] = choosen;
+
+        //Hacer que ls cajas no puedan seleccionarse durante la animación
+        $(".box").addClass("box-unselectable");
+
         //Mostrar el contenedor de caja
         $("#your-box-container").show();
-        var previous_choose=$(".choosen-box").removeClass("choosen-box");
+
+        //A la caja anterior desmarcarla como elegida
+        var previous_choose = $(".choosen-box").removeClass("choosen-box");
 
         games.debug && console.log("Elegida: " + choosen);
 
-        self.first_choose = choosen;
+        //Nueva caja elegida
+        var choosen = $("#box-" + choosen).addClass("choosen-box");
 
-        //Caja elegida
-        var choosen=$("#box-" + choosen)
-        .addClass("choosen-box");
-
+        //Esconder el título de selección de caja inicial
         $("#choosen-box-title").hide();
 
-        var boxes_to_remove=$(".box:not(.choosen-box):not(#box-"+self.winner_box+")").addClass("to-be-removed");
-        var box_to_delete=(Math.ceil(Math.random() * (boxes_to_remove.length-1)));
-        games.debug && console.log("A borrar entre...",boxes_to_remove, "Borrada", box_to_delete);
-        $(boxes_to_remove[box_to_delete]).addClass("removing").animate({"height":0, "opacity": 0}, 1000, function(){$(boxes_to_remove[box_to_delete]).remove()});
+        //Marcar posibles cajas a borrar, no lo serán ni la ganadora ni la elegida
+        var boxes_to_remove = $(".box:not(.choosen-box):not(#box-" + self.winner_box + ")").addClass("to-be-removed");
+        //Elegir aleatoriamente una caja a borrar enre las disponibles
+        var box_to_delete = (Math.ceil(Math.random() * (boxes_to_remove.length - 1)));
+
+        games.debug && console.log("A borrar entre...", boxes_to_remove, "Borrada", box_to_delete);
+
+        //A la elegida a desaparecer marcarla como tal y hacer que se desvanezca
+        $(boxes_to_remove[box_to_delete]).addClass("removing").animate({"height": 0, "opacity": 0}, 1000, function () {
+            $(boxes_to_remove[box_to_delete]).remove()
+        });
+
+        //Borrar la clase de posible caja a borrar de las no elegidas
         boxes_to_remove.removeClass("to-be-removed");
 
+        //Cambiar el título inicial a '¿cambias de caja?'
         $(".boxes-title-text").attr("src", "/images/boxes/box-title-change.png");
+
+        //Reajustar la disposición de lass cajas
         self.updateBoxes(true);
 
         //Mover la elegida al marco de caja elegida
-        choosen.animate({"left": "80%", "bottom": "8%"}, 1000, function(){});
-        
-        if(previous_choose.attr("id") == choosen.attr("id")){
-            //Si la caja elegida es la misma, no hacer nada
-        } else if(previous_choose){
-            previous_choose.animate({"bottom": "36%"}, 1000, function(){});
-        } 
+        choosen.animate({"left": "80%", "bottom": "8%"}, 1000, function () {
+        });
 
+        if (previous_choose.attr("id") == choosen.attr("id")) {
+            //Si la caja elegida es la misma, no hacer nada
+        } else if (previous_choose) {
+            //Si no, moverla
+            previous_choose.animate({"bottom": "36%"}, 1000, function () {
+            });
+        }
+
+        //Esperar un segundo a que acabe la animación
         setTimeout(function () {
-            var now_boxes=$(".box:not(.removing)").removeClass("box-unselectable"); 
-            console.log("quedan",now_boxes.length);
-            if(now_boxes.length==2){
-                $(now_boxes[0]).attr("onclick", 'games.boxesGame.finalChoose('+$(now_boxes[0]).attr("box-number")+')');
-                $(now_boxes[1]).attr("onclick", 'games.boxesGame.finalChoose('+$(now_boxes[1]).attr("box-number")+')');
+            //A las cajas que quedan
+            var now_boxes = $(".box:not(.removing)").removeClass("box-unselectable");
+            games.debug && console.log("quedan", now_boxes.length);
+            //Si sólo quedan 2, llevar a games.boxesGame.finalChoose al seleccionar
+            if (now_boxes.length == 2) {
+                $(now_boxes[0]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[0]).attr("box-number") + ')');
+                $(now_boxes[1]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[1]).attr("box-number") + ')');
             }
-            self.animatingBoxes=false;
+            //Ya puede volver a seleccionarse caja
+            self.animatingBoxes = false;
+            //Resetear el contador
             self.start_iteration_time = new Date().getTime();
         }, 1000);
     },
+    /**
+     * Función games.boxesGame.finalChoose: EL usuario ha elegido una caja de las dos últimas
+     * @param {int} choosen | Número de la caja elegida
+     * @returns {undefined} | No devuelve ningún valor
+     */
     finalChoose: function (choosen) {
-        this.times[this.times.length]= new Date().getTime() - this.start_iteration_time;
-        this.choosenBoxes[this.choosenBoxes.length]=choosen;
+        this.times[this.times.length] = new Date().getTime() - this.start_iteration_time;
+        //Tomar el tiempo llevado
+        this.choosenBoxes[this.choosenBoxes.length] = choosen;
+        //Hacer que las cajas no puedan volver a seleccionarse
         $(".box").removeAttr("onclick").addClass("box-unselectable");
         var self = this;
-        
+
+        //Pausar el tema principal
         $("#theme-audio3")[0].pause();
 
-        //Esconder texto de ayuda
+        //Esconder texto de ayuda, parándolo primero
         clearInterval(self.textInterval);
         $(".boxes-title").fadeOut(200);
 
         games.debug && console.log("Winner " + self.winner_box, "choose" + choosen);
+
+        //Si la elegida es la ganadora
         if (self.winner_box == choosen) {
+            //Mostrar imagen de caja ganadora y reproducir sonido de victoria
             $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win.png");
             $('#winner-sound')[0].play();
         } else {
+            //Mostrar imagen de caja no ganadora y reproducir sonido de derroa
             $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box.png");
             $("#lose-sound")[0].play();
         }
+
+        //Pasado un segundo...
         setTimeout(function () {
             if (self.winner_box == choosen) {
+                //Mostrar pantalla de has ganado
                 $('#boxes-win-screen').show();
             } else {
+                //Pantalla de has perdido
                 $('#boxes-lose-screen').show();
             }
             games.debug && console.log("NumBoxes: " + self.boxesNumber, "Winner: " + self.winner_box, "First choose: " + self.first_choose, "Available to change: " + self.box_available_to_change, "final_choose: " + choosen, "time_to_first_choose" + self.ellapsed_time_decission, "time_to_change" + self.ellapsed_time_decission_change);
+            //Enviar los datos al servidor
             self.sendDataToServer(self.boxesNumber, self.winner_box, self.boxesAvailable, self.times, self.choosenBoxes);
         }, 1000);
     },
+    /**
+     * Función games.boxesGame.sendDataToServer: Enviar datos al servidor del juego de las cañas
+     * @param {int} boxes_number | Número de cajas en el juego
+     * @param {int} winner_box | Número de la caja ganadora
+     * @param {array} boxes_available | Cajas disponibles en cada iteracción
+     * @param {array} times | Tiempo captados en cada iteración
+     * @param {array} choosen_boxes | caja elegida en cada ieracción
+     * @returns {undefined} | No devuelve ningún valor
+     */
     sendDataToServer: function (boxes_number, winner_box, boxes_available, times, choosen_boxes) {
-        var availableBoxes3=boxes_available[2];
-        if(availableBoxes3){
-            availableBoxes3=availableBoxes3;
-        }else{
-            availableBoxes3="NULL";
+        //Comprobar iteracción 3. Si habían 4 o más cajas no hay problema. Si no, modificar a Null
+        var availableBoxes3 = boxes_available[2];
+        if (availableBoxes3) {
+            availableBoxes3 = availableBoxes3;
+        } else {
+            availableBoxes3 = "NULL";
         }
-        var availableBoxes4=boxes_available[3];
-        if(availableBoxes4){
-            availableBoxes4=availableBoxes4;
-        }else{
-            availableBoxes4="NULL";
+        //Comprobar iteracción 4. Si habían 5 cajas no hay problema. Si no, modificar a Null
+        var availableBoxes4 = boxes_available[3];
+        if (availableBoxes4) {
+            availableBoxes4 = availableBoxes4;
+        } else {
+            availableBoxes4 = "NULL";
         }
+        //POST al servidor con los datos
         $.ajax({
             type: "POST",
-            url: "store-data/boxes-game",
+            url: "/store-data/boxes-game",
             data: {
                 id_user: games.userId,
                 boxes_number: boxes_number,
@@ -827,11 +1000,13 @@ games.boxesGame = {
                 fourth_available_boxes_to_change: availableBoxes4,
                 fourth_time_choosing: times[3] || "NULL",
             },
+            //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
             },
+            //En caso de error imprimirlo por pantalla
             error: function (data) {
-                console.log("Algo ha ido mal", data);
+                $("#error-screen").show();
             }
         });
     }

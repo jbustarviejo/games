@@ -1,1 +1,3 @@
-<?php include("games.php");
+<?php
+
+include("games.php");
