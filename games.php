@@ -106,7 +106,7 @@
                                     <div id="main-screen-cards-game" class="screen">
                                         <div id="main-screen-cards-container">
                                             <img id="cards-title" src="/images/cards/title1.png"/>
-                                            <button id="cards-play-button" class="play-button cards-play-button" onclick="games.cardsGame.animateCardsToHat();">¡Hecho!</button>
+                                            <button id="cards-play-button" class="play-button cards-play-button">Haz en las cartas para verlas por detrás</button>
                                             <img id="cards-hat" ondragstart="return false;" src="/images/cards/hat.png"/>
                                             <div id="final-card" class="card-container smaller">
                                                 <div class="card" onclick="return false;">
@@ -260,19 +260,16 @@
 
                                     <h2>Todo</h2>
                                     <ul>
-                                        <li>Controlar acceso a Internet</li>
-                                        <li>Juego cartas, haz click</li>
+                                        <li>Tiempo hasta elegir juego</li>
+                                        <li>Estilo del menú, botón del juego de cartas.</li>
                                         <li>Botón de volver</li>
                                         <li>Bajar volumen, juego cajas</li>
                                         <li>Menú principal</li>
-                                        <li>Preload</li>
                                         <li>Return to main menu button instead of 'x'</li>
                                         <li>Comprimir imágenes, achicar las más grandes</li>
                                         <li>Avisar de giro de pantalla de movil</li>
                                         <li>Mis estadísticas</li>
                                         <li>Aviso de compatibilidad</li>
-                                        <li>Cambiar los self por this solo si necesario</li>
-                                        <li>traducción a Jquery final</li>
                                         <li>Abrir cajas con colores</li>
                                         <li>Enviar los datos lo antes posible</li>
                                         <li>Minificar js y css</li>

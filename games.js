@@ -22,9 +22,13 @@ var games = {
     displayMainMenu: function (hide) {
         $("#" + hide).hide();
         $('#main-menu').show();
+        $("#theme-audio1")[0].pause();
+        $("#theme-audio2")[0].pause();
+        $("#theme-audio3")[0].pause();
         var theme = $("#main-theme")[0];
         theme.currentTime = 0;
         theme.play();
+        this.start_decission = new Date().getTime();
     },
     /**
      * Función games.resized: En caso de que el browser cambie de tamaño, se cambia el canvas de los juegos
@@ -169,6 +173,39 @@ var games = {
                 $("#error-screen").show();
             }
         });
+    },
+    /**
+     * Función games.playTheme: Pausar la música principal y reproducir la del tema indicdo
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    playTheme: function (themeNumber) {
+        $("#main-theme")[0].pause();
+        var theme = $("#theme-audio" + themeNumber)[0];
+        theme.currentTime = 0;
+        theme.play();
+    },
+    /**
+     * Función games.sendDataToServer: Enviar datos al servidor
+     * @returns {undefined} | No devuelve ningún valor
+     */
+    sendDataToServer: function (game) {
+        $.ajax({
+            type: "POST",
+            url: "/store-data/time-choosing",
+            data: {
+                userId: games.userId,
+                time: new Date().getTime() - this.start_decission,
+                game: game
+            },
+            //En caso de éxito imprimirlo por pantalla
+            success: function (data) {
+                console.log(data);
+            },
+            //En caso de error imprimirlo por pantalla
+            error: function (data) {
+                $("#error-screen").show();
+            }
+        });
     }
 };
 /**
@@ -234,7 +271,6 @@ games.login = {
      * @returns {undefined} | No devuelve ningún valor
      */
     sendDataToServer: function (username, password) {
-
         $.ajax({
             type: "POST",
             url: "/store-data/login",
@@ -273,7 +309,8 @@ games.strawsGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (strawsNumber) {
-        var self = this;
+        //Calcular tiempo hasta elegir juego
+        games.sendDataToServer("strawsGame");
         //Mostrar la pantalla de juego principal y la de instrucciones
         $("#straws-game").show();
         $("#straws-instructions-screen").show();
@@ -284,10 +321,7 @@ games.strawsGame = {
         $("#straws-win-screen").hide();
 
         //Poner la música y pausar la del menú principal
-        $("#main-theme")[0].pause();
-        var theme = $("#theme-audio1")[0];
-        theme.currentTime = 0;
-        theme.play();
+        games.playTheme(1);
 
         //Obtener el contenedor principal, borrar su contenido
         var imagesContainer = $("#main-screen-game-straws-container");
@@ -307,9 +341,9 @@ games.strawsGame = {
                 .appendTo(imagesContainer);
 
         //Almacenar los datos que guardaremos al final
-        self.strawsNumber = strawsNumber;
-        self.winner_straw = Math.floor(Math.random() * strawsNumber) + 1;
-        games.debug && console.log("Número de cañas: " + strawsNumber, "Caña ganadora:" + self.winner_straw);
+        this.strawsNumber = strawsNumber;
+        this.winner_straw = Math.floor(Math.random() * strawsNumber) + 1;
+        games.debug && console.log("Número de cañas: " + strawsNumber, "Caña ganadora:" + this.winner_straw);
 
         //Dibujar las cañas sobre la pantalla
         var availableWidth = 20;
@@ -317,7 +351,7 @@ games.strawsGame = {
         var leftOffset = 45;
 
         for (var i = 0; i < strawsNumber; i++) {
-            if (i === self.winner_straw - 1) {
+            if (i === this.winner_straw - 1) {
                 //La caña más larga medirá el 70% del alto de la pantalla
                 var height = 70;
             } else {
@@ -345,7 +379,6 @@ games.strawsGame = {
      * @returns {undefined} | No devuelve ningún valor
      */
     chooseStraw: function (choosen) {
-        var self = this;
         //Obtener tiempo consumido y enviar los datos al servidor
         var ellapsed_time = new Date().getTime() - this.start_decission;
         games.debug && console.log(ellapsed_time);
@@ -353,7 +386,7 @@ games.strawsGame = {
         this.sendDataToServer(ellapsed_time, this.winner_straw, choosen, this.strawsNumber);
 
         //Esconder texto de ayuda
-        clearInterval(self.textInterval);
+        clearInterval(this.textInterval);
         $("#straws-game .helper-tip").fadeOut(700);
 
         //Cambiar mano cerrada por abierta
@@ -377,7 +410,7 @@ games.strawsGame = {
         //Comenzar a desvanecer la mano
         $(".open-hand").animate({opacity: 0, left: "-50%"}, 1500, function () {
             // Animación completa
-            self.finish(choosen);
+            games.strawsGame.finish(choosen);
         });
     },
     /**
@@ -436,7 +469,8 @@ games.cardsGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (cardsNumber) {
-        var self = this;
+        //Calcular tiempo hasta elegir juego
+        games.sendDataToServer("cardsGame");
         //Mostrar las instrucciones escondiendo todo lo demás
         $("#cards-game").show();
         $("#main-menu").hide();
@@ -446,10 +480,7 @@ games.cardsGame = {
         $("#cards-instructions-screen").show();
 
         //Poner la música y pausar la del menú principal
-        $("#main-theme")[0].pause();
-        var theme = $("#theme-audio2")[0];
-        theme.currentTime = 0;
-        theme.play();
+        games.playTheme(2);
 
         //Devolver la carta final mostrada a su estado original
         var final_card = $("#final-card")
@@ -469,13 +500,17 @@ games.cardsGame = {
 
         //Restablecer título
         $("#cards-title").attr("src", "/images/cards/title1.png").show();
+        //Restablecer botón
+        $("#cards-play-button").text("Haz en las cartas para verlas por detrás").removeAttr("onclick");
         //Borrar posibles cartas antiguas
         $(".card-container").remove();
         //Borrar estilo del sombrero
         $("#cards-hat").removeAttr("style");
 
         //Almacenar el número de cartas mostrado
-        self.cardsNumber = cardsNumber;
+        this.cardsNumber = cardsNumber;
+        //Resetar la variable que guarda clicks en las cartas
+        this.cardsClicks = "";
 
         //Array de cartas del juego mínimo y los offsets de sus representaciones
         var cardsArray = [["red-card", "black-card"], ["black-card", "black-card"], ["red-card", "red-card"]];
@@ -490,21 +525,35 @@ games.cardsGame = {
         }
 
         //Barajar las cartas
-        self.cardsArray = games.shuffle(cardsArray);
+        this.cardsArray = games.shuffle(cardsArray);
         //ALmacenar las cartas que se mostrarán
-        self.displayedCards = encodeURI(self.cardsArray);
+        this.displayedCards = encodeURI(this.cardsArray);
 
         //Mostrar las cartas en su contenedor principal
         var container = $('#main-screen-cards-container');
         var offsetIncrement = 20;
         for (var i = 0; i < cardsNumber; i++) {
-            container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" onclick="this.classList.toggle(\'flipped\');$(\'#flipCardAudio' + (i + 1) + '\')[0].play();"><div class="front ' + self.cardsArray[i][0] + '"></div><div class="back ' + self.cardsArray[i][1] + '"></div></div></div>'));
+            container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" id="card-' + (i + 1) + '" onclick="games.cardsGame.cardClick(' + (i + 1) + ')"><div class="front ' + this.cardsArray[i][0] + '"></div><div class="back ' + this.cardsArray[i][1] + '"></div></div></div>'));
             //Las cartas tienen un offset para no colisionar en el mismo espacio. 
             offsetLeft += offsetIncrement;
         }
     },
     /**
-     * Función games.strawsGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
+     * Función games.cardsGame.cardClick: Se ha hecho click en una carta
+     * @returns {undefined} | No devuelve ningún valor
+     */
+    cardClick: function (cardNumber) {
+        //Se le da la vuelta a la carta
+        $("#card-" + cardNumber).toggleClass("flipped");
+        //Se reproduce el sonido de voltearla
+        $('#flipCardAudio' + cardNumber)[0].play();
+        //Se habilita el botón de jugar
+        $("#cards-play-button").text("¡Hecho!").attr("onclick", "games.cardsGame.animateCardsToHat();");
+        //Registrar un nuevo click
+        this.cardsClicks += cardNumber + ",";
+    },
+    /**
+     * Función games.cardsGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
      * @returns {undefined} | No devuelve ningún valor
      */
     startCardsGame: function () {
@@ -516,13 +565,12 @@ games.cardsGame = {
      * @returns {undefined} | No devuelve ningún valor
      */
     animateCardsToHat: function () {
-        var self = this;
         //Tomar el tiempo que ha llevado la memorización
-        self.ellapsed_time_memory = new Date().getTime() - self.start_memory;
-        games.debug && console.log("Time memory:" + self.ellapsed_time_memory);
+        this.ellapsed_time_memory = new Date().getTime() - this.start_memory;
+        games.debug && console.log("Time memory:" + this.ellapsed_time_memory);
 
         //Encoger las cartas y llevarlas al centro
-        self.shrinkCards();
+        this.shrinkCards();
 
         //Esconder el título y el botón
         $("#cards-title").fadeOut(500);
@@ -533,13 +581,13 @@ games.cardsGame = {
             // Animación del sombrero completa
             $(".card-container").hide();
             //Elegir una carta aleatoria
-            var card = games.shuffle(self.cardsArray)[0];
+            var card = games.shuffle(games.cardsGame.cardsArray)[0];
             var choose = Math.floor(Math.random() * 2);
             var selected_side = card[choose];
             var winner_side = (choose == 0 ? card[1] : card[0]);
             //Almacenar los lados escondido y mostrado de la carta
-            self.displayed = selected_side;
-            self.winner = winner_side;
+            games.cardsGame.displayed = selected_side;
+            games.cardsGame.winner = winner_side;
 
             //Crear la carta extraída
             var final_card = $("#final-card").show();
@@ -552,7 +600,7 @@ games.cardsGame = {
             $("#move-hat-sound")[0].play();
 
             //Agitar el sombrero
-            self.shakeHat(5, 30, function () {
+            games.cardsGame.shakeHat(5, 30, function () {
                 //Sacar el sombrero de la pantalla
                 $hat.removeClass("fast-transition").animate({"top": "100%"}, 2000);
 
@@ -560,8 +608,8 @@ games.cardsGame = {
                 $("#cards-title").attr("src", "/images/cards/title2.png").fadeIn(500);
 
                 //Rotar
-                self.textInterval1 = games.rotateRandom($("#card-to-choose-left img"), 10, 10);
-                self.textInterval2 = games.rotateRandom($("#card-to-choose-right img"), 10, 10);
+                games.cardsGame.textInterval1 = games.rotateRandom($("#card-to-choose-left img"), 10, 10);
+                games.cardsGame.textInterval2 = games.rotateRandom($("#card-to-choose-right img"), 10, 10);
 
                 //Esperar medio segundo
                 setTimeout(function () {
@@ -573,7 +621,7 @@ games.cardsGame = {
                     games.debug && console.log(winner_side, winner_side === "red-card");
 
                     //Comenzar a contabilizar el tiempo de decisión
-                    self.start_decission = new Date().getTime();
+                    games.cardsGame.start_decission = new Date().getTime();
                     if (winner_side === "red-card") {
                         left_card.attr("onclick", "games.cardsGame.finishCardGame(true, 'red-card');");
                         right_card.attr("onclick", "games.cardsGame.finishCardGame(false, 'black-card');");
@@ -593,7 +641,6 @@ games.cardsGame = {
      * @returns {undefined} | No devuelve ningún valor
      */
     shakeHat: function (times, degrees, callback) {
-        var self = this;
         //Reducir el número de veces que quedan pendiente de agitar
         times--;
         //Voltear hacia el lado opuesto
@@ -617,7 +664,7 @@ games.cardsGame = {
                 .css("transform", "rotate(" + degrees + "deg)");
         setTimeout(function () {
             //Llamar de forma recursiva a esta función
-            self.shakeHat(times, degrees, callback);
+            games.cardsGame.shakeHat(times, degrees, callback);
         }, 300);
     },
     /**
@@ -637,7 +684,6 @@ games.cardsGame = {
      */
     finishCardGame: function (win, selected_side) {
         this.ellapsed_time_decission = new Date().getTime() - this.start_decission;
-        var self = this;
         //Reproducir sonido de girado de carta y darle la vuelta
         $("#fast-woosh-sound")[0].play();
         $("#final-card .card").addClass("flipped");
@@ -650,11 +696,14 @@ games.cardsGame = {
         }
 
         //Parar movimiento de los textos
-        clearInterval(self.textInterval1);
-        clearInterval(self.textInterval2);
+        clearInterval(this.textInterval1);
+        clearInterval(this.textInterval2);
+
+        //Eliminar la coma final
+        this.cardsClicks = this.cardsClicks.substring(0, this.cardsClicks.length - 1);
 
         //Enviar los datos al servidor
-        self.sendDataToServer(self.ellapsed_time_memory, self.ellapsed_time_decission, self.displayed, self.winner, selected_side, self.cardsNumber, self.displayedCards);
+        this.sendDataToServer(this.ellapsed_time_memory, this.ellapsed_time_decission, this.displayed, this.winner, selected_side, this.cardsNumber, this.displayedCards, this.cardsClicks);
 
         //Pasado un segundo y medio acabar el juego
         setTimeout(function () {
@@ -679,8 +728,8 @@ games.cardsGame = {
      * @param {type} cards_array
      * @returns {undefined}
      */
-    sendDataToServer: function (time_memory, time_decission, displayed_side, winner_side, selected_side, cards_number, cards_array) {
-        games.debug && console.log("Time memory: " + time_memory, "Time decission: " + time_decission, "Displayed side: " + displayed_side, "Winner side: " + winner_side, "Selected: " + selected_side, "Card numbers: " + cards_number);
+    sendDataToServer: function (time_memory, time_decission, displayed_side, winner_side, selected_side, cards_number, cards_array, cards_clicks) {
+        games.debug && console.log("Time memory: " + time_memory, "Time decission: " + time_decission, "Displayed side: " + displayed_side, "Winner side: " + winner_side, "Selected: " + selected_side, "Card numbers: " + cards_number, "CardsClicks: " + cards_clicks);
         //POST al servidor con los datos
         $.ajax({
             type: "POST",
@@ -693,7 +742,8 @@ games.cardsGame = {
                 displayed_side: displayed_side,
                 winner_side: winner_side,
                 cards_number: cards_number,
-                cards_array: cards_array
+                cards_array: cards_array,
+                cards_clicks: cards_clicks,
             },
             //En caso de éxito imprimirlo por pantalla
             success: function (data) {
@@ -716,8 +766,9 @@ games.boxesGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (boxesNumber) {
+        //Calcular tiempo hasta elegir juego
+        games.sendDataToServer("boxesGame");
         //Mostrar las instrucciones escondiendo todo lo demás
-        var self = this;
         $('#boxes-game').show();
         $('#main-menu').hide();
         $("#boxes-lose-screen").hide();
@@ -728,10 +779,7 @@ games.boxesGame = {
         $("#main-screen-boxes-container").html("");
 
         //Poner la música y pausar la del menú principal
-        $("#main-theme")[0].pause();
-        var theme = $("#theme-audio3")[0];
-        theme.currentTime = 0;
-        theme.play();
+        games.playTheme(3);
 
         //Restablecer el contenedor de caja
         $("#your-box-container").hide();
@@ -747,14 +795,14 @@ games.boxesGame = {
         }
 
         //Almacenar la caja ganadora, el número de ellas y crear array para guardar las cajas disponibles mostradas
-        self.winner_box = (Math.ceil(Math.random() * boxesNumber));
-        self.boxesNumber = boxesNumber;
+        this.winner_box = (Math.ceil(Math.random() * boxesNumber));
+        this.boxesNumber = boxesNumber;
         this.boxesAvailable = [];
 
         //Centrar las cajas y espaciarlas sobre la mesa
-        self.updateBoxes(false);
+        this.updateBoxes(false);
 
-        games.debug && console.log("Winner:" + self.winner_box);
+        games.debug && console.log("Winner:" + this.winner_box);
         games.debug && console.log("Boxes Number: " + boxesNumber);
     },
     /**
@@ -838,7 +886,6 @@ games.boxesGame = {
 
         games.debug && console.log("Registrar", this.times);
 
-        var self = this;
         //Registar la caja elegida
         this.choosenBoxes[this.choosenBoxes.length] = choosen;
 
@@ -860,7 +907,7 @@ games.boxesGame = {
         $("#choosen-box-title").hide();
 
         //Marcar posibles cajas a borrar, no lo serán ni la ganadora ni la elegida
-        var boxes_to_remove = $(".box:not(.choosen-box):not(#box-" + self.winner_box + ")").addClass("to-be-removed");
+        var boxes_to_remove = $(".box:not(.choosen-box):not(#box-" + this.winner_box + ")").addClass("to-be-removed");
         //Elegir aleatoriamente una caja a borrar enre las disponibles
         var box_to_delete = (Math.ceil(Math.random() * (boxes_to_remove.length - 1)));
 
@@ -878,7 +925,7 @@ games.boxesGame = {
         $(".boxes-title-text").attr("src", "/images/boxes/box-title-change.png");
 
         //Reajustar la disposición de lass cajas
-        self.updateBoxes(true);
+        this.updateBoxes(true);
 
         //Mover la elegida al marco de caja elegida
         choosen.animate({"left": "80%", "bottom": "8%"}, 1000, function () {
@@ -903,9 +950,9 @@ games.boxesGame = {
                 $(now_boxes[1]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[1]).attr("box-number") + ')');
             }
             //Ya puede volver a seleccionarse caja
-            self.animatingBoxes = false;
+            games.boxesGame.animatingBoxes = false;
             //Resetear el contador
-            self.start_iteration_time = new Date().getTime();
+            games.boxesGame.start_iteration_time = new Date().getTime();
         }, 1000);
     },
     /**
@@ -919,19 +966,18 @@ games.boxesGame = {
         this.choosenBoxes[this.choosenBoxes.length] = choosen;
         //Hacer que las cajas no puedan volver a seleccionarse
         $(".box").removeAttr("onclick").addClass("box-unselectable");
-        var self = this;
 
         //Pausar el tema principal
         $("#theme-audio3")[0].pause();
 
         //Esconder texto de ayuda, parándolo primero
-        clearInterval(self.textInterval);
+        clearInterval(this.textInterval);
         $(".boxes-title").fadeOut(200);
 
-        games.debug && console.log("Winner " + self.winner_box, "choose" + choosen);
+        games.debug && console.log("Winner " + this.winner_box, "choose" + choosen);
 
         //Si la elegida es la ganadora
-        if (self.winner_box == choosen) {
+        if (this.winner_box == choosen) {
             //Mostrar imagen de caja ganadora y reproducir sonido de victoria
             $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win.png");
             $('#winner-sound')[0].play();
@@ -943,16 +989,16 @@ games.boxesGame = {
 
         //Pasado un segundo...
         setTimeout(function () {
-            if (self.winner_box == choosen) {
+            if (games.boxesGame.winner_box == choosen) {
                 //Mostrar pantalla de has ganado
                 $('#boxes-win-screen').show();
             } else {
                 //Pantalla de has perdido
                 $('#boxes-lose-screen').show();
             }
-            games.debug && console.log("NumBoxes: " + self.boxesNumber, "Winner: " + self.winner_box, "First choose: " + self.first_choose, "Available to change: " + self.box_available_to_change, "final_choose: " + choosen, "time_to_first_choose" + self.ellapsed_time_decission, "time_to_change" + self.ellapsed_time_decission_change);
+            games.debug && console.log("NumBoxes: " + games.boxesGame.boxesNumber, "Winner: " + games.boxesGame.winner_box, "First choose: " + games.boxesGame.first_choose, "Available to change: " + games.boxesGame.box_available_to_change, "final_choose: " + choosen, "time_to_first_choose" + games.boxesGame.ellapsed_time_decission, "time_to_change" + games.boxesGame.ellapsed_time_decission_change);
             //Enviar los datos al servidor
-            self.sendDataToServer(self.boxesNumber, self.winner_box, self.boxesAvailable, self.times, self.choosenBoxes);
+            games.boxesGame.sendDataToServer(games.boxesGame.boxesNumber, games.boxesGame.winner_box, games.boxesGame.boxesAvailable, games.boxesGame.times, games.boxesGame.choosenBoxes);
         }, 1000);
     },
     /**
