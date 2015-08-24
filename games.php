@@ -51,10 +51,10 @@
                                 <!--Menú principal-->
                                 <div id="main-menu" class="screen menu-screen">
                                     <div>
-                                        <h2 class="h2-title">Elige un juego:</h2>
-                                        <button class="play-button" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(Math.floor(Math.random() * 3) + 3);">La caña más larga</button><br/>
-                                        <button class="play-button" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(Math.floor(Math.random() * 3) + 3);">Adivina el color</button><br/>
-                                        <button class="play-button" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.init(Math.floor(Math.random() * 3) + 3);">Elige la caja</button>
+                                        <img src="/images/general/main-title.png" ondragstart="return false;" class="choose-game-title" alt="Elige un juego"/>
+                                        <img src="/images/general/first-button.jpg" ondragstart="return false;" class="play-button play-button-first" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(Math.floor(Math.random() * 3) + 3);" alt="La caña más larga"/>
+                                        <img src="/images/general/second-button.jpg" ondragstart="return false;" class="play-button play-button-second" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(Math.floor(Math.random() * 3) + 3);" alt="Adivina el color"/>
+                                        <img src="/images/general/third-button.jpg" ondragstart="return false;" class="play-button play-button-third" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.init(Math.floor(Math.random() * 3) + 3);" alt="Elige la caja"/>
                                     </div>
                                 </div>
 
@@ -67,7 +67,7 @@
                                             <h2 class="h2-title">La caña más larga</h2>
                                             <p class="screen-msg">Elige una de las cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
                                         </div>
-                                        <button class="play-button" onclick="games.strawsGame.startstrawsGame();">Jugar</button>
+                                        <img src="/images/general/play.jpg" ondragstart="return false;" class="play-button-game" alt="Jugar" onclick="games.strawsGame.startstrawsGame();"/>
                                     </div>
                                     <!--Juego 1: Contenedor principal-->
                                     <div id="main-screen-game-straws" class="screen">
@@ -79,6 +79,7 @@
                                         <div style="color: #fff; margin-top: 22%;">
                                             <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                                             <p class="screen-msg">Has conseguido X puntos</p>
+                                            <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('straws-game');"/>
                                         </div>
                                     </div>
                                     <!--Juego 1: Página de has perdido-->
@@ -87,6 +88,7 @@
                                         <div style="color: #fff; margin-top: 22%;">
                                             <h2 class="h2-title">Vaya... No has ganado...</h2>
                                             <p class="screen-msg">Has perdido Y puntos</p>
+                                            <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('straws-game');"/>
                                         </div>
                                     </div>
                                 </div>
@@ -100,13 +102,13 @@
                                             <h2 class="h2-title">Adivina el color</h2>
                                             <p class="screen-msg">Estate atento a las cartas. Se mezclarán y se cogerá una al azar ¿podrás adivinar el color del reverso?</p>
                                         </div>
-                                        <button class="play-button" onclick="games.cardsGame.startCardsGame();">Jugar</button>
+                                        <img src="/images/general/play.jpg" ondragstart="return false;" class="play-button-game" alt="Jugar" onclick="games.cardsGame.startCardsGame();"/>
                                     </div>
                                     <!--Juego 2: Contenedor principal-->
                                     <div id="main-screen-cards-game" class="screen">
                                         <div id="main-screen-cards-container">
                                             <img id="cards-title" src="/images/cards/title1.png"/>
-                                            <button id="cards-play-button" class="play-button cards-play-button">Haz en las cartas para verlas por detrás</button>
+                                            <img id="cards-play-button" src="/images/cards/do-click.jpg" ondragstart="return false;" class="play-button cards-play-button"/>
                                             <img id="cards-hat" ondragstart="return false;" src="/images/cards/hat.png"/>
                                             <div id="final-card" class="card-container smaller">
                                                 <div class="card" onclick="return false;">
@@ -124,6 +126,7 @@
                                         <div style="color: #fff; margin-top: 22%;">
                                             <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                                             <p class="screen-msg">Has conseguido Z puntos</p>
+                                            <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('cards-game');"/>
                                         </div>
                                     </div>
                                     <!--Juego 1: Página de has perdido-->
@@ -132,6 +135,7 @@
                                         <div style="color: #fff; margin-top: 22%;">
                                             <h2 class="h2-title">Vaya... No has ganado...</h2>
                                             <p class="screen-msg">Has perdido W puntos</p>
+                                            <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('cards-game');"/>
                                         </div>
                                     </div>
                                 </div>
@@ -145,7 +149,7 @@
                                             <h2 class="h2-title">Encuentra la caja con el premio</h2>
                                             <p class="screen-msg">¿Eres capaz de encontrar la caja con el premio?</p>
                                         </div>
-                                        <button class="play-button" onclick="games.boxesGame.startBoxesGame();">Jugar</button>
+                                        <img src="/images/general/play.jpg" ondragstart="return false;" class="play-button-game" alt="Jugar" onclick="games.boxesGame.startBoxesGame();"/>
                                     </div>
                                     <!--Juego 3: Contenedor principal-->
                                     <div id="main-screen-game-boxes" class="screen">
@@ -160,6 +164,7 @@
                                         <div style="color: #fff; margin-top: 22%;">
                                             <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                                             <p class="screen-msg">Has conseguido F puntos</p>
+                                            <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('boxes-game');"/>
                                         </div>
                                     </div>
                                     <!--Juego 3: Página de has perdido-->
@@ -168,6 +173,7 @@
                                         <div style="color: #fff; margin-top: 22%;">
                                             <h2 class="h2-title">Vaya... No has ganado...</h2>
                                             <p class="screen-msg">Has perdido G puntos</p>
+                                            <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('boxes-game');"/>
                                         </div>
                                     </div>
                                 </div>
@@ -215,6 +221,14 @@
                                         <img src="/images/general/mute.png"/>
                                         <img src="/images/general/sound.png"/>
                                         <img src="/images/general/grass.jpg"/>
+                                        <img src="/images/general/no-internet.png"/>
+                                        <img src="/images/general/loading-title.png"/>
+                                        <img src="/images/general/main-title.png"/>
+                                        <img src="/images/general/first-button.jpg"/>
+                                        <img src="/images/general/second-button.jpg"/>
+                                        <img src="/images/general/third-button.jpg"/>
+                                        <img src="/images/general/play.jpg"/>
+                                        <img src="/images/general/back.jpg"/>
                                         <!--Straws game-->
                                         <img src="/images/largest-straw/helper-arrow.png"/>
                                         <img src="/images/largest-straw/helper-text.png"/>
@@ -228,6 +242,8 @@
                                         <img src="/images/largest-straw/straw3.jpg"/>
                                         <img src="/images/largest-straw/straw4.jpg"/>
                                         <img src="/images/largest-straw/straw5.jpg"/>
+                                        <img src="/images/largest-straw/do-click.jpg"/>
+                                        <img src="/images/largest-straw/done.jpg"/>
                                         <!--Cards game-->
                                         <img src="/images/cards/black-card-background.jpg"/>
                                         <img src="/images/cards/red-card-background.jpg"/>

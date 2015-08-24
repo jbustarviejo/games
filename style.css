@@ -109,12 +109,52 @@ header, footer{
     background-image: url("/images/general/grass.jpg");
     background-size: 100% auto;
 }
-#game-container #main-menu button{
-    width: 250px;
+#main-menu  .choose-game-title{
+    left: 21%;
+    position: absolute;
+    top: 4%;
+    width: 60%;
 }
-#game-container #main-menu button:hover{
-    width: 300px;
-    font-size: 25px;
+#main-menu .play-button{
+    border: 3px solid #666;
+    border-radius: 7px;
+    cursor: pointer;
+    left: 29%;
+    position: absolute;
+    width: 43%;
+}
+#main-menu .play-button:hover{
+    width: 45%;
+    left: 28%;
+}
+#main-menu .play-button-first{
+    bottom: 56%;
+}
+#main-menu .play-button-second{
+    bottom: 33%;
+}
+#main-menu .play-button-third{
+    bottom: 13%;
+}
+#game-container .play-button-game{
+    cursor: pointer;
+    width: 17%;
+    margin-top: 3%;
+    border-radius: 8px;
+}
+#game-container .play-button-game:hover{
+    width: 19%;
+    margin-top: 2.5%;
+}
+#game-container .back-button{
+    border-radius: 6px;
+    margin-top: 2%;
+    width: 18%;
+    cursor: pointer;
+}
+#game-container .back-button:hover{
+    margin-top: 1.5%;
+    width: 20%;
 }
 #game-container button{
     cursor:pointer;
@@ -300,13 +340,23 @@ header, footer{
 }
 
 #cards-game .cards-play-button{
-    bottom: 8%;
-    left: 42%;
+    border-radius: 6px;
+    bottom: 6%;
+    left: 33%;
+    opacity: 0.6;
     position: absolute;
-    text-align: center;
-    width: 15%;
+    width: 34%;
 }
-
+#cards-game .ready-btn{
+    cursor: pointer;
+    left: 40%;
+    opacity: 1;
+    width: 17%;
+}
+#cards-game .ready-btn:hover{
+    width: 19%;
+    left: 39%;
+}
 #game-container .card-container {
     width: 18%;
     height: 45%;
