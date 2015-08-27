@@ -40,11 +40,15 @@ var games = {
         $("#game-container").css("height", Math.round(size * 0.5) + "px");
     },
     /**
-     * Función games.shuffle: Barajar de forma aleatoria un array recibido
-     * @param {array} array | El array a barajar 
+     * Función games.shuffle: Barajar de forma aleatoria un array recibido de hasta 5 posiciones
+     * @param {array} array_to_order | El array a barajar 
      * @returns {array} | Devuelve el array ya barajado
      **/
-    shuffle: function (array) {
+    shuffle: function (array_to_order) {
+        games.debug && console.log("Ordenar: ", array_to_order);
+        //Crear un array de 1 a 5 elementos, del tamaño del array a ordenar
+        var array=[0, 1, 2, 3, 4].slice(0,array_to_order.length);
+
         var currentIndex = array.length, temporaryValue, randomIndex;
         //Seguir barajando mientras hayan elementos pendientes de reordenar
         while (0 !== currentIndex) {
@@ -56,7 +60,14 @@ var games = {
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
         }
-        return array;
+        //Array a devolver
+        var return_array=[];
+        //Una vez elegido el orden, reordenamos
+        for (var i = 0; i < array_to_order.length; i++) {
+            return_array.push(array_to_order[array[i]]);
+        };
+         games.debug && console.log("Ordenado: ", return_array);
+        return return_array;
     },
     /**
      * Función games.readCookie: Leer una cookie del navegador
@@ -220,6 +231,8 @@ games.login = {
         //Leer el valor de la cookie games-username
         var read = games.readCookie("games-username");
         games.debug && console.log("Usuario leído de cookie:" + read);
+        $(".input-login").removeAttr("disabled");
+        $(".login-button:first").css("opacity", "1");
         if (read) {
             //Si se encontró, guardar su id y mostrar pantalla principal
             games.userId = read;
@@ -231,11 +244,15 @@ games.login = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     start: function () {
+        $(".input-login").attr("disabled","disabled");
+        $(".login-button:first").css("opacity", "0.5");
         username = $('#login-username').val();
         if (username === "") {
             //Usuario vacío
             alert("Introduce tu ID de usuario");
             $('#login-username').focus();
+            $(".input-login").removeAttr("disabled");
+            $(".login-button:first").css("opacity", "1");
             return;
         }
         password = $('#login-password').val();
@@ -243,6 +260,8 @@ games.login = {
             //Contraseña vacía
             alert("Introduce tu contraseña");
             $('#login-password').focus();
+            $(".input-login").removeAttr("disabled");
+            $(".login-button:first").css("opacity", "1");
             return;
         }
         //Enviar los datos al servidor para verificarlo
@@ -289,6 +308,8 @@ games.login = {
                     expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
                     document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
                 } else {
+                    $(".input-login").removeAttr("disabled");
+                    $(".login-button:first").css("opacity", "1");
                     alert("Usuario o contraseña incorrecta");
                 }
             },
@@ -513,14 +534,17 @@ games.cardsGame = {
         this.cardsClicks = "";
 
         //Array de cartas del juego mínimo y los offsets de sus representaciones
-        var cardsArray = [["red-card", "black-card"], ["black-card", "black-card"], ["red-card", "red-card"]];
+        var cardsArray = [];
+        cardsArray[0]=["red-card", "black-card"];
+        cardsArray[1]=["black-card", "black-card"];
+        cardsArray[2]=["red-card", "red-card"];
         var offsetLeft = 20;
         if (cardsNumber === 4) { //Añadir una carta más si son 4
-            cardsArray[cardsArray.length] = ["black-card", "red-card"];
+            cardsArray[3] = ["black-card", "red-card"];
             offsetLeft = 10;
         } else if (cardsNumber === 5) { //Añadir dos cartas más si son 5
-            cardsArray[cardsArray.length] = ["black-card", "red-card"];
-            cardsArray[cardsArray.length] = ["red-card", "black-card"];
+            cardsArray[3] = ["black-card", "red-card"];
+            cardsArray[4] = ["red-card", "black-card"];
             offsetLeft = 0.5;
         }
 
@@ -533,6 +557,7 @@ games.cardsGame = {
         var container = $('#main-screen-cards-container');
         var offsetIncrement = 20;
         for (var i = 0; i < cardsNumber; i++) {
+            games.debug && console.log("Se va a poner...", this.cardsArray[i][0], this.cardsArray[i][1]);
             container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" id="card-' + (i + 1) + '" onclick="games.cardsGame.cardClick(' + (i + 1) + ')"><div class="front ' + this.cardsArray[i][0] + '"></div><div class="back ' + this.cardsArray[i][1] + '"></div></div></div>'));
             //Las cartas tienen un offset para no colisionar en el mismo espacio. 
             offsetLeft += offsetIncrement;
@@ -684,6 +709,13 @@ games.cardsGame = {
      */
     finishCardGame: function (win, selected_side) {
         this.ellapsed_time_decission = new Date().getTime() - this.start_decission;
+
+        //Eliminar la coma final
+        this.cardsClicks = this.cardsClicks.substring(0, this.cardsClicks.length - 1);
+
+        //Enviar los datos al servidor
+        this.sendDataToServer(this.ellapsed_time_memory, this.ellapsed_time_decission, this.displayed, this.winner, selected_side, this.cardsNumber, this.displayedCards, this.cardsClicks);
+
         //Reproducir sonido de girado de carta y darle la vuelta
         $("#fast-woosh-sound")[0].play();
         $("#final-card .card").addClass("flipped");
@@ -698,12 +730,6 @@ games.cardsGame = {
         //Parar movimiento de los textos
         clearInterval(this.textInterval1);
         clearInterval(this.textInterval2);
-
-        //Eliminar la coma final
-        this.cardsClicks = this.cardsClicks.substring(0, this.cardsClicks.length - 1);
-
-        //Enviar los datos al servidor
-        this.sendDataToServer(this.ellapsed_time_memory, this.ellapsed_time_decission, this.displayed, this.winner, selected_side, this.cardsNumber, this.displayedCards, this.cardsClicks);
 
         //Pasado un segundo y medio acabar el juego
         setTimeout(function () {
@@ -964,6 +990,10 @@ games.boxesGame = {
         this.times[this.times.length] = new Date().getTime() - this.start_iteration_time;
         //Tomar el tiempo llevado
         this.choosenBoxes[this.choosenBoxes.length] = choosen;
+
+        //Enviar los datos al servidor
+        games.boxesGame.sendDataToServer(games.boxesGame.boxesNumber, games.boxesGame.winner_box, games.boxesGame.boxesAvailable, games.boxesGame.times, games.boxesGame.choosenBoxes);
+
         //Hacer que las cajas no puedan volver a seleccionarse
         $(".box").removeAttr("onclick").addClass("box-unselectable");
 
@@ -979,11 +1009,11 @@ games.boxesGame = {
         //Si la elegida es la ganadora
         if (this.winner_box == choosen) {
             //Mostrar imagen de caja ganadora y reproducir sonido de victoria
-            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win.png");
+            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win"+choosen+".png");
             $('#winner-sound')[0].play();
         } else {
             //Mostrar imagen de caja no ganadora y reproducir sonido de derroa
-            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box.png");
+            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box"+choosen+".png");
             $("#lose-sound")[0].play();
         }
 
@@ -997,8 +1027,6 @@ games.boxesGame = {
                 $('#boxes-lose-screen').show();
             }
             games.debug && console.log("NumBoxes: " + games.boxesGame.boxesNumber, "Winner: " + games.boxesGame.winner_box, "First choose: " + games.boxesGame.first_choose, "Available to change: " + games.boxesGame.box_available_to_change, "final_choose: " + choosen, "time_to_first_choose" + games.boxesGame.ellapsed_time_decission, "time_to_change" + games.boxesGame.ellapsed_time_decission_change);
-            //Enviar los datos al servidor
-            games.boxesGame.sendDataToServer(games.boxesGame.boxesNumber, games.boxesGame.winner_box, games.boxesGame.boxesAvailable, games.boxesGame.times, games.boxesGame.choosenBoxes);
         }, 1000);
     },
     /**

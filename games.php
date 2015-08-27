@@ -41,10 +41,10 @@
                                 <!--Menú de acceso, sólo presente cuando no se detecta la cookie de usuario--> 
                                 <div id="login-menu" class="screen menu-screen login-menu">
                                     <div>
-                                        <h2 class="h2-title">Introduce tus datos de acceso</h2>
+                                        <img src="/images/general/login-title.png" ondragstart="return false;" class="login-title" alt="Introduce tus datos de acceso"/>
                                         <input id="login-username" class="input-login" onkeypress="games.login.keypressed(event);" placeholder="Introduce tu id de usuario"/> 
                                         <input id="login-password" type="password" onkeypress="games.login.keypressed(event);" class="input-login" placeholder="Introduce tu contraseña"/><br>
-                                            <button class="login-button" onclick="games.login.start()">Entrar</button>
+                                        <img src="/images/general/login-btn.jpg" ondragstart="return false;" class="login-button" alt="Entrar" onclick="games.login.start();"/>
                                     </div>
                                 </div>
 
@@ -229,6 +229,8 @@
                                         <img src="/images/general/third-button.jpg"/>
                                         <img src="/images/general/play.jpg"/>
                                         <img src="/images/general/back.jpg"/>
+                                        <img src="/images/general/login-btn.jpg"/>
+                                        <img src="/images/general/login-title.png"/>
                                         <!--Straws game-->
                                         <img src="/images/largest-straw/helper-arrow.png"/>
                                         <img src="/images/largest-straw/helper-text.png"/>
@@ -242,8 +244,6 @@
                                         <img src="/images/largest-straw/straw3.jpg"/>
                                         <img src="/images/largest-straw/straw4.jpg"/>
                                         <img src="/images/largest-straw/straw5.jpg"/>
-                                        <img src="/images/largest-straw/do-click.jpg"/>
-                                        <img src="/images/largest-straw/done.jpg"/>
                                         <!--Cards game-->
                                         <img src="/images/cards/black-card-background.jpg"/>
                                         <img src="/images/cards/red-card-background.jpg"/>
@@ -253,8 +253,31 @@
                                         <img src="/images/cards/hat.png"/>
                                         <img src="/images/cards/title1.png"/>
                                         <img src="/images/cards/title2.png"/>
+                                        <img src="/images/cards/do-click.jpg"/>
+                                        <img src="/images/cards/done.jpg"/>
                                         <!--Boxes game-->
-                                        <!--img src="/images/boxes/"/-->
+                                        <img src="/images/boxes/box-title-change.png"/>
+                                        <img src="/images/boxes/box1.png"/>
+                                        <img src="/images/boxes/box2.png"/>
+                                        <img src="/images/boxes/box3.png"/>
+                                        <img src="/images/boxes/box4.png"/>
+                                        <img src="/images/boxes/box5.png"/>
+                                        <img src="/images/boxes/boxes-top-title.png"/>
+                                        <img src="/images/boxes/boxes-top.png"/>
+                                        <img src="/images/boxes/open-box-win1.png"/>
+                                        <img src="/images/boxes/open-box-win2.png"/>
+                                        <img src="/images/boxes/open-box-win3.png"/>
+                                        <img src="/images/boxes/open-box-win4.png"/>
+                                        <img src="/images/boxes/open-box-win5.png"/>
+                                        <img src="/images/boxes/open-box1.png"/>
+                                        <img src="/images/boxes/open-box2.png"/>
+                                        <img src="/images/boxes/open-box3.png"/>
+                                        <img src="/images/boxes/open-box4.png"/>
+                                        <img src="/images/boxes/open-box5.png"/>
+                                        <img src="/images/boxes/table.png"/>
+                                        <img src="/images/boxes/yourbox.png"/>
+                                        <img src="/images/boxes/yourboxwhite.png"/>
+                                        <img src="/images/boxes/boxes_background.jpg"/>
                                     </div>    
                                 </div>
                                 </div>
@@ -276,18 +299,7 @@
 
                                     <h2>Todo</h2>
                                     <ul>
-                                        <li>Tiempo hasta elegir juego</li>
-                                        <li>Estilo del menú, botón del juego de cartas.</li>
-                                        <li>Botón de volver</li>
-                                        <li>Bajar volumen, juego cajas</li>
-                                        <li>Menú principal</li>
-                                        <li>Return to main menu button instead of 'x'</li>
-                                        <li>Comprimir imágenes, achicar las más grandes</li>
-                                        <li>Avisar de giro de pantalla de movil</li>
-                                        <li>Mis estadísticas</li>
-                                        <li>Aviso de compatibilidad</li>
-                                        <li>Abrir cajas con colores</li>
-                                        <li>Enviar los datos lo antes posible</li>
+                                        <li>Aviso de compatibilidad, comprobar IE</li>
                                         <li>Minificar js y css</li>
                                     </ul>
                                 </div>

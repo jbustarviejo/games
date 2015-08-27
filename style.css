@@ -57,6 +57,11 @@ header, footer{
     z-index: 10;
     background-color: #0A5D83;
 }
+#game-container .login-title {
+    left: 14%;
+    position: absolute;
+    width: 74%;
+}
 #game-container #error-screen{
     z-index: 12;
     background-color: #0A5D83;
@@ -75,22 +80,48 @@ header, footer{
     width: 55%;
 }
 #loading-screen .loading-icon{
-    animation: 2s linear 0s normal none infinite running fa-spin;
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
     bottom: 4%;
     left: 31%;
     position: absolute;
     width: 36%;
 }
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
 @keyframes fa-spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(359deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+#login-menu .login-button{
+    border: 3px solid #666;
+    border-radius: 7px;
+    bottom: 10%;
+    cursor: pointer;
+    left: 40%;
+    position: absolute;
+    width: 18%;
+}
+#login-menu .login-button:hover{
+    width: 20%;
+    left: 39%;
 }
 #game-container #login-username{
-    margin-top: 8%;
+    margin-top: 18%;
 }
 #game-container #login-menu .h2-title{
     color: white;
@@ -103,6 +134,16 @@ header, footer{
     border: 0 none;
     padding: 5px 15px;
     margin-bottom: 20px;
+}
+@media all and (max-width: 700px) { 
+    #game-container .input-login{
+        width: 40%;
+    }
+}
+@media all and (max-width: 400px) { 
+    #game-container .input-login{
+        width: 37%;
+    }
 }
 #game-container #main-menu{
     color: #fff;
