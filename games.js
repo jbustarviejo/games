@@ -40,15 +40,11 @@ var games = {
         $("#game-container").css("height", Math.round(size * 0.5) + "px");
     },
     /**
-     * Función games.shuffle: Barajar de forma aleatoria un array recibido de hasta 5 posiciones
-     * @param {array} array_to_order | El array a barajar 
+     * Función games.shuffle: Barajar de forma aleatoria un array recibido
+     * @param {array} array | El array a barajar 
      * @returns {array} | Devuelve el array ya barajado
      **/
-    shuffle: function (array_to_order) {
-        games.debug && console.log("Ordenar: ", array_to_order);
-        //Crear un array de 1 a 5 elementos, del tamaño del array a ordenar
-        var array=[0, 1, 2, 3, 4].slice(0,array_to_order.length);
-
+    shuffle: function (array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
         //Seguir barajando mientras hayan elementos pendientes de reordenar
         while (0 !== currentIndex) {
@@ -60,14 +56,7 @@ var games = {
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
         }
-        //Array a devolver
-        var return_array=[];
-        //Una vez elegido el orden, reordenamos
-        for (var i = 0; i < array_to_order.length; i++) {
-            return_array.push(array_to_order[array[i]]);
-        };
-         games.debug && console.log("Ordenado: ", return_array);
-        return return_array;
+        return array;
     },
     /**
      * Función games.readCookie: Leer una cookie del navegador
@@ -534,17 +523,14 @@ games.cardsGame = {
         this.cardsClicks = "";
 
         //Array de cartas del juego mínimo y los offsets de sus representaciones
-        var cardsArray = [];
-        cardsArray[0]=["red-card", "black-card"];
-        cardsArray[1]=["black-card", "black-card"];
-        cardsArray[2]=["red-card", "red-card"];
+        var cardsArray = [["red-card", "black-card"], ["black-card", "black-card"], ["red-card", "red-card"]];
         var offsetLeft = 20;
         if (cardsNumber === 4) { //Añadir una carta más si son 4
-            cardsArray[3] = ["black-card", "red-card"];
+            cardsArray[cardsArray.length] = ["black-card", "red-card"];
             offsetLeft = 10;
         } else if (cardsNumber === 5) { //Añadir dos cartas más si son 5
-            cardsArray[3] = ["black-card", "red-card"];
-            cardsArray[4] = ["red-card", "black-card"];
+            cardsArray[cardsArray.length] = ["black-card", "red-card"];
+            cardsArray[cardsArray.length] = ["red-card", "black-card"];
             offsetLeft = 0.5;
         }
 
@@ -557,7 +543,6 @@ games.cardsGame = {
         var container = $('#main-screen-cards-container');
         var offsetIncrement = 20;
         for (var i = 0; i < cardsNumber; i++) {
-            games.debug && console.log("Se va a poner...", this.cardsArray[i][0], this.cardsArray[i][1]);
             container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" id="card-' + (i + 1) + '" onclick="games.cardsGame.cardClick(' + (i + 1) + ')"><div class="front ' + this.cardsArray[i][0] + '"></div><div class="back ' + this.cardsArray[i][1] + '"></div></div></div>'));
             //Las cartas tienen un offset para no colisionar en el mismo espacio. 
             offsetLeft += offsetIncrement;

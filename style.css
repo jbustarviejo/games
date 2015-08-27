@@ -402,10 +402,6 @@ header, footer{
     width: 18%;
     height: 45%;
     position: absolute;
-    -webkit-perspective: 800px;
-    -moz-perspective: 800px;
-    -o-perspective: 800px;
-    perspective: 800px;
     float: left;
     cursor: pointer;
     top: 28%;
@@ -419,11 +415,9 @@ header, footer{
     -moz-transition: -moz-transform 0.6s;
     -o-transition: -o-transform 0.6s;
     transition: transform 0.6s;
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    -o-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-transform-origin: 50% 50%;
+}
+#game-container #final-card-front, #game-container #final-card-back{
+    cursor: default;
 }
 #game-container .card div {
     display: block;
@@ -435,64 +429,58 @@ header, footer{
     font-weight: bold;
     font-size: 140px;
     position: absolute;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    transform-style: preserve-3d;
     -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
-    backface-visibility: hidden;
+    backface-visibility: hidden; 
+    -webkit-transition: -webkit-transform 0.6s;
+    -moz-transition: -moz-transform 0.6s;
+    -o-transition: -o-transform 0.6s;
+    transition: transform 0.6s;
 }
-#game-container .card .back {
+#game-container .card .front{
+    z-index: 1; 
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+#game-container .card .back{
+    z-index: 0; 
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
     -o-transform: rotateY(180deg);
     transform: rotateY(180deg);
 }
-
+#game-container .card.flipped .front{
+    z-index: 0;
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+#game-container .card.flipped .back{
+    z-index: 1;
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
 #game-container .card:hover {
     -webkit-transform: rotateY(30deg);
     -moz-transform: rotateY(30deg);
     -o-transform: rotateY(30deg);
     transform: rotateY(30deg);
 }
-#game-container #final-card-front, #game-container #final-card-back{
-    cursor: default;
-}
-#game-container .smaller .card:hover {
-    -webkit-transform: rotateY(0deg);
-    -moz-transform: rotateY(0deg);
-    -o-transform: rotateY(0deg);
-    transform: rotateY(0deg);
-}
-#game-container .smaller .card.flipped:hover {
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    -o-transform: rotateY(180deg);
-    transform: rotateY(180deg);
-}
-#game-container .flipped{
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    -o-transform: rotateY(180deg);
-    transform: rotateY(180deg);
-}
-#game-container .flipped:hover {
-    -webkit-transform: rotateY(150deg);
-    -moz-transform: rotateY(150deg);
-    -o-transform: rotateY(150deg);
-    transform: rotateY(150deg);
-}
-
 
 #cards-game #cards-hat {
     left: 36.5%;
-    /*margin-top: 6%;*/
     top: 100%;
     position: absolute;
     width: 25%;
     z-index: 3;
-    /*-webkit-transition: 2.5s;
-    -moz-transition: 2.5s;
-    -o-transition: 2.5s;
-    transition: 2.5s;*/
 }
 
 #cards-game #cards-hat.fast-transition {
