@@ -7,11 +7,75 @@ Author     : jbustarviejo
 
 #body{
     width:100%; height: 100%; margin:0;
-    background: #fff url("/images/movistar/movistar-background-fake.png") repeat-x scroll left top;
+    background: #fff url("/images/movistar/movistar-background-fake3.jpg") repeat-x scroll left top;
 }
 header, footer{
     text-align: center;
 }
+header .logo {
+    padding-right: 30px;
+    position: absolute;
+    right: 0;
+    top: 18px;
+}
+header #user-pannel{
+    background-color: #005c83;
+    border-radius: 0 0 5px 5px;
+    color: #00bbca;
+    float: right;
+    font-family: Movistar;
+    padding: 6px 19px;
+    position: absolute;
+    right: 12%;
+    top: 0;
+}
+header #user-pannel span{
+    margin-right: 5px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+header #user-pannel img{
+    height: 20px;
+    vertical-align: middle;
+}
+header .menu {
+    background-color: #005c83;
+    border-radius: 15px;
+    height: 75px;
+    margin: 55px auto 25px;
+    max-width: 980px;
+    position: relative;
+}
+header .bot_home {
+    background: rgba(0, 0, 0, 0) url("/images/movistar/home.jpg") repeat scroll 0 0;
+    display: block;
+    float: left;
+    height: 26px;
+    width: 31px;
+    margin-left: 30px;
+    margin-top: 25px;
+}
+header .bot_desc {
+    display: block;
+    float: left;
+    font-size: 26px;
+    margin-left: 20px;
+    padding-top: 23px;
+}
+header a {
+    color: #259dcd;
+    outline: medium none;
+    text-decoration: none;
+    font-family: Movistar;
+}
+header a:hover {
+    color: rgb(175,222,240);
+}
+@font-face {
+    font-family: Movistar;
+    src: url(fonts/Movistar.otf);
+}
+
 .movistar-image-fake{
     width: 100%;
     max-width: 980px;
@@ -23,14 +87,88 @@ header, footer{
     position: relative;
     width: 100%;
     padding-top: 1px;
+    border-radius: 10px;
 }
 .fake-title {
-    color: rgb(0, 50, 69);
-    margin-left: 20px;
+    font-family: Movistar;
+    display: inline-block;
+    margin-bottom: 0;
+    margin-left: 42px;
+    margin-top: 12px;
 }
 
 #game-container #straws-instructions-screen > div,#game-container #cards-instructions-screen > div,#game-container #boxes-instructions-screen > div{
     color: #fff; margin-top: 19%;
+}
+
+#fake-container .user-points{
+    display: inline;
+    float: right;
+    font-family: Movistar;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 40px;
+    margin-top: 23px;
+}
+
+#fake-container .user-points.hidden{
+    display: none;
+}
+
+footer #pie {
+    background: #00517a none repeat scroll 0 0;
+    clear: both;
+    color: #fff;
+    font-family: Arial;
+    font-size: 0.9em;
+    margin: 30px auto 15px;
+    max-width: 980px;
+}
+
+footer #copy {
+    padding: 1% 3% 2%;
+}
+
+footer #pie ul {
+    float: left;
+    list-style-type: none;
+    margin: 7px 0 0;
+    padding: 0;
+}
+
+footer .logo-telef {
+    float: right;
+    margin: 2px 0 0;
+}
+footer #pie ul li.sinborde {
+    border: medium none;
+}
+footer #pie ul li:first-child {
+    margin: 0;
+    padding: 0;
+}
+footer #pie ul li {
+    border-left: 1px solid #00c1d5;
+    display: block;
+    float: left;
+    line-height: 0.9em;
+    margin: 0 0 0 4px;
+    padding: 0 0 1px 5px;
+}
+footer li {
+    list-style: outside none none;
+}
+footer #pie ul li {
+    border-left: 1px solid #00c1d5;
+    display: block;
+    float: left;
+    line-height: 0.9em;
+    margin: 0 0 0 4px;
+    padding: 0 0 1px 5px;
+}
+footer #pie a {
+    color: #00c1d5;
+    text-decoration: none;
 }
 
 /*Contenedor y estilos del menú principal de login*/
@@ -88,24 +226,24 @@ header, footer{
     width: 36%;
 }
 @-webkit-keyframes fa-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
 @keyframes fa-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
 #login-menu .login-button{
     border: 3px solid #666;
@@ -147,7 +285,7 @@ header, footer{
 }
 #game-container #main-menu{
     color: #fff;
-    background-image: url("/images/general/grass.jpg");
+    background-image: url("/images/general/clouds.jpg");
     background-size: 100% auto;
 }
 #main-menu  .choose-game-title{
@@ -683,4 +821,43 @@ header, footer{
     top: 2%;
     width: 50%;
     left: 20%;
+}
+
+/*Mis puntos*/
+
+#index-container, #points-container{
+    border-radius: 8px;
+    height: 90%;
+    margin: 15px auto 20px;
+    overflow: hidden;
+    padding-bottom: 30px;
+    position: relative;
+    width: 90%;
+    font-family: Movistar;
+}
+
+#points-container > p{
+    margin: 0 0 15px;
+}
+
+#points-container table{
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #BBE8EE;
+    border-collapse: collapse;
+}
+
+#points-container table td {
+    border: 1px solid #666;
+    text-align: center;
+    color: #1d7a8b;
+}
+
+#points-container thead{
+    background-color: #62BFD0;
+}
+
+#points-container thead td{
+    color: #1d7a8b;
 }

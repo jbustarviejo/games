@@ -206,6 +206,48 @@ var games = {
                 $("#error-screen").show();
             }
         });
+    },
+    /**
+     * Función games.updatePoints: Actualizar el marcador de puntos
+     * @returns {undefined} | No devuelve ningún valor
+     */
+    updatePoints: function () {
+        $(".user-points").show().text("Tienes " + games.userPoints + " puntos");
+    },
+    /**
+    * Función games.showSurvey: Mostrar respuesta en la encuesta
+    * @returns {undefined} | No devuelve ningún valor
+    */
+    showSurvey: function(checked){
+        games.debug && console.log("Stored survey answer", checked);
+        //Mostrar la encuesta
+        $("#games-survey").show(200);
+        //Mostrar la última respuesta insertada si la hubo
+        if(checked){
+            $("#games-survey [type=radio][value='"+checked+"']").prop('checked', 'checked');
+        }else{
+            $("#games-survey [type=radio]").first().prop('checked', 'checked');
+        }
+
+        //En caso de elegir una nueva respuesta, registrarla
+        $("#games-survey [type=radio]").click(function(){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/store-data/survey-answer",
+                data: {
+                    userId: games.userId,
+                    answer: $("#games-survey [type=radio]:checked").val()
+                },
+                success: function (data) {
+                    //No hacer nada...
+                },
+                //En caso de error alertar
+                error: function (data) {
+                    //No hacer nada...
+                }
+            });
+        });
     }
 };
 /**
@@ -223,9 +265,31 @@ games.login = {
         $(".input-login").removeAttr("disabled");
         $(".login-button:first").css("opacity", "1");
         if (read) {
-            //Si se encontró, guardar su id y mostrar pantalla principal
-            games.userId = read;
-            games.displayMainMenu("login-menu");
+            $.ajax({
+                type: "POST",
+                url: "/store-data/check-cookie",
+                data: {
+                    userId: read
+                },
+                dataType: "json",
+                //En caso de éxito imprimirlo por pantalla
+                success: function (data) {
+                    console.log(data);
+                    if (!data.ok) {
+                        //Si ha habiado algún fallo, volver
+                        return;
+                    }
+                    //Si se encontró y es correcta, guardar su id, los puntos y mostrar pantalla principal y los puntos
+                    games.userId = read;
+                    games.userPoints = parseInt(data.points);
+                    games.updatePoints();
+                    games.displayMainMenu("login-menu");
+                    games.showSurvey(data.survey);
+                },
+                //En caso de error no hacer nada, no interpretar la cookie
+                error: function (data) {
+                }
+            });
         }
     },
     /**
@@ -233,7 +297,7 @@ games.login = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     start: function () {
-        $(".input-login").attr("disabled","disabled");
+        $(".input-login").attr("disabled", "disabled");
         $(".login-button:first").css("opacity", "0.5");
         username = $('#login-username').val();
         if (username === "") {
@@ -281,6 +345,7 @@ games.login = {
     sendDataToServer: function (username, password) {
         $.ajax({
             type: "POST",
+            dataType: "json",
             url: "/store-data/login",
             data: {
                 username: username,
@@ -288,14 +353,20 @@ games.login = {
             },
             //En caso de éxito, guardar una cookie con el usuario
             success: function (data) {
-                if (data == "ok") {
+                if (data.ok === true) {
                     //Mostrar el menu
                     games.displayMainMenu("login-menu");
                     games.userId = username;
+                    //Actualizar puntos
+                    $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span><span class="user-points"></span> <img src="images/movistar/user-icon.png"></a>');
+                    games.userPoints = parseInt(data.points);
+                    games.updatePoints();
                     //Almacenar la cookie
                     expiry = new Date();
                     expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
                     document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
+                    //Mostrar encuesta
+                    games.showSurvey(data.survey);
                 } else {
                     $(".input-login").removeAttr("disabled");
                     $(".login-button:first").css("opacity", "1");
@@ -437,6 +508,8 @@ games.strawsGame = {
             $("#straws-lose-screen").show();
             $("#lose-sound")[0].play();
         }
+        //Actualizar puntos
+        games.updatePoints();
     },
     /**
      * Función games.strawsGame.sendDataToServer: Enviar datos al servidor del juego de las cañas
@@ -451,6 +524,7 @@ games.strawsGame = {
         $.ajax({
             type: "POST",
             url: "/store-data/straws-game",
+            dataType: "json",
             data: {
                 userId: games.userId,
                 time: time,
@@ -461,6 +535,10 @@ games.strawsGame = {
             //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
+                if (data.points) {
+                    //Actualizar puntos
+                    games.userPoints += parseInt(data.points);
+                }
             },
             //En caso de error imprimirlo por pantalla
             error: function (data) {
@@ -511,7 +589,7 @@ games.cardsGame = {
         //Restablecer título
         $("#cards-title").attr("src", "/images/cards/title1.png").show();
         //Restablecer botón
-        $("#cards-play-button").attr("src","/images/cards/do-click.jpg").removeClass("ready-btn").removeAttr("onclick");
+        $("#cards-play-button").attr("src", "/images/cards/do-click.jpg").removeClass("ready-btn").removeAttr("onclick");
         //Borrar posibles cartas antiguas
         $(".card-container").remove();
         //Borrar estilo del sombrero
@@ -558,7 +636,7 @@ games.cardsGame = {
         //Se reproduce el sonido de voltearla
         $('#flipCardAudio' + cardNumber)[0].play();
         //Se habilita el botón de jugar
-        $("#cards-play-button").attr("src","/images/cards/done.jpg").addClass("ready-btn").attr("onclick", "games.cardsGame.animateCardsToHat();");
+        $("#cards-play-button").attr("src", "/images/cards/done.jpg").addClass("ready-btn").attr("onclick", "games.cardsGame.animateCardsToHat();");
         //Registrar un nuevo click
         this.cardsClicks += cardNumber + ",";
     },
@@ -726,6 +804,8 @@ games.cardsGame = {
                 $("#cards-lose-screen").show();
             }
             $("#theme-audio2")[0].pause();
+            //Actualizar puntos
+            games.updatePoints();
         }, 1500);
     },
     /**
@@ -745,6 +825,7 @@ games.cardsGame = {
         $.ajax({
             type: "POST",
             url: "/store-data/cards-game",
+            dataType: "json",
             data: {
                 userId: games.userId,
                 time_memory: time_memory,
@@ -759,6 +840,10 @@ games.cardsGame = {
             //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
+                if (data.points) {
+                    //Actualizar puntos
+                    games.userPoints += parseInt(data.points);
+                }
             },
             //En caso de error imprimirlo por pantalla
             error: function (data) {
@@ -994,11 +1079,11 @@ games.boxesGame = {
         //Si la elegida es la ganadora
         if (this.winner_box == choosen) {
             //Mostrar imagen de caja ganadora y reproducir sonido de victoria
-            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win"+choosen+".png");
+            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win" + choosen + ".png");
             $('#winner-sound')[0].play();
         } else {
             //Mostrar imagen de caja no ganadora y reproducir sonido de derroa
-            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box"+choosen+".png");
+            $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box" + choosen + ".png");
             $("#lose-sound")[0].play();
         }
 
@@ -1011,6 +1096,9 @@ games.boxesGame = {
                 //Pantalla de has perdido
                 $('#boxes-lose-screen').show();
             }
+            //Actualizar puntos
+            games.updatePoints();
+
             games.debug && console.log("NumBoxes: " + games.boxesGame.boxesNumber, "Winner: " + games.boxesGame.winner_box, "First choose: " + games.boxesGame.first_choose, "Available to change: " + games.boxesGame.box_available_to_change, "final_choose: " + choosen, "time_to_first_choose" + games.boxesGame.ellapsed_time_decission, "time_to_change" + games.boxesGame.ellapsed_time_decission_change);
         }, 1000);
     },
@@ -1042,10 +1130,12 @@ games.boxesGame = {
         $.ajax({
             type: "POST",
             url: "/store-data/boxes-game",
+            dataType: "json",
             data: {
                 id_user: games.userId,
                 boxes_number: boxes_number,
                 winner_box: winner_box,
+                last_box_selected: choosen_boxes[choosen_boxes.length - 1],
                 first_box_choose: choosen_boxes[0],
                 first_available_boxes_to_change: boxes_available[0],
                 first_time_choosing: times[0],
@@ -1062,6 +1152,10 @@ games.boxesGame = {
             //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
+                if (data.points) {
+                    //Actualizar puntos
+                    games.userPoints += parseInt(data.points);
+                }
             },
             //En caso de error imprimirlo por pantalla
             error: function (data) {

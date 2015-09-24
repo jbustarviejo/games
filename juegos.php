@@ -1,6 +1,6 @@
 <?php
 
-$content = file_get_contents("pages/index.php");
+$content = file_get_contents("pages/games.php");
 $title = "Juegos - Movistar";
 
 if($_COOKIE["games-username"]){

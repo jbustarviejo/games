@@ -1,10 +1,10 @@
 <?php
 
-$content = file_get_contents("pages/index.php");
-$title = "Juegos - Movistar";
+$content = file_get_contents("pages/shop.php");
+$title = "Tienda de puntos - Movistar";
 
 if($_COOKIE["games-username"]){
-
+	
 	include("store-data/db_connection.php");
 
 	$conn = mysqli_connect($host_name, $user_name, $password, $database);
