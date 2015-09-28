@@ -1,9 +1,10 @@
 <?php
-
+//Título de página
 $title = "Mis puntos - Movistar";
 
+//Si el usuario está logado 
 if($_COOKIE["games-username"]){
-
+	//Conectar a BBDD
 	include("store-data/db_connection.php");
 
 	$conn = mysqli_connect($host_name, $user_name, $password, $database);
@@ -18,6 +19,7 @@ if($_COOKIE["games-username"]){
 	if ($result->num_rows > 0) {
 	    //Datos encontrados
 	    while($row = $result->fetch_assoc()) {
+	    	//Si el usuario es correcto, coger sus puntos
 	    	if($_COOKIE["games-username"]===$row["id_user"]){
 	    		$conn->close();
 	    		$points="Tienes ".$row["points"]." puntos";
@@ -30,20 +32,22 @@ if($_COOKIE["games-username"]){
 		$conn->close();
 	    $points="";
 	}
-
+	//Barra de usuario logado
 	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$_COOKIE["games-username"].'. </span><span class="user-points">'.$points.'</span> <img src="images/movistar/user-icon.png"/></a>';
 }else{
+	//Si no está logado, volver a raíz
 	header("Location: /");
 	die();
 }
 
-/*Content*/
+//Creación del contenido de página
 
 $conn = mysqli_connect($host_name, $user_name, $password, $database);
 if (mysqli_connect_errno()) {
     echo "Error al conectar con servidor MySQL: " . mysqli_connect_error();
 }
 
+//Coger historial de usuario
 $sql="(SELECT u.id_user as id_user, 'Juego de las cañas' as game, s.date as 'date', (s.selected=s.winner) as won FROM users u LEFT JOIN `strawsGameRecords` s ON u.id_user = s.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') UNION (SELECT u.id_user as id_user, 'Juego de las cartas' as game, c.date as 'date', (c.winner_side = c.displayed_side) as won FROM users u LEFT JOIN `cardsGameRecords` c ON u.id_user = c.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') UNION (SELECT u.id_user as id_user, 'Juego de las cajas' as game, b.date as 'date', (b.winner_box = b.last_box_selected) as won FROM users u LEFT JOIN `boxesGameRecords` b ON u.id_user = b.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') ORDER BY date DESC";
 
 $result = $conn->query($sql);
@@ -53,6 +57,7 @@ $table="";
 if ($result->num_rows > 0) {
     //Datos encontrados
     while($row = $result->fetch_assoc()) {
+    	//Si el usuario es correcto, coger todos los datos e ir rellenándolos
     	if($_COOKIE["games-username"]===$row["id_user"]){
     		if($row["won"]==1){
     			$won_table="Ganaste";
@@ -69,6 +74,7 @@ if ($result->num_rows > 0) {
     $table="--";
 }
 
+//Contenido de página principal
 $content = <<<HTML
 	<h1 class="fake-title">Mis puntos</h1>
 
@@ -86,6 +92,5 @@ $content = <<<HTML
 	</div>
 HTML;
 
-/*Layout*/
-
+//Layout de página
 include("pages/layout.php");

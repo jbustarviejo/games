@@ -38,23 +38,25 @@
     <div id="main-menu" class="screen menu-screen">
         <div>
             <img src="/images/general/main-title.png" ondragstart="return false;" class="choose-game-title" alt="Elige un juego"/>
-            <img src="/images/general/first-button.jpg" ondragstart="return false;" class="play-button play-button-first" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(Math.floor(Math.random() * 3) + 3);" alt="La caña más larga"/>
-            <img src="/images/general/second-button.jpg" ondragstart="return false;" class="play-button play-button-second" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(Math.floor(Math.random() * 3) + 3);" alt="Adivina el color"/>
-            <img src="/images/general/third-button.jpg" ondragstart="return false;" class="play-button play-button-third" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.init(Math.floor(Math.random() * 3) + 3);" alt="Elige la caja"/>
+            <img src="/images/general/first-button.jpg" ondragstart="return false;" class="play-button play-button-first" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.showInstructions();" alt="La caña más larga"/>
+            <img src="/images/general/second-button.jpg" ondragstart="return false;" class="play-button play-button-second" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.showInstructions();" alt="Adivina el color"/>
+            <img src="/images/general/third-button.jpg" ondragstart="return false;" class="play-button play-button-third" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.showInstructions();" alt="Elige la caja"/>
         </div>
     </div>
 
     <!--Juego 1: La caña más larga-->
     <div id="straws-game" style="display:none">
         <!--Juego 1: Página de instrucciones-->
-        <div id="straws-instructions-screen" class="screen menu-screen">
+        <div id="straws-instructions-screen" class="screen menu-screen instructions-screen">
             <span class="close-button" onclick="games.displayMainMenu('straws-game');">X</span>
             <div>
                 <h2 class="h2-title">La caña más larga</h2>
                 <p class="screen-msg">Elige una de las cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
             </div>
-            <img src="/images/general/play.jpg" ondragstart="return false;" class="play-button-game" alt="Jugar" onclick="games.strawsGame.startstrawsGame();"/>
-        </div>
+            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(3);">3 cañas</button>
+            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.strawsGame.init(4);">4 cañas</button>
+            <button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.strawsGame.init(5);">5 cañas</button>
+        </div>         
         <!--Juego 1: Contenedor principal-->
         <div id="main-screen-game-straws" class="screen">
             <div id="main-screen-game-straws-container"></div>
@@ -82,13 +84,15 @@
     <!--Juego 2: Adivina el color de la carta-->
     <div id="cards-game" style="display:none;">
         <!--Juego 2: Página de instrucciones-->
-        <div id="cards-instructions-screen" class="screen menu-screen">
+        <div id="cards-instructions-screen" class="screen menu-screen instructions-screen">
             <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
             <div>
                 <h2 class="h2-title">Adivina el color</h2>
                 <p class="screen-msg">Estate atento a las cartas. Se mezclarán y se cogerá una al azar ¿podrás adivinar el color del reverso?</p>
             </div>
-            <img src="/images/general/play.jpg" ondragstart="return false;" class="play-button-game" alt="Jugar" onclick="games.cardsGame.startCardsGame();"/>
+            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.cardsGame.init(3);">3 cartas</button>
+            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(4);">4 cartas</button>
+            <button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.cardsGame.init(5);">5 cartas</button>
         </div>
         <!--Juego 2: Contenedor principal-->
         <div id="main-screen-cards-game" class="screen">
@@ -129,13 +133,15 @@
     <!--Juego 3: Elige la caja-->
     <div id="boxes-game" style="display:none;">
         <!--Juego 3: Página de instrucciones-->
-        <div id="boxes-instructions-screen" class="screen menu-screen">
+        <div id="boxes-instructions-screen" class="screen menu-screen instructions-screen">
             <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
             <div>
                 <h2 class="h2-title">Encuentra la caja con el premio</h2>
                 <p class="screen-msg">¿Eres capaz de encontrar la caja con el premio?</p>
             </div>
-            <img src="/images/general/play.jpg" ondragstart="return false;" class="play-button-game" alt="Jugar" onclick="games.boxesGame.startBoxesGame();"/>
+            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.boxesGame.init(3);">3 cajas</button>
+            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.boxesGame.init(4);">4 cajas</button>
+            <button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.init(5);">5 cajas</button>
         </div>
         <!--Juego 3: Contenedor principal-->
         <div id="main-screen-game-boxes" class="screen">
@@ -269,7 +275,7 @@
 </div>
 
 <div id="games-survey" style="display:none;">
-    <h2>¿Cómo sueles jugar a videojuegos?</h2>
+    <h2>Encuesta: ¿Cómo sueles jugar a videojuegos?</h2>
     <form>
         <input type="radio" name="survey" value="No juego habitualmente" />No juego habitualmente<br/>
         <input type="radio" name="survey" value="Juego a videojuegos de ordenador" />Juego a videojuegos de ordenador<br/>
@@ -279,22 +285,9 @@
 </div>
 
 <div>
-    <h2>Dudas</h2>
-    <ul>
-        <li>Sistema de puntos</li>
-        <li>Servidor?</li>
-        <li>¿Login?</li>
-        <li>Plazos</li>
-        <li>Tiempos de selección</li>
-        <li>Diferenes variaciones, ¿son correctas?</li>
-        <li>Unlog</li>
-        <li>¿Guardar datos intermedios?</li>
-        <li>Juego de las cartas, posibles colores</li>
-        <li>Cmabiar nombres a los juegos: '¿Quién se libra de pagar la cena?' (Motivo para jugar)</li>
-    </ul>
-
     <h2>Todo</h2>
     <ul>
+        <li>Unlog</li>
         <li>Aviso de compatibilidad, comprobar IE</li>
         <li>Minificar js y css</li>
     </ul>

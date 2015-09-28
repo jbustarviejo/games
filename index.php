@@ -1,10 +1,13 @@
 <?php
 
+//Coger Contenido
 $content = file_get_contents("pages/index.php");
+//Título
 $title = "Juegos - Movistar";
 
+//Si el usuario está logado 
 if($_COOKIE["games-username"]){
-
+	//Conectar a BBDD
 	include("store-data/db_connection.php");
 
 	$conn = mysqli_connect($host_name, $user_name, $password, $database);
@@ -19,6 +22,7 @@ if($_COOKIE["games-username"]){
 	if ($result->num_rows > 0) {
 	    //Datos encontrados
 	    while($row = $result->fetch_assoc()) {
+	    	//Si el usuario es correcto, coger sus puntos
 	    	if($_COOKIE["games-username"]===$row["id_user"]){
 	    		$conn->close();
 	    		$points="Tienes ".$row["points"]." puntos";
@@ -31,10 +35,12 @@ if($_COOKIE["games-username"]){
 		$conn->close();
 	    $points="";
 	}
-
-	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$_COOKIE["games-username"].'. </span><span class="user-points">'.$points.'</span> <img src="images/movistar/user-icon.png"/></a>';
+	//Barra de usuario logado
+	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$_COOKIE["games-username"].'. </span><span class="user-points">'.$points.'</span> <img src="images/movistar/user-icon.png"/></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>';
 }else{
+	//Barra de usuario no logado
 	$user_pannel = '<a href="/juegos"><span>Acceder</span> <img src="images/movistar/user-icon.png"/></a>';
 }
 
+//Layout de página
 include("pages/layout.php");

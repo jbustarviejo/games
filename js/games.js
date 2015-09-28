@@ -358,7 +358,7 @@ games.login = {
                     games.displayMainMenu("login-menu");
                     games.userId = username;
                     //Actualizar puntos
-                    $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span><span class="user-points"></span> <img src="images/movistar/user-icon.png"></a>');
+                    $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span> <span class="user-points"></span> <img src="images/movistar/user-icon.png"></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>');
                     games.userPoints = parseInt(data.points);
                     games.updatePoints();
                     //Almacenar la cookie
@@ -385,13 +385,10 @@ games.login = {
  **/
 games.strawsGame = {
     /**
-     * Función games.strawsGame.init: Inicializa el juego de la caña más larga
-     * @param {int} strawsNumber | Número de cañas a mostrar
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    init: function (strawsNumber) {
-        //Calcular tiempo hasta elegir juego
-        games.sendDataToServer("strawsGame");
+    * Función games.strawsGame.showInstructions: Muestra las instrucciones del juego de la caña más larga
+    * @returns {undefined} | No devuelve ningún valor
+    **/
+    showInstructions: function(){
         //Mostrar la pantalla de juego principal y la de instrucciones
         $("#straws-game").show();
         $("#straws-instructions-screen").show();
@@ -403,6 +400,15 @@ games.strawsGame = {
 
         //Poner la música y pausar la del menú principal
         games.playTheme(1);
+    },
+    /**
+     * Función games.strawsGame.init: Inicializa el juego de la caña más larga
+     * @param {int} strawsNumber | Número de cañas a mostrar
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    init: function (strawsNumber) {
+        //Calcular tiempo hasta elegir juego
+        games.sendDataToServer("strawsGame");
 
         //Obtener el contenedor principal, borrar su contenido
         var imagesContainer = $("#main-screen-game-straws-container");
@@ -443,12 +449,13 @@ games.strawsGame = {
             imagesContainer.append($('<img class="straw" onclick="games.strawsGame.chooseStraw(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-straw/straw' + (i + 1) + '.jpg" onmouseover="document.getElementById(\'strawAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
             leftOffset += leftInc;
         }
+        this.startStrawsGame();
     },
     /**
      * Función games.strawsGame.startstrawsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
      * @returns {undefined} | No devuelve ningún valor
      */
-    startstrawsGame: function () {
+    startStrawsGame: function () {
         this.start_decission = new Date().getTime();
         $("#straws-instructions-screen").hide();
         //Hace girar el texto de ayuda de forma aleatoria
@@ -552,13 +559,10 @@ games.strawsGame = {
  **/
 games.cardsGame = {
     /**
-     * Función games.cardsGame.init: Inicializa el juego de las cartas
-     * @param {int} cardsNumber | Número de cartas a mostrar
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    init: function (cardsNumber) {
-        //Calcular tiempo hasta elegir juego
-        games.sendDataToServer("cardsGame");
+    * Función games.cardsGame.showInstructions: Muestra las instrucciones del juego de la caña más larga
+    * @returns {undefined} | No devuelve ningún valor
+    **/
+    showInstructions: function(){
         //Mostrar las instrucciones escondiendo todo lo demás
         $("#cards-game").show();
         $("#main-menu").hide();
@@ -569,7 +573,15 @@ games.cardsGame = {
 
         //Poner la música y pausar la del menú principal
         games.playTheme(2);
-
+    },
+    /**
+     * Función games.cardsGame.init: Inicializa el juego de las cartas
+     * @param {int} cardsNumber | Número de cartas a mostrar
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    init: function (cardsNumber) {
+        //Calcular tiempo hasta elegir juego
+        games.sendDataToServer("cardsGame");
         //Devolver la carta final mostrada a su estado original
         var final_card = $("#final-card")
                 .removeAttr("style")
@@ -625,6 +637,7 @@ games.cardsGame = {
             //Las cartas tienen un offset para no colisionar en el mismo espacio. 
             offsetLeft += offsetIncrement;
         }
+        this.startCardsGame();
     },
     /**
      * Función games.cardsGame.cardClick: Se ha hecho click en una carta
@@ -857,13 +870,10 @@ games.cardsGame = {
  **/
 games.boxesGame = {
     /**
-     * Función games.boxesGame.init: Inicializa el juego de las cartas
-     * @param {int} boxesNumber | Número de cajas a mostrar
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    init: function (boxesNumber) {
-        //Calcular tiempo hasta elegir juego
-        games.sendDataToServer("boxesGame");
+    * Función games.boxesGame.showInstructions: Muestra las instrucciones del juego de la caña más larga
+    * @returns {undefined} | No devuelve ningún valor
+    **/
+    showInstructions: function(){
         //Mostrar las instrucciones escondiendo todo lo demás
         $('#boxes-game').show();
         $('#main-menu').hide();
@@ -871,11 +881,20 @@ games.boxesGame = {
         $("#boxes-win-screen").hide();
         $("#boxes-instructions-screen").show();
 
-        //Eliminar cajas antiguas
-        $("#main-screen-boxes-container").html("");
-
         //Poner la música y pausar la del menú principal
         games.playTheme(3);
+    },
+    /**
+     * Función games.boxesGame.init: Inicializa el juego de las cartas
+     * @param {int} boxesNumber | Número de cajas a mostrar
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    init: function (boxesNumber) {
+        //Calcular tiempo hasta elegir juego
+        games.sendDataToServer("boxesGame");
+
+        //Eliminar cajas antiguas
+        $("#main-screen-boxes-container").html("");
 
         //Restablecer el contenedor de caja
         $("#your-box-container").hide();
@@ -900,6 +919,7 @@ games.boxesGame = {
 
         games.debug && console.log("Winner:" + this.winner_box);
         games.debug && console.log("Boxes Number: " + boxesNumber);
+        this.startBoxesGame();
     },
     /**
      * Función games.boxesGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
