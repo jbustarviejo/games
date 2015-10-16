@@ -12,7 +12,7 @@ if($_COOKIE["games-username"]){
 
 	$conn = mysqli_connect($host_name, $user_name, $password, $database);
 	if (mysqli_connect_errno()) {
-	    echo "Error al conectar con servidor MySQL: " . mysqli_connect_error();
+	    echo "Error al conectar con servidor MySQL: " . mysqli_connect_error().$host_name. $user_name. $password. $database;
 	}
 
 	$sql="SELECT * FROM users WHERE id_user='".$_COOKIE["games-username"]."' LIMIT 1";

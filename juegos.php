@@ -24,7 +24,7 @@ if($_COOKIE["games-username"]){
 	    	//Si el usuario es correcto, coger sus puntos
 	    	if($_COOKIE["games-username"]===$row["id_user"]){
 	    		$conn->close();
-	    		$points="Tienes ".$row["points"]." puntos";
+	    		$points="Tienes ".$row["points"]." Movipuntos";
 	    	}else{
 	            $conn->close();
 	            $points="";

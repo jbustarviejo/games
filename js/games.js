@@ -212,7 +212,7 @@ var games = {
      * @returns {undefined} | No devuelve ningún valor
      */
     updatePoints: function () {
-        $(".user-points").show().text("Tienes " + games.userPoints + " puntos");
+        $(".user-points").show().text("Tienes " + games.userPoints + " Movipuntos");
     },
     /**
     * Función games.showSurvey: Mostrar respuesta en la encuesta
@@ -1064,6 +1064,12 @@ games.boxesGame = {
             if (now_boxes.length == 2) {
                 $(now_boxes[0]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[0]).attr("box-number") + ')');
                 $(now_boxes[1]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[1]).attr("box-number") + ')');
+            }
+            //Si quedan 3, pero empezaron 4, llevar a games.boxesGame.finalChoose al seleccionar
+            else if (now_boxes.length == 3 && games.boxesGame.boxesNumber == 4) {
+                $(now_boxes[0]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[0]).attr("box-number") + ')');
+                $(now_boxes[1]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[1]).attr("box-number") + ')');
+                $(now_boxes[2]).attr("onclick", 'games.boxesGame.finalChoose(' + $(now_boxes[2]).attr("box-number") + ')');
             }
             //Ya puede volver a seleccionarse caja
             games.boxesGame.animatingBoxes = false;

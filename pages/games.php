@@ -55,7 +55,7 @@
             </div>
             <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(3);">3 cañas</button>
             <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.strawsGame.init(4);">4 cañas</button>
-            <button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.strawsGame.init(5);">5 cañas</button>
+            <!--button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.strawsGame.init(5);">5 cañas</button-->
         </div>         
         <!--Juego 1: Contenedor principal-->
         <div id="main-screen-game-straws" class="screen">
@@ -66,7 +66,7 @@
             <span class="close-button" onclick="games.displayMainMenu('straws-game');">X</span>
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
-                <p class="screen-msg">Has conseguido 10 puntos</p>
+                <p class="screen-msg">Has conseguido 10 Movipuntos</p>
                 <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('straws-game');"/>
             </div>
         </div>
@@ -75,7 +75,7 @@
             <span class="close-button" onclick="games.displayMainMenu('straws-game');">X</span>
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
-                <p class="screen-msg">Has perdido 5 puntos</p>
+                <p class="screen-msg">Has perdido 5 Movipuntos</p>
                 <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('straws-game');"/>
             </div>
         </div>
@@ -92,7 +92,7 @@
             </div>
             <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.cardsGame.init(3);">3 cartas</button>
             <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(4);">4 cartas</button>
-            <button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.cardsGame.init(5);">5 cartas</button>
+            <!--button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.cardsGame.init(5);">5 cartas</button-->
         </div>
         <!--Juego 2: Contenedor principal-->
         <div id="main-screen-cards-game" class="screen">
@@ -115,7 +115,7 @@
             <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
-                <p class="screen-msg">Has conseguido 10 puntos</p>
+                <p class="screen-msg">Has conseguido 10 Movipuntos</p>
                 <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('cards-game');"/>
             </div>
         </div>
@@ -124,7 +124,7 @@
             <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
-                <p class="screen-msg">Has perdido 5 puntos</p>
+                <p class="screen-msg">Has perdido 5 Movipuntos</p>
                 <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('cards-game');"/>
             </div>
         </div>
@@ -141,7 +141,7 @@
             </div>
             <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.boxesGame.init(3);">3 cajas</button>
             <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.boxesGame.init(4);">4 cajas</button>
-            <button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.init(5);">5 cajas</button>
+            <!--button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.init(5);">5 cajas</button-->
         </div>
         <!--Juego 3: Contenedor principal-->
         <div id="main-screen-game-boxes" class="screen">
@@ -155,7 +155,7 @@
             <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
-                <p class="screen-msg">Has conseguido 10 puntos</p>
+                <p class="screen-msg">Has conseguido 10 Movipuntos</p>
                 <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('boxes-game');"/>
             </div>
         </div>
@@ -164,7 +164,7 @@
             <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
-                <p class="screen-msg">Has perdido 5 puntos</p>
+                <p class="screen-msg">Has perdido 5 Movipuntos</p>
                 <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('boxes-game');"/>
             </div>
         </div>
@@ -284,11 +284,11 @@
     </form>
 </div>
 
-<div>
+<!--div>
     <h2>Todo</h2>
     <ul>
         <li>Unlog</li>
         <li>Aviso de compatibilidad, comprobar IE</li>
         <li>Minificar js y css</li>
     </ul>
-</div>
+</div-->

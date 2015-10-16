@@ -8,6 +8,7 @@
         <title><?php echo $title; ?></title>
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
         <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+        <?php echo $includes; ?>
     </head>
 
     <body id="body"> 
@@ -20,7 +21,7 @@
                 <div class="cont-menu">
                     <a href="/" class="bot_home" ondragstart="return false;"></a>
                     <a href="/juegos" class="bot_desc" ondragstart="return false;">Juegos</a>
-                    <a href="/tienda" class="bot_desc" ondragstart="return false;">Tienda de puntos</a>
+                    <a href="/tienda" class="bot_desc" ondragstart="return false;">Tienda de Movipuntos</a>
                 </div>
                 <div class="logo">
                     <img alt="movistar" src="/images/movistar/movistar-logo.png" ondragstart="return false;">

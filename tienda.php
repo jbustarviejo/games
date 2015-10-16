@@ -24,7 +24,7 @@ if($_COOKIE["games-username"]){
 	    	//Si el usuario es correcto, coger sus puntos
 	    	if($_COOKIE["games-username"]===$row["id_user"]){
 	    		$conn->close();
-	    		$points="Tienes ".$row["points"]." puntos";
+	    		$points="Tienes ".$row["points"]." Movipuntos";
 	    	}else{
 	            $conn->close();
 	            $points="";
@@ -41,5 +41,6 @@ if($_COOKIE["games-username"]){
 	$user_pannel = '<a href="/juegos"><span>Acceder</span> <img src="images/movistar/user-icon.png"/></a>';
 }
 
+$includes='<script type="text/javascript" src="/js/shop.js"></script>';
 //Layout de página
 include("pages/layout.php");
