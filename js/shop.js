@@ -1,7 +1,7 @@
 //Una vez se haya cargado la página, inicar la tienda
-window.onload = function () {
+$(document).ready(function () {
     shop.initShop();
-};
+});
 /**
  * @Variable shop: Contenedor de todas las funciones necesarias para la tienda
  **/

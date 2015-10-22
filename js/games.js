@@ -1,8 +1,4 @@
-//Una vez se haya cargado la página, inicar los juegos
-window.onload = function () {
-    games.initGames();
-};
-//Estar atento a los cambios de tamaño de la pantalla
+//Escuchar a los cambios de tamaño de la pantalla
 window.onresize = function () {
     games.resized();
 };
@@ -15,95 +11,37 @@ var games = {
     //Sound. true para que se oiga la música y los efectos
     sound: true,
     /**
-     * Función games.displayMainMenu: Muestra el menú principal, escondiendo la pantalla del juego previo 
-     * @param {string} hide | Id de la pantalla a esconder
+     * Función games.initGames: Iniciar el contenedor de los juegos
      * @returns {undefined} | No devuelve ningún valor
      **/
-    displayMainMenu: function (hide) {
-        $("#" + hide).hide();
-        $('#main-menu').show();
-        $("#theme-audio1")[0].pause();
-        $("#theme-audio2")[0].pause();
-        $("#theme-audio3")[0].pause();
-        var theme = $("#main-theme")[0];
-        theme.currentTime = 0;
-        theme.play();
-        this.start_decission = new Date().getTime();
-    },
-    /**
-     * Función games.resized: En caso de que el browser cambie de tamaño, se cambia el canvas de los juegos
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    resized: function () {
-        var size = Math.round($("#fake-container").width() * 0.92);
-        $("#game-container").css("width", size + "px");
-        $("#game-container").css("height", Math.round(size * 0.5) + "px");
-    },
-    /**
-     * Función games.shuffle: Barajar de forma aleatoria un array recibido
-     * @param {array} array | El array a barajar 
-     * @returns {array} | Devuelve el array ya barajado
-     **/
-    shuffle: function (array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-        //Seguir barajando mientras hayan elementos pendientes de reordenar
-        while (0 !== currentIndex) {
-            //Coger un elemento de los restantes
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            //Intercambiarlo por el actual
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-        return array;
-    },
-    /**
-     * Función games.readCookie: Leer una cookie del navegador
-     * @param {string} name | El nombre de la cookie
-     * @returns {string} | Devuelve el contenido de la cookie o null si no se encuentra
-     **/
-    readCookie: function (name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        //Obtener todas las cookies y buscar en ellas la nuestra
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ')
-                c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0)
-                return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    },
-    /**
-     * Función games.rotateRandom: Dar una inclinación aleatoria a la imagen recibida cada cierto periodo de tiempo
-     * @param {jQuery Object} $img | La imagen a inclinar
-     * @returns {int} | Devuelve la id del intervalo de tiempo para más tarde, eliminarlo
-     **/
-    rotateRandom: function ($img, deg1, deg2) {
-        //Repetir cada cierto periodo de tiempo
-        return setInterval(function () {
-            //Inclinación aleatoria
-            var degrees = Math.round(Math.random() * deg1) - deg2;
-            $img.css("-ms-transform", "rotate(" + degrees + "deg)")
-                    .css("-webkit-transform", "rotate(" + degrees + "deg)")
-                    .css("transform", "rotate(" + degrees + "deg)");
-        }, 250);
-    },
-    /**
-     * Función games.toggleSound: Apagar/encender el sonido
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    toogleSound: function () {
-        if (this.sound) {
-            $("#toggle-sound").attr("src", "/images/general/mute.png");
-            $("audio").prop("volume", 0);
-        } else {
-            $("#toggle-sound").attr("src", "/images/general/sound.png");
-            $("audio").prop("volume", 1);
-        }
-        this.sound = !this.sound;
+    initGames: function (userName, userPoints) {
+        //Almacenar datos de usuario
+        games.userId = userName; 
+        games.userPoints = parseInt(userPoints);
+        games.updatePoints();
+        //Ajustar a tamaño de pantalla
+        games.resized();
+        //Comprobar conexión con el servidor
+        $.ajax({
+            type: "POST",
+            url: "/store-data/check-internet",
+            cache: false,
+            dataType: "json",
+            //En caso de éxito imprimirlo por pantalla
+            success: function (data) {
+                if (data.ok) {
+                    //Comprobar que todos los recursos hayan cargado
+                    games.initLoadResources();
+                } else {
+                    //En caso de error imprimirlo por pantalla
+                    $("#error-screen").show();
+                }
+            },
+            //En caso de error imprimirlo por pantalla
+            error: function (data) {
+                $("#error-screen").show();
+            }
+        });
     },
     /**
      * Función games.initLoadResources: Comprobar que todos los recursos estén cargados
@@ -141,38 +79,62 @@ var games = {
             }
         }
         games.debug && console.log("Audios cargados");
-        //Todo cargado. Eliminar página de cargado y comprobar cookie de usuario
-        $("#loading-screen").hide();
-        games.login.checkCookie();
+        //Todo cargado. Eliminar página de cargado y poner música
+        games.displayMainMenu("loading-screen");
     },
     /**
-     * Función games.initGames: Iniciar el contenedor de los juegos
+     * Función games.displayMainMenu: Muestra el menú principal, escondiendo la pantalla con la id especificada 
+     * @param {string} hide | Id de la pantalla a esconder
      * @returns {undefined} | No devuelve ningún valor
      **/
-    initGames: function () {
-        //Ajustar a tamaño de pantalla
-        games.resized();
-        //Comprobar conexión con el servidor
-        $.ajax({
-            type: "POST",
-            url: "/store-data/check-internet",
-            cache: false,
-            dataType: "json",
-            //En caso de éxito imprimirlo por pantalla
-            success: function (data) {
-                if (data.ok) {
-                    //Comprobar que todos los recursos hayan cargado
-                    games.initLoadResources();
-                } else {
-                    //En caso de error imprimirlo por pantalla
-                    $("#error-screen").show();
-                }
-            },
-            //En caso de error imprimirlo por pantalla
-            error: function (data) {
-                $("#error-screen").show();
-            }
-        });
+    displayMainMenu: function (hide) {
+        $("#" + hide).hide();
+        $('#main-menu').show();
+        $("#theme-audio1")[0].pause();
+        $("#theme-audio2")[0].pause();
+        $("#theme-audio3")[0].pause();
+        var theme = $("#main-theme")[0];
+        theme.currentTime = 0;
+        theme.play();
+        this.start_decission = new Date().getTime();
+    },
+    /**
+     * Función games.resized: En caso de que el browser cambie de tamaño, se cambia el tamaño del contenedor de los juegos
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    resized: function () {
+        var size = Math.round($("#fake-container").width() * 0.92);
+        $("#game-container").css("width", size + "px");
+        $("#game-container").css("height", Math.round(size * 0.5) + "px");
+    },
+    /**
+     * Función games.rotateRandom: Dar una inclinación aleatoria a la imagen (o imágenes) recibida cada cierto periodo de tiempo
+     * @param {jQuery Object} $img | La imagen a inclinar
+     * @returns {int} | Devuelve la id del intervalo de tiempo para más tarde, eliminarlo
+     **/
+    rotateRandom: function ($img, deg1, deg2) {
+        //Repetir cada cierto periodo de tiempo
+        return setInterval(function () {
+            //Inclinación aleatoria
+            var degrees = Math.round(Math.random() * deg1) - deg2;
+            $img.css("-ms-transform", "rotate(" + degrees + "deg)")
+                    .css("-webkit-transform", "rotate(" + degrees + "deg)")
+                    .css("transform", "rotate(" + degrees + "deg)");
+        }, 250);
+    },
+    /**
+     * Función games.toggleSound: Apagar/encender el sonido
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    toogleSound: function () {
+        if (this.sound) {
+            $("#toggle-sound").attr("src", "/images/general/mute.png");
+            $("audio").prop("volume", 0);
+        } else {
+            $("#toggle-sound").attr("src", "/images/general/sound.png");
+            $("audio").prop("volume", 1);
+        }
+        this.sound = !this.sound;
     },
     /**
      * Función games.playTheme: Pausar la música principal y reproducir la del tema indicdo
@@ -185,10 +147,10 @@ var games = {
         theme.play();
     },
     /**
-     * Función games.sendDataToServer: Enviar datos al servidor
+     * Función games.sendTimeToChoose: Enviar datos al servidor del tiempo hasta elegir un juego
      * @returns {undefined} | No devuelve ningún valor
      */
-    sendDataToServer: function (game) {
+    sendTimeToChoose: function (game) {
         $.ajax({
             type: "POST",
             url: "/store-data/time-choosing",
@@ -214,171 +176,6 @@ var games = {
     updatePoints: function () {
         $(".user-points").show().text("Tienes " + games.userPoints + " Movipuntos");
     },
-    /**
-    * Función games.showSurvey: Mostrar respuesta en la encuesta
-    * @returns {undefined} | No devuelve ningún valor
-    */
-    showSurvey: function(checked){
-        games.debug && console.log("Stored survey answer", checked);
-        //Mostrar la encuesta
-        $("#games-survey").show(200);
-        //Mostrar la última respuesta insertada si la hubo
-        if(checked){
-            $("#games-survey [type=radio][value='"+checked+"']").prop('checked', 'checked');
-        }else{
-            $("#games-survey [type=radio]").first().prop('checked', 'checked');
-        }
-
-        //En caso de elegir una nueva respuesta, registrarla
-        $("#games-survey [type=radio]").click(function(){
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "/store-data/survey-answer",
-                data: {
-                    userId: games.userId,
-                    answer: $("#games-survey [type=radio]:checked").val()
-                },
-                success: function (data) {
-                    //No hacer nada...
-                },
-                //En caso de error alertar
-                error: function (data) {
-                    //No hacer nada...
-                }
-            });
-        });
-    }
-};
-/**
- * @Variable games.login: Contenedor de todas las funciones necesarias para la identificación de usuario en el servidor
- **/
-games.login = {
-    /**
-     * Función games.login.checkCookie: Buscar al usuario en las cookies para hacer el login automático
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    checkCookie: function () {
-        //Leer el valor de la cookie games-username
-        var read = games.readCookie("games-username");
-        games.debug && console.log("Usuario leído de cookie:" + read);
-        $(".input-login").removeAttr("disabled");
-        $(".login-button:first").css("opacity", "1");
-        if (read) {
-            $.ajax({
-                type: "POST",
-                url: "/store-data/check-cookie",
-                data: {
-                    userId: read
-                },
-                dataType: "json",
-                //En caso de éxito imprimirlo por pantalla
-                success: function (data) {
-                    console.log(data);
-                    if (!data.ok) {
-                        //Si ha habiado algún fallo, volver
-                        return;
-                    }
-                    //Si se encontró y es correcta, guardar su id, los puntos y mostrar pantalla principal y los puntos
-                    games.userId = read;
-                    games.userPoints = parseInt(data.points);
-                    games.updatePoints();
-                    games.displayMainMenu("login-menu");
-                    games.showSurvey(data.survey);
-                },
-                //En caso de error no hacer nada, no interpretar la cookie
-                error: function (data) {
-                }
-            });
-        }
-    },
-    /**
-     * Función games.login.start: Leer los valores del formulario de acceso a los juegos
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    start: function () {
-        $(".input-login").attr("disabled", "disabled");
-        $(".login-button:first").css("opacity", "0.5");
-        username = $('#login-username').val();
-        if (username === "") {
-            //Usuario vacío
-            alert("Introduce tu ID de usuario");
-            $('#login-username').focus();
-            $(".input-login").removeAttr("disabled");
-            $(".login-button:first").css("opacity", "1");
-            return;
-        }
-        password = $('#login-password').val();
-        if (password === "") {
-            //Contraseña vacía
-            alert("Introduce tu contraseña");
-            $('#login-password').focus();
-            $(".input-login").removeAttr("disabled");
-            $(".login-button:first").css("opacity", "1");
-            return;
-        }
-        //Enviar los datos al servidor para verificarlo
-        this.sendDataToServer(username, password);
-    },
-    /**
-     * Función games.login.keypressed: Esperar que se pulse la tecla de enter para hacer login
-     * @returns {undefined} | No devuelve ningún valor
-     **/
-    keypressed: function (e) {
-        var keynum;
-        if (window.event) { // IE                 
-            keynum = e.keyCode;
-        } else if (e.which) { // Netscape/Firefox/Opera                  
-            keynum = e.which;
-        }
-        //Si es la 13 (Enter), comenzar
-        if (keynum == "13") {
-            this.start();
-        }
-    },
-    /**
-     * Función games.login.sendDataToServer: Enviar datos al servidor para el login
-     * @param {string} username | Nombre de usuario (id_user)
-     * @param {string} password | Contraseña de usuario (password)
-     * @returns {undefined} | No devuelve ningún valor
-     */
-    sendDataToServer: function (username, password) {
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "/store-data/login",
-            data: {
-                username: username,
-                password: password
-            },
-            //En caso de éxito, guardar una cookie con el usuario
-            success: function (data) {
-                if (data.ok === true) {
-                    //Mostrar el menu
-                    games.displayMainMenu("login-menu");
-                    games.userId = username;
-                    //Actualizar puntos
-                    $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span> <span class="user-points"></span> <img src="images/movistar/user-icon.png"></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>');
-                    games.userPoints = parseInt(data.points);
-                    games.updatePoints();
-                    //Almacenar la cookie
-                    expiry = new Date();
-                    expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
-                    document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
-                    //Mostrar encuesta
-                    games.showSurvey(data.survey);
-                } else {
-                    $(".input-login").removeAttr("disabled");
-                    $(".login-button:first").css("opacity", "1");
-                    alert("Usuario o contraseña incorrecta");
-                }
-            },
-            //En caso de error alertar
-            error: function (data) {
-                $("#error-screen").show();
-            }
-        });
-    }
 };
 /**
  * @Variable games.strawsGame: Contenedor de todas las funciones necesarias para el juego de las cañas
@@ -408,7 +205,7 @@ games.strawsGame = {
      **/
     init: function (strawsNumber) {
         //Calcular tiempo hasta elegir juego
-        games.sendDataToServer("strawsGame");
+        games.sendTimeToChoose("strawsGame");
 
         //Obtener el contenedor principal, borrar su contenido
         var imagesContainer = $("#main-screen-game-straws-container");
@@ -581,7 +378,7 @@ games.cardsGame = {
      **/
     init: function (cardsNumber) {
         //Calcular tiempo hasta elegir juego
-        games.sendDataToServer("cardsGame");
+        games.sendTimeToChoose("cardsGame");
         //Devolver la carta final mostrada a su estado original
         var final_card = $("#final-card")
                 .removeAttr("style")
@@ -625,7 +422,7 @@ games.cardsGame = {
         }
 
         //Barajar las cartas
-        this.cardsArray = games.shuffle(cardsArray);
+        this.cardsArray = games.cardsGame.shuffle(cardsArray);
         //ALmacenar las cartas que se mostrarán
         this.displayedCards = encodeURI(this.cardsArray);
 
@@ -638,6 +435,25 @@ games.cardsGame = {
             offsetLeft += offsetIncrement;
         }
         this.startCardsGame();
+    },
+    /**
+     * Función games.cardsGame.shuffle: Barajar de forma aleatoria un array recibido
+     * @param {array} array | El array a barajar 
+     * @returns {array} | Devuelve el array ya barajado
+     **/
+    shuffle: function (array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        //Seguir barajando mientras hayan elementos pendientes de reordenar
+        while (0 !== currentIndex) {
+            //Coger un elemento de los restantes
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            //Intercambiarlo por el actual
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
     },
     /**
      * Función games.cardsGame.cardClick: Se ha hecho click en una carta
@@ -682,7 +498,7 @@ games.cardsGame = {
             // Animación del sombrero completa
             $(".card-container").hide();
             //Elegir una carta aleatoria
-            var card = games.shuffle(games.cardsGame.cardsArray)[0];
+            var card = games.cardsGame.shuffle(games.cardsGame.cardsArray)[0];
             var choose = Math.floor(Math.random() * 2);
             var selected_side = card[choose];
             var winner_side = (choose == 0 ? card[1] : card[0]);
@@ -891,7 +707,7 @@ games.boxesGame = {
      **/
     init: function (boxesNumber) {
         //Calcular tiempo hasta elegir juego
-        games.sendDataToServer("boxesGame");
+        games.sendTimeToChoose("boxesGame");
 
         //Eliminar cajas antiguas
         $("#main-screen-boxes-container").html("");

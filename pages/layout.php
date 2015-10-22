@@ -8,6 +8,7 @@
         <title><?php echo $title; ?></title>
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
         <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="/js/login.js"></script>
         <?php echo $includes; ?>
     </head>
 
@@ -29,9 +30,32 @@
             </nav>
         </header>
 
+        <!--Script de inicio de juegos-->
+        <?php if($_SERVER['REQUEST_URI']=="/juegos"){ ?>
+        <script type="text/javascript">
+            //Una vez se haya cargado la página, inicar los juegos
+            $(document).ready(function () {
+                games.initGames(<?php echo "'".$userName."','".$userPoints."'";?>);
+            });
+        </script>
+        <?php } ?>
+
         <div class="fake-container" id="fake-container">
             <?php echo $content; ?>
         </div>
+
+        <!--Diálogo de login de usuario-->
+        <?php if($login){ ?>
+        <div id="login-menu-container">
+            <div>
+                <h1>¡Bienvenido al Movijuego!</h1>
+                <p>Para poder participar es necesario estar logado. Introduce tus datos de acceso</p>
+                <input class="input-login login-username" id="login-username" type="text" onkeypress="login.keypressed(event);" placeholder="Introduce tu id de usuario" disabled="disabled" /><br/>
+                <input class="input-login login-password" id="login-password" type="password" onkeypress="login.keypressed(event);" placeholder="Introduce tu contraseña" disabled="disabled" /><br>
+                <button class="login-button" onclick="login.start();">Acceder</button>
+            </div>
+        </div>
+        <?php } ?>
 
         <!--Footer de la página fake-->
         <footer>

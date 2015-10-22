@@ -114,6 +114,61 @@ header .unlog-button:hover{
     }
 }
 
+/*Estilo del diálogo de acceso*/
+#login-menu-container{
+    width: 100%; height: 100%; 
+    display: block; 
+    position: fixed; 
+    z-index: 100; 
+    top: 0px; left: 0px; 
+    background-color: rgba(55, 55, 55, 0.7);
+}
+
+#login-menu-container>div{
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    bottom: 0;
+    display: block;
+    font-family: Movistar;
+    height: 250px;
+    left: 0;
+    margin: auto;
+    padding: 2%;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    vertical-align: middle;
+    width: 50%;
+}
+@media all and (max-width: 750px) { 
+    #login-menu-container>div{
+        height: auto;
+    }
+}
+
+#login-menu-container .input-login {
+    border: 1px solid gray;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-bottom: 15px;
+    padding: 1% 2%;
+    width: 46%;
+}
+
+#login-menu-container button {
+    background-color: #003245;
+    border: 1px solid;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0.5% 6%;
+}
+
+#login-menu-container button:hover{
+    opacity: 0.7;
+}
+
 /*Estilos generales*/
 
 .main-description-image{

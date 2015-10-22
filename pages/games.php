@@ -24,16 +24,6 @@
         </div>
     </div>
 
-    <!--Menú de acceso, sólo presente cuando no se detecta la cookie de usuario--> 
-    <div id="login-menu" class="screen menu-screen login-menu">
-        <div>
-            <img src="/images/general/login-title.png" ondragstart="return false;" class="login-title" alt="Introduce tus datos de acceso"/>
-            <input id="login-username" class="input-login" onkeypress="games.login.keypressed(event);" placeholder="Introduce tu id de usuario"/> 
-            <input id="login-password" type="password" onkeypress="games.login.keypressed(event);" class="input-login" placeholder="Introduce tu contraseña"/><br>
-            <img src="/images/general/login-btn.jpg" ondragstart="return false;" class="login-button" alt="Entrar" onclick="games.login.start();"/>
-        </div>
-    </div>
-
     <!--Menú principal-->
     <div id="main-menu" class="screen menu-screen">
         <div>
@@ -272,16 +262,6 @@
             <img src="/images/boxes/boxes_background.jpg"/>
         </div>    
     </div>
-</div>
-
-<div id="games-survey" style="display:none;">
-    <h2>Encuesta: ¿Cómo sueles jugar a videojuegos?</h2>
-    <form>
-        <input type="radio" name="survey" value="No juego habitualmente" />No juego habitualmente<br/>
-        <input type="radio" name="survey" value="Juego a videojuegos de ordenador" />Juego a videojuegos de ordenador<br/>
-        <input type="radio" name="survey" value="Juego a videojuegos online" />Juego a videojuegos online<br/>
-        <input type="radio" name="survey" value="Juego a videoconsolas" />Juego a videoconsolas<br/>
-    </form>
 </div>
 
 <!--div>

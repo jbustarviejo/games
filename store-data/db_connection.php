@@ -1,6 +1,7 @@
 <?php
 
-if(php_uname('n')!="MacBook-de-jbustarviejogmailcom.local"){
+//Detectar configuración del servidor
+/*if(php_uname('n')!="MacBook-de-jbustarviejogmailcom.local"){
 	$host_name = "db451884065.db.1and1.com";
 	$database = "db451884065";
 	$user_name = "dbo451884065";
@@ -10,4 +11,9 @@ if(php_uname('n')!="MacBook-de-jbustarviejogmailcom.local"){
 	$database = "test";
 	$user_name = "pressclipit";
 	$password = "pressclipit";
-}
+}*/
+
+$host_name = "localhost";
+$database = "test";
+$user_name = "pressclipit";
+$password = "pressclipit";
