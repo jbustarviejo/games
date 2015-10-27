@@ -14,10 +14,11 @@ var games = {
      * Función games.initGames: Iniciar el contenedor de los juegos
      * @returns {undefined} | No devuelve ningún valor
      **/
-    initGames: function (userName, userPoints) {
+    initGames: function (userName, userPoints, userToken) {
         //Almacenar datos de usuario
         games.userId = userName; 
         games.userPoints = parseInt(userPoints);
+        games.userToken = userToken;
         games.updatePoints();
         //Ajustar a tamaño de pantalla
         games.resized();
@@ -150,21 +151,35 @@ var games = {
      * Función games.sendTimeToChoose: Enviar datos al servidor del tiempo hasta elegir un juego
      * @returns {undefined} | No devuelve ningún valor
      */
-    sendTimeToChoose: function (game) {
+    sendTimeToChoose: function (game, itemsNumber, callback) {
+        $("#loading-screen").show();
         $.ajax({
             type: "POST",
             url: "/store-data/time-choosing",
+            dataType: "json",
             data: {
                 userId: games.userId,
                 time: new Date().getTime() - this.start_decission,
-                game: game
+                game: game,
+                itemsNumber: itemsNumber,
+                userToken: games.userToken
             },
-            //En caso de éxito imprimirlo por pantalla
+            //En caso de éxito actualizar los puntos
             success: function (data) {
-                console.log(data);
+                $("#loading-screen").hide();
+                if(data.ok==false){
+                    //En caso de error imprimirlo por pantalla
+                    $("#error-screen").show();
+                    return;
+                }
+                games.debug && console.log(data, callback);
+                games.userPoints=data.points;
+                games.updatePoints();
+                callback && callback();
             },
             //En caso de error imprimirlo por pantalla
             error: function (data) {
+                $("#loading-screen").hide();
                 $("#error-screen").show();
             }
         });
@@ -204,49 +219,50 @@ games.strawsGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (strawsNumber) {
-        //Calcular tiempo hasta elegir juego
-        games.sendTimeToChoose("strawsGame");
+        //Calcular tiempo hasta elegir juego, restar puntos y volver aquí
+        games.sendTimeToChoose("strawsGame", strawsNumber, function(){
 
-        //Obtener el contenedor principal, borrar su contenido
-        var imagesContainer = $("#main-screen-game-straws-container");
-        imagesContainer.html("");
+            //Obtener el contenedor principal, borrar su contenido
+            var imagesContainer = $("#main-screen-game-straws-container");
+            imagesContainer.html("");
 
-        //Crear el dibujo de 'Mano abierta'
-        $('<img id="open-hand-back" class="open-hand" ondragstart="return false;" src="/images/largest-straw/open-hand-back.png"/><img id="open-hand-front" class="open-hand" ondragstart="return false;" src="/images/largest-straw/open-hand-front.png"/>')
-                .hide()
-                .appendTo(imagesContainer);
+            //Crear el dibujo de 'Mano abierta'
+            $('<img id="open-hand-back" class="open-hand" ondragstart="return false;" src="/images/largest-straw/open-hand-back.png"/><img id="open-hand-front" class="open-hand" ondragstart="return false;" src="/images/largest-straw/open-hand-front.png"/>')
+                    .hide()
+                    .appendTo(imagesContainer);
 
-        //Crear el dibujo de 'Mano cerrada'
-        $('<img id="close-hand-front" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-front.png"/><img id="close-hand-back" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-back.png"/>')
-                .appendTo(imagesContainer);
+            //Crear el dibujo de 'Mano cerrada'
+            $('<img id="close-hand-front" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-front.png"/><img id="close-hand-back" class="close-hand" ondragstart="return false;" src="/images/largest-straw/close-hand-back.png"/>')
+                    .appendTo(imagesContainer);
 
-        //Crear texto de indicación 
-        $("<img class='straws-helper-arrow helper-tip' ondragstart='return false;' src='/images/largest-straw/helper-arrow.png'/><img id='straws-helper-text' class='helper-tip' ondragstart='return false;' src='/images/largest-straw/helper-text.png'/>")
-                .appendTo(imagesContainer);
+            //Crear texto de indicación 
+            $("<img class='straws-helper-arrow helper-tip' ondragstart='return false;' src='/images/largest-straw/helper-arrow.png'/><img id='straws-helper-text' class='helper-tip' ondragstart='return false;' src='/images/largest-straw/helper-text.png'/>")
+                    .appendTo(imagesContainer);
 
-        //Almacenar los datos que guardaremos al final
-        this.strawsNumber = strawsNumber;
-        this.winner_straw = Math.floor(Math.random() * strawsNumber) + 1;
-        games.debug && console.log("Número de cañas: " + strawsNumber, "Caña ganadora:" + this.winner_straw);
+            //Almacenar los datos que guardaremos al final
+            games.strawsGame.strawsNumber = strawsNumber;
+            games.strawsGame.winner_straw = Math.floor(Math.random() * strawsNumber) + 1;
+            games.debug && console.log("Número de cañas: " + strawsNumber, "Caña ganadora:" + games.strawsGame.winner_straw);
 
-        //Dibujar las cañas sobre la pantalla
-        var availableWidth = 20;
-        var leftInc = Math.round(availableWidth * 100 / strawsNumber) / 100;
-        var leftOffset = 45;
+            //Dibujar las cañas sobre la pantalla
+            var availableWidth = 20;
+            var leftInc = Math.round(availableWidth * 100 / strawsNumber) / 100;
+            var leftOffset = 45;
 
-        for (var i = 0; i < strawsNumber; i++) {
-            if (i === this.winner_straw - 1) {
-                //La caña más larga medirá el 70% del alto de la pantalla
-                var height = 70;
-            } else {
-                //El resto un valor entre el 50% y el 38%
-                var height = Math.floor(Math.random() * 12) + 38;
+            for (var i = 0; i < strawsNumber; i++) {
+                if (i === games.strawsGame.winner_straw - 1) {
+                    //La caña más larga medirá el 70% del alto de la pantalla
+                    var height = 70;
+                } else {
+                    //El resto un valor entre el 50% y el 38%
+                    var height = Math.floor(Math.random() * 12) + 38;
+                }
+                //Crear las cañas. Se introduce un offset a cada una para no colisionar en el mismo espacio
+                imagesContainer.append($('<img class="straw" onclick="games.strawsGame.chooseStraw(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-straw/straw' + (i + 1) + '.jpg" onmouseover="document.getElementById(\'strawAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
+                leftOffset += leftInc;
             }
-            //Crear las cañas. Se introduce un offset a cada una para no colisionar en el mismo espacio
-            imagesContainer.append($('<img class="straw" onclick="games.strawsGame.chooseStraw(' + (i + 1) + ')" ondragstart="return false;" number="' + i + '" src="/images/largest-straw/straw' + (i + 1) + '.jpg" onmouseover="document.getElementById(\'strawAudio' + (i + 1) + '\').play();" style="left:' + leftOffset + '%; height:' + height + '%">'));
-            leftOffset += leftInc;
-        }
-        this.startStrawsGame();
+            games.strawsGame.startStrawsGame();
+        });
     },
     /**
      * Función games.strawsGame.startstrawsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
@@ -268,6 +284,9 @@ games.strawsGame = {
         var ellapsed_time = new Date().getTime() - this.start_decission;
         games.debug && console.log(ellapsed_time);
         games.debug && console.log(this.winner_straw, choosen);
+        //Tomar referencia de puntos
+        this.userPointsInit=games.userPoints;
+        //Enviar datos al servidor
         this.sendDataToServer(ellapsed_time, this.winner_straw, choosen, this.strawsNumber);
 
         //Esconder texto de ayuda
@@ -293,7 +312,8 @@ games.strawsGame = {
         //Sonido
         $("#woosh-sound")[0].play();
         //Comenzar a desvanecer la mano
-        $(".open-hand").animate({opacity: 0, left: "-50%"}, 1500, function () {
+        $("#open-hand-front").animate({opacity: 0, left: "-50%"}, 1500);
+        $("#open-hand-back").animate({opacity: 0, left: "-50%"}, 1500, function () {
             // Animación completa
             games.strawsGame.finish(choosen);
         });
@@ -308,12 +328,22 @@ games.strawsGame = {
         if (this.winner_straw === choosen) {
             $("#straws-win-screen").show();
             $("#winner-sound")[0].play();
+
+            //Sumar puntos si ha ganado y mostrar cuántos por pantalla
+            if(this.strawsNumber == 3){
+                games.userPoints = this.userPointsInit + 3;
+                $("#straws-win-screen .screen-msg").text("Has conseguido " + 3 + " Movipuntos");
+                games.updatePoints();
+            }else if(this.strawsNumber == 4){
+                games.userPoints = this.userPointsInit + 4;
+                $("#straws-win-screen .screen-msg").text("Has conseguido " + 4 + " Movipuntos");
+                games.updatePoints();
+            }
+
         } else {
             $("#straws-lose-screen").show();
             $("#lose-sound")[0].play();
         }
-        //Actualizar puntos
-        games.updatePoints();
     },
     /**
      * Función games.strawsGame.sendDataToServer: Enviar datos al servidor del juego de las cañas
@@ -335,13 +365,14 @@ games.strawsGame = {
                 winner: winner,
                 selected: selected,
                 strawsNumber: strawsNumber,
+                userToken: games.userToken
             },
             //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
                 if (data.points) {
                     //Actualizar puntos
-                    games.userPoints += parseInt(data.points);
+                    games.userPoints = parseInt(data.points);
                 }
             },
             //En caso de error imprimirlo por pantalla
@@ -377,64 +408,65 @@ games.cardsGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (cardsNumber) {
-        //Calcular tiempo hasta elegir juego
-        games.sendTimeToChoose("cardsGame");
-        //Devolver la carta final mostrada a su estado original
-        var final_card = $("#final-card")
-                .removeAttr("style")
-                .attr("class", "smaller")
-                .find(".card").first().attr("class", "card");
-        $("#final-card-front").attr("class", "front");
-        $("#final-card-back").attr("class", "back");
+        //Calcular tiempo hasta elegir juego, restar puntos y volver aquí
+        games.sendTimeToChoose("cardsGame", cardsNumber, function(){
+            //Devolver la carta final mostrada a su estado original
+            var final_card = $("#final-card")
+                    .removeAttr("style")
+                    .attr("class", "smaller")
+                    .find(".card").first().attr("class", "card");
+            $("#final-card-front").attr("class", "front");
+            $("#final-card-back").attr("class", "back");
 
-        //Devolver la página de selección de cartas a los valores iniciales
-        var right_card = $("#card-to-choose-right")
-                .removeAttr("style")
-                .removeAttr("onclick");
-        var left_card = $("#card-to-choose-left")
-                .removeAttr("style")
-                .removeAttr("onclick");
+            //Devolver la página de selección de cartas a los valores iniciales
+            var right_card = $("#card-to-choose-right")
+                    .removeAttr("style")
+                    .removeAttr("onclick");
+            var left_card = $("#card-to-choose-left")
+                    .removeAttr("style")
+                    .removeAttr("onclick");
 
-        //Restablecer título
-        $("#cards-title").attr("src", "/images/cards/title1.png").show();
-        //Restablecer botón
-        $("#cards-play-button").attr("src", "/images/cards/do-click.jpg").removeClass("ready-btn").removeAttr("onclick");
-        //Borrar posibles cartas antiguas
-        $(".card-container").remove();
-        //Borrar estilo del sombrero
-        $("#cards-hat").removeAttr("style");
+            //Restablecer título
+            $("#cards-title").attr("src", "/images/cards/title1.png").show();
+            //Restablecer botón
+            $("#cards-play-button").attr("src", "/images/cards/do-click.jpg").removeClass("ready-btn").removeAttr("onclick");
+            //Borrar posibles cartas antiguas
+            $(".card-container").remove();
+            //Borrar estilo del sombrero
+            $("#cards-hat").removeAttr("style");
 
-        //Almacenar el número de cartas mostrado
-        this.cardsNumber = cardsNumber;
-        //Resetar la variable que guarda clicks en las cartas
-        this.cardsClicks = "";
+            //Almacenar el número de cartas mostrado
+            games.cardsGame.cardsNumber = cardsNumber;
+            //Resetar la variable que guarda clicks en las cartas
+            games.cardsGame.cardsClicks = "";
 
-        //Array de cartas del juego mínimo y los offsets de sus representaciones
-        var cardsArray = [["red-card", "black-card"], ["black-card", "black-card"], ["red-card", "red-card"]];
-        var offsetLeft = 20;
-        if (cardsNumber === 4) { //Añadir una carta más si son 4
-            cardsArray[cardsArray.length] = ["black-card", "red-card"];
-            offsetLeft = 10;
-        } else if (cardsNumber === 5) { //Añadir dos cartas más si son 5
-            cardsArray[cardsArray.length] = ["black-card", "red-card"];
-            cardsArray[cardsArray.length] = ["red-card", "black-card"];
-            offsetLeft = 0.5;
-        }
+            //Array de cartas del juego mínimo y los offsets de sus representaciones
+            var cardsArray = [["red-card", "black-card"], ["black-card", "black-card"], ["red-card", "red-card"]];
+            var offsetLeft = 20;
+            if (cardsNumber === 4) { //Añadir una carta más si son 4
+                cardsArray[cardsArray.length] = ["black-card", "red-card"];
+                offsetLeft = 10;
+            } else if (cardsNumber === 5) { //Añadir dos cartas más si son 5
+                cardsArray[cardsArray.length] = ["black-card", "red-card"];
+                cardsArray[cardsArray.length] = ["red-card", "black-card"];
+                offsetLeft = 0.5;
+            }
 
-        //Barajar las cartas
-        this.cardsArray = games.cardsGame.shuffle(cardsArray);
-        //ALmacenar las cartas que se mostrarán
-        this.displayedCards = encodeURI(this.cardsArray);
+            //Barajar las cartas
+            games.cardsGame.cardsArray = games.cardsGame.shuffle(cardsArray);
+            //ALmacenar las cartas que se mostrarán
+            games.cardsGame.displayedCards = encodeURI(games.cardsGame.cardsArray);
 
-        //Mostrar las cartas en su contenedor principal
-        var container = $('#main-screen-cards-container');
-        var offsetIncrement = 20;
-        for (var i = 0; i < cardsNumber; i++) {
-            container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" id="card-' + (i + 1) + '" onclick="games.cardsGame.cardClick(' + (i + 1) + ')"><div class="front ' + this.cardsArray[i][0] + '"></div><div class="back ' + this.cardsArray[i][1] + '"></div></div></div>'));
-            //Las cartas tienen un offset para no colisionar en el mismo espacio. 
-            offsetLeft += offsetIncrement;
-        }
-        this.startCardsGame();
+            //Mostrar las cartas en su contenedor principal
+            var container = $('#main-screen-cards-container');
+            var offsetIncrement = 20;
+            for (var i = 0; i < cardsNumber; i++) {
+                container.append($('<div class="card-container" style="margin-left:' + offsetLeft + '%"><div class="card" id="card-' + (i + 1) + '" onclick="games.cardsGame.cardClick(' + (i + 1) + ')"><div class="front ' + games.cardsGame.cardsArray[i][0] + '"></div><div class="back ' + games.cardsGame.cardsArray[i][1] + '"></div></div></div>'));
+                //Las cartas tienen un offset para no colisionar en el mismo espacio. 
+                offsetLeft += offsetIncrement;
+            }
+            games.cardsGame.startCardsGame();
+        });
     },
     /**
      * Función games.cardsGame.shuffle: Barajar de forma aleatoria un array recibido
@@ -601,6 +633,8 @@ games.cardsGame = {
      */
     finishCardGame: function (win, selected_side) {
         this.ellapsed_time_decission = new Date().getTime() - this.start_decission;
+        //Tomar referencia de puntos
+        this.userPointsInit=games.userPoints;
 
         //Eliminar la coma final
         this.cardsClicks = this.cardsClicks.substring(0, this.cardsClicks.length - 1);
@@ -627,6 +661,17 @@ games.cardsGame = {
         setTimeout(function () {
             if (win) {
                 $("#winner-sound")[0].play();
+
+                //Sumar puntos si ha ganado y mostrar cuántos por pantalla
+                if(games.cardsGame.cardsNumber == 3){
+                    games.userPoints = games.cardsGame.userPointsInit + 10;
+                    $("#cards-win-screen .screen-msg").text("Has conseguido " + 10 + " Movipuntos");
+                    games.updatePoints();
+                }else if(games.cardsGame.cardsNumber == 4){
+                    games.userPoints = games.cardsGame.userPointsInit + 4;
+                    $("#cards-win-screen .screen-msg").text("Has conseguido " + 4 + " Movipuntos");
+                    games.updatePoints();
+                }
                 $("#cards-win-screen").show();
             } else {
                 $("#lose-sound")[0].play();
@@ -665,13 +710,14 @@ games.cardsGame = {
                 cards_number: cards_number,
                 cards_array: cards_array,
                 cards_clicks: cards_clicks,
+                userToken: games.userToken
             },
             //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
                 if (data.points) {
                     //Actualizar puntos
-                    games.userPoints += parseInt(data.points);
+                    games.userPoints = parseInt(data.points);
                 }
             },
             //En caso de error imprimirlo por pantalla
@@ -706,36 +752,37 @@ games.boxesGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (boxesNumber) {
-        //Calcular tiempo hasta elegir juego
-        games.sendTimeToChoose("boxesGame");
+        //Calcular tiempo hasta elegir juego, restar puntos y volver aquí
+        games.sendTimeToChoose("boxesGame", boxesNumber, function(){
 
-        //Eliminar cajas antiguas
-        $("#main-screen-boxes-container").html("");
+            //Eliminar cajas antiguas
+            $("#main-screen-boxes-container").html("");
 
-        //Restablecer el contenedor de caja
-        $("#your-box-container").hide();
+            //Restablecer el contenedor de caja
+            $("#your-box-container").hide();
 
-        //Inicializar el título
-        var boxesContainer = $('#main-screen-boxes-container')
-                .append('<img class="boxes-title boxes-title-background" ondragstart="return false;" src="/images/boxes/boxes-top.png">')
-                .append('<img class="boxes-title boxes-title-text" ondragstart="return false;" src="/images/boxes/boxes-top-title.png">');
+            //Inicializar el título
+            var boxesContainer = $('#main-screen-boxes-container')
+                    .append('<img class="boxes-title boxes-title-background" ondragstart="return false;" src="/images/boxes/boxes-top.png">')
+                    .append('<img class="boxes-title boxes-title-text" ondragstart="return false;" src="/images/boxes/boxes-top-title.png">');
 
-        //Pintar las cajas en el contenedor principal
-        for (var i = 0; i < boxesNumber; i++) {
-            boxesContainer.append('<img id="box-' + (i + 1) + '" box-number="' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box' + (i + 1) + '.png" style="bottom:36%">');
-        }
+            //Pintar las cajas en el contenedor principal
+            for (var i = 0; i < boxesNumber; i++) {
+                boxesContainer.append('<img id="box-' + (i + 1) + '" box-number="' + (i + 1) + '" onmouseover="$(\'#boxAudio' + (i + 1) + '\')[0].play();" class="box" onclick="games.boxesGame.chooseBox(' + (i + 1) + ')" ondragstart="return false;" number="' + (i + 1) + '" src="/images/boxes/box' + (i + 1) + '.png" style="bottom:36%">');
+            }
 
-        //Almacenar la caja ganadora, el número de ellas y crear array para guardar las cajas disponibles mostradas
-        this.winner_box = (Math.ceil(Math.random() * boxesNumber));
-        this.boxesNumber = boxesNumber;
-        this.boxesAvailable = [];
+            //Almacenar la caja ganadora, el número de ellas y crear array para guardar las cajas disponibles mostradas
+            games.boxesGame.winner_box = (Math.ceil(Math.random() * boxesNumber));
+            games.boxesGame.boxesNumber = boxesNumber;
+            games.boxesGame.boxesAvailable = [];
 
-        //Centrar las cajas y espaciarlas sobre la mesa
-        this.updateBoxes(false);
+            //Centrar las cajas y espaciarlas sobre la mesa
+            games.boxesGame.updateBoxes(false);
 
-        games.debug && console.log("Winner:" + this.winner_box);
-        games.debug && console.log("Boxes Number: " + boxesNumber);
-        this.startBoxesGame();
+            games.debug && console.log("Winner:" + games.boxesGame.winner_box);
+            games.debug && console.log("Boxes Number: " + boxesNumber);
+            games.boxesGame.startBoxesGame();
+        });
     },
     /**
      * Función games.boxesGame.startCardsGame: Esconde la página de instrucciones de este juego y almacena el tiempo inicial
@@ -902,6 +949,8 @@ games.boxesGame = {
         this.times[this.times.length] = new Date().getTime() - this.start_iteration_time;
         //Tomar el tiempo llevado
         this.choosenBoxes[this.choosenBoxes.length] = choosen;
+        //Tomar referencia de puntos
+        this.userPointsInit=games.userPoints;
 
         //Enviar los datos al servidor
         games.boxesGame.sendDataToServer(games.boxesGame.boxesNumber, games.boxesGame.winner_box, games.boxesGame.boxesAvailable, games.boxesGame.times, games.boxesGame.choosenBoxes);
@@ -923,6 +972,17 @@ games.boxesGame = {
             //Mostrar imagen de caja ganadora y reproducir sonido de victoria
             $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box-win" + choosen + ".png");
             $('#winner-sound')[0].play();
+
+            //Sumar puntos si ha ganado y mostrar cuántos por pantalla
+            if(games.boxesGame.boxesNumber == 3){
+                games.userPoints = games.boxesGame.userPointsInit + 9;
+                $("#boxes-win-screen .screen-msg").text("Has conseguido " + 9 + " Movipuntos");
+                games.updatePoints();
+            }else if(games.boxesGame.boxesNumber == 4){
+                games.userPoints = games.boxesGame.userPointsInit + 8;
+                $("#boxes-win-screen .screen-msg").text("Has conseguido " + 8 + " Movipuntos");
+                games.updatePoints();
+            }
         } else {
             //Mostrar imagen de caja no ganadora y reproducir sonido de derroa
             $('#box-' + choosen).addClass("final-box").attr("src", "/images/boxes/open-box" + choosen + ".png");
@@ -961,20 +1021,13 @@ games.boxesGame = {
         } else {
             availableBoxes3 = "NULL";
         }
-        //Comprobar iteracción 4. Si habían 5 cajas no hay problema. Si no, modificar a Null
-        var availableBoxes4 = boxes_available[3];
-        if (availableBoxes4) {
-            availableBoxes4 = availableBoxes4;
-        } else {
-            availableBoxes4 = "NULL";
-        }
         //POST al servidor con los datos
         $.ajax({
             type: "POST",
             url: "/store-data/boxes-game",
             dataType: "json",
             data: {
-                id_user: games.userId,
+                userId: games.userId,
                 boxes_number: boxes_number,
                 winner_box: winner_box,
                 last_box_selected: choosen_boxes[choosen_boxes.length - 1],
@@ -987,16 +1040,14 @@ games.boxesGame = {
                 third_box_choose: choosen_boxes[2] || "NULL",
                 third_available_boxes_to_change: availableBoxes3,
                 third_time_choosing: times[2] || "NULL",
-                fourth_box_choose: choosen_boxes[3] || "NULL",
-                fourth_available_boxes_to_change: availableBoxes4,
-                fourth_time_choosing: times[3] || "NULL",
+                userToken: games.userToken
             },
             //En caso de éxito imprimirlo por pantalla
             success: function (data) {
                 console.log(data);
                 if (data.points) {
                     //Actualizar puntos
-                    games.userPoints += parseInt(data.points);
+                    games.userPoints = parseInt(data.points);
                 }
             },
             //En caso de error imprimirlo por pantalla

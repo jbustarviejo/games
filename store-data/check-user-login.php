@@ -26,6 +26,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     		$conn->close();
     		$userPoints=$row["points"];
     		$userName=$row["id_user"];
+    		$userToken=$row["security_token"];
     		$login=false;
     	}else{
             $conn->close();

@@ -22,7 +22,8 @@
                 <div class="cont-menu">
                     <a href="/" class="bot_home" ondragstart="return false;"></a>
                     <a href="/juegos" class="bot_desc" ondragstart="return false;">Juegos</a>
-                    <a href="/tienda" class="bot_desc" ondragstart="return false;">Tienda de Movipuntos</a>
+                    <a href="/tienda" class="bot_desc" ondragstart="return false;">Tienda</a>
+                    <a href="/mis-puntos" class="bot_desc" ondragstart="return false;">Mi panel</a>
                 </div>
                 <div class="logo">
                     <img alt="movistar" src="/images/movistar/movistar-logo.png" ondragstart="return false;">
@@ -35,7 +36,7 @@
         <script type="text/javascript">
             //Una vez se haya cargado la página, inicar los juegos
             $(document).ready(function () {
-                games.initGames(<?php echo "'".$userName."','".$userPoints."'";?>);
+                games.initGames(<?php echo "'".$userName."','".$userPoints."','". $userToken ."'";?>);
             });
         </script>
         <?php } ?>

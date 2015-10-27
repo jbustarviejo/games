@@ -110,7 +110,7 @@ header .unlog-button:hover{
         clear: both;
     }
     header .menu{
-        height: 185px;
+        height: 235px;
     }
 }
 
@@ -200,7 +200,7 @@ header .unlog-button:hover{
 }
 
 #game-container #straws-instructions-screen > div,#game-container #cards-instructions-screen > div,#game-container #boxes-instructions-screen > div{
-    color: #fff; margin-top: 19%;
+    color: #fff; margin-top: 13%;
 }
 
 #fake-container .user-points{
@@ -433,14 +433,14 @@ footer #pie a {
     font-weight: bold;
 }
 #game-container .play-button-game:hover, #game-container .play-button-game2{
-    width: 19%;
-    margin-left: 0%;
-    margin-top: 1%;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    margin-right: 0%;
     font-size: 2vw;
-    height: 15%;
+    height: 16%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 1.4%;
+    padding-bottom: 2%;
+    padding-top: 1%;
+    width: 19%;
 }
 #game-container .back-button{
     border-radius: 6px;
