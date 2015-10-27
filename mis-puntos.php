@@ -15,7 +15,8 @@ if (mysqli_connect_errno()) {
 }
 
 //Coger historial de usuario
-$sql="(SELECT u.id_user as id_user, 10 as points, 'Juego de las cañas' as game, s.date as 'date', (s.selected=s.winner) as won FROM users u LEFT JOIN `strawsGameRecords` s ON u.id_user = s.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') UNION (SELECT u.id_user as id_user, 10 as points, 'Juego de las cartas' as game, c.date as 'date', (c.winner_side = c.displayed_side) as won FROM users u LEFT JOIN `cardsGameRecords` c ON u.id_user = c.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') UNION (SELECT u.id_user as id_user, 10 as points, 'Juego de las cajas' as game, b.date as 'date', (b.winner_box = b.last_box_selected) as won FROM users u LEFT JOIN `boxesGameRecords` b ON u.id_user = b.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') ORDER BY date ASC";
+//$sql="(SELECT u.id_user as id_user, 10 as points, 'Juego de las cañas' as game, s.date as 'date', (s.selected=s.winner) as won FROM users u LEFT JOIN `strawsGameRecords` s ON u.id_user = s.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') UNION (SELECT u.id_user as id_user, 10 as points, 'Juego de las cartas' as game, c.date as 'date', (c.winner_side = c.displayed_side) as won FROM users u LEFT JOIN `cardsGameRecords` c ON u.id_user = c.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') UNION (SELECT u.id_user as id_user, 10 as points, 'Juego de las cajas' as game, b.date as 'date', (b.winner_box = b.last_box_selected) as won FROM users u LEFT JOIN `boxesGameRecords` b ON u.id_user = b.id_user WHERE u.id_user='".$_COOKIE["games-username"]."') ORDER BY date ASC";
+$sql='SELECT * FROM gamesHistory WHERE id_user = "test" ORDER BY date DESC';
 
 $result = $conn->query($sql);
 
@@ -28,14 +29,8 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
     	//Si el usuario es correcto, coger todos los datos e ir rellenándolos
     	if($_COOKIE["games-username"]===$row["id_user"]){
-    		if($row["won"]==1){
-    			$won_table="Ganaste";
-    		}else{
-    			$won_table="Perdiste";
-    		}
-    		$table.="<tr><td>".$row["game"]."</td>"."<td>".$row["date"]."</td>"."<td>".$won_table."</td></tr>";
-    		$accumulated_points+=$row["points"];
-    		$jsdata.="[new Date('".str_replace(" ", "T", $row["date"])."'),  ".($accumulated_points == 0 ? "0":$accumulated_points).", 100],";
+    		$table.="<tr><td>".$row["game"]."</td>"."<td>".$row["date"]."</td><td>".$row["points_variation"]."</td><td>".$row["points_result"]."</td></tr>";
+    		$jsdata.="[new Date('".str_replace(" ", "T", $row["date"])."'),  ".($row["points_result"] == 0 ? "0":$row["points_result"]).", 100],";
     	}else{
             $table.="";
             $jsdata.="";
@@ -91,7 +86,7 @@ $content = <<<HTML
 	<div id="curve_chart" style="width: 100%; height: 500px"></div><br/><br/>
 		<table style="width:100%">
 			 <thead>
-			 <td>Juego</td><td>Fecha</td><td>Resultado</td>
+			 <td>Juego</td><td>Fecha</td><td>Variación</td><td>Resultado</td>
 			 </thead>
 			 <tbody>
 				$table

@@ -91,7 +91,7 @@ function getUserPoints($conn){
 * @returns NULL | No devuelve ningún valor
 */
 function registerInHistory($conn, $points_variation, $points_result){
-	$sql = "INSERT INTO gamesHistory(`id_user`, `date`, `game`, `time_to_choose`, `points_variation`, `points_result`) VALUES ('" . $_POST["userId"] . "', '" . date('Y-m-d H:i:s') . "', 'cardsGame', NULL, '" . $points_variation . "', '" . $points_result .  "')";
+	$sql = "INSERT INTO gamesHistory(`id_user`, `date`, `game`, `time_to_choose`, `points_variation`, `points_result`) VALUES ('" . $_POST["userId"] . "', '" . date('Y-m-d H:i:s') . "', 'boxesGame', NULL, '" . $points_variation . "', '" . $points_result .  "')";
 
 	if ($conn->query($sql) === TRUE) {
 		//Actualizar el marcador de usuario
