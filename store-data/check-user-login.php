@@ -49,7 +49,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 		$user_pannel = '<a href="/juegos"><span>Acceder</span> <img src="images/movistar/user-icon.png"/></a>';
 	}
 	//Barra de usuario logado
-	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$userName.'. </span><span class="user-points"> Tienes'.$points.' puntos</span> <img src="images/movistar/user-icon.png"/></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>';
+	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$userName.'. </span><span class="user-points"> Tienes '.$userPoints.' puntos</span> <img src="images/movistar/user-icon.png"/></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>';
 }else{
 	if($_SERVER['REQUEST_URI']!="/"){
 		header('Location: /');

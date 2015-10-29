@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
         <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="/js/login.js"></script>
+        <script type="text/javascript" src="/js/shop.js"></script>
         <?php echo $includes; ?>
     </head>
 
@@ -37,6 +38,14 @@
             //Una vez se haya cargado la página, inicar los juegos
             $(document).ready(function () {
                 games.initGames(<?php echo "'".$userName."','".$userPoints."','". $userToken ."'";?>);
+            });
+        </script>
+        <?php } else if($_SERVER['REQUEST_URI']=="/tienda"){ ?>
+        <!--Script de inicio de la tienda-->
+        <script type="text/javascript">
+            //Una vez se haya cargado la página, inicar la tienda
+            $(document).ready(function () {
+                shop.initShop(<?php echo "'".$userName."','". $userToken ."'";?>);
             });
         </script>
         <?php } ?>

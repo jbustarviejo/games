@@ -12,6 +12,9 @@ var games = {
     sound: true,
     /**
      * Función games.initGames: Iniciar el contenedor de los juegos
+     * @param {string} userName | Id de usuario
+     * @param {int} userPoint | puntos de usuario
+     * @param {string} userToken | Token de seguridad de usuario
      * @returns {undefined} | No devuelve ningún valor
      **/
     initGames: function (userName, userPoints, userToken) {
