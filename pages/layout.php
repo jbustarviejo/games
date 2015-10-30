@@ -48,6 +48,20 @@
                 shop.initShop(<?php echo "'".$userName."','". $userToken ."'";?>);
             });
         </script>
+        <?php } if($showAnswer){?>
+        <!--Script de inicio de la encuesta-->
+        <script type="text/javascript">
+            //Una vez se haya cargado la página, inicar la encuesta
+            $(document).ready(function () {
+                login.userId=<?php echo "'".$userName."'";?>;
+                //Mostrar contenedor de diálogo
+                $("#login-menu-container").show();
+                //Esconder diálogo de login
+                $("#login-menu-container>div:first").hide();
+                //Mostrar la encuesta
+                $("#games-survey").show();    
+            }); 
+        </script>
         <?php } ?>
 
         <div class="fake-container" id="fake-container">
@@ -55,8 +69,7 @@
         </div>
 
         <!--Diálogo de login de usuario-->
-        <?php if($login){ ?>
-        <div id="login-menu-container">
+        <div id="login-menu-container" <?php echo (!$login ? "style='display:none'" : ""); ?>>
             <div>
                 <h1>¡Bienvenido al Movijuego!</h1>
                 <p>Para poder participar es necesario estar logado. Introduce tus datos de acceso</p>
@@ -64,8 +77,17 @@
                 <input class="input-login login-password" id="login-password" type="password" onkeypress="login.keypressed(event);" placeholder="Introduce tu contraseña" disabled="disabled" /><br>
                 <button class="login-button" onclick="login.start();">Acceder</button>
             </div>
+            <div id="games-survey" style="display:none;">
+                <h2>Encuesta: ¿Cómo sueles jugar a videojuegos?</h2></br>
+                <form>
+                    <input type="radio" name="survey" value="No juego habitualmente" checked="checked" />No juego habitualmente<br/>
+                    <input type="radio" name="survey" value="Juego a videojuegos de ordenador" />Juego a videojuegos de ordenador<br/>
+                    <input type="radio" name="survey" value="Juego a videojuegos online" />Juego a videojuegos online<br/>
+                    <input type="radio" name="survey" value="Juego a videoconsolas" />Juego a videoconsolas<br/>
+                </form><br/><br/>
+                <button class="login-button" onclick="login.saveSurvey();">Guardar</button>
+            </div>
         </div>
-        <?php } ?>
 
         <!--Footer de la página fake-->
         <footer>

@@ -74,6 +74,7 @@ login = {
                 if (data.ok === true) {
                     //Si todo es correcto...
                     login.debug && console.log(data);
+                    login.userId=username; 
                     //Actualizar puntos
                     $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span> <span class="user-points">Tienes '+data.points+' puntos</span> <img src="images/movistar/user-icon.png"></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>');
                     //Almacenar las cookies
@@ -81,8 +82,16 @@ login = {
                     expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
                     document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
                     document.cookie = "games-st=" + data.token + "; expires=" + expiry.toGMTString();
-                    //Desvanecer diálogo de login
-                    $("#login-menu-container").fadeOut(500);
+                    //Si no ha respondido a la encuesta...
+                    if(!data.survey){
+                        //Esconder diálogo de login
+                        $("#login-menu-container>div:first").hide();
+                        //Mostrar la encuesta
+                        $("#games-survey").show();
+                    }else{
+                        //Desvanecer diálogo de login
+                        $("#login-menu-container").fadeOut(500);
+                    }
                 }else{
                     //En caso de error desbloquear los inputs y alertar al usuario
                     $(".input-login").removeAttr("disabled");
@@ -95,10 +104,36 @@ login = {
                 alert("Parece que hubo un error en el servidor, inténtelo de nuevo en unos minutos");
             }
         });
-    }
+    },
+    /**
+    * Función login.saveSurvey: Guardar respuesta de encuesta
+    * @returns {undefined} | No devuelve ningún valor
+    */
+    saveSurvey: function(){        
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/store-data/survey-answer",
+            data: {
+                userId: login.userId,
+                answer: $("#games-survey [type=radio]:checked").val()
+            },
+            success: function (data) {
+                //Desvanecer diálogo de login
+                $("#login-menu-container").fadeOut(500);
+            },
+            //En caso de error desvanecer
+            error: function (data) {
+                //Desvanecer diálogo de login
+                $("#login-menu-container").fadeOut(500);
+            }
+        });
+    },
+
 };
 
 
+    /*
     /**
     * Función games.showSurvey: Mostrar respuesta en la encuesta
     * @returns {undefined} | No devuelve ningún valor

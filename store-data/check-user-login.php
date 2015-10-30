@@ -13,7 +13,8 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 	}
 
 	//Obtener datos del usuario por su id y su Token de seguridad
-	$sql="SELECT * FROM users WHERE id_user='".$_COOKIE["games-username"]."' AND security_token='".$_COOKIE["games-st"]."' LIMIT 1";
+	$sql="SELECT points, answer, pass, security_token, u.id_user as id_user FROM users u LEFT JOIN survey s on u.id_user = s.id_user WHERE u.id_user='".$_COOKIE["games-username"]."' AND security_token='".$_COOKIE["games-st"]."' ORDER BY s.date DESC LIMIT 1";
+	
 	$result = $conn->query($sql);
 
 	//Comprobar usuario
@@ -28,6 +29,10 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     		$userName=$row["id_user"];
     		$userToken=$row["security_token"];
     		$login=false;
+    		if(empty($row["answer"])){
+    			//die("asdasd");
+    			$showAnswer=true;
+    		}
     	}else{
             $conn->close();
             setcookie('games-username', null, -1, '/');
