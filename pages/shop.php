@@ -16,6 +16,7 @@
     				<p>1,5 GB</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-1">Comprar</button>
+    				<button class="goal" onclick="shop.saveGoal(1)">Fijar como objetivo</button>
 	            </div>
 	        </div>
 		</div>
@@ -33,6 +34,7 @@
 					<p>Router Wi-Fi gratis</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-2">Comprar</button>
+    				<button class="goal" onclick="shop.saveGoal(2)">Fijar como objetivo</button>
 	            </div>
 	        </div>
 		</div>
@@ -53,6 +55,7 @@
 	    			<p>Garantía de devolución 20 días</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-3">Comprar</button>
+    				<button class="goal" onclick="shop.saveGoal(3)">Fijar como objetivo</button>
 	            </div>
 	        </div>
 		</div>
@@ -68,6 +71,7 @@
 					<p>Control de vigilancia en la nube de tu hogar</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-4">Comprar</button>
+    				<button class="goal" onclick="shop.saveGoal(4)">Fijar como objetivo</button>
 	            </div>
 	        </div>
 		</div>
@@ -86,6 +90,7 @@
 	    			<p>Garantía de devolución 20 días</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-5">Comprar</button>
+    				<button class="goal" onclick="shop.saveGoal(5)">Fijar como objetivo</button>
 	            </div>
 	        </div>
 		</div>
@@ -102,6 +107,7 @@
 					<p>Verisure</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-6">Comprar</button>
+    				<button class="goal" onclick="shop.saveGoal(6)">Fijar como objetivo</button>
 	            </div>
 	        </div>
 		</div>

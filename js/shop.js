@@ -32,6 +32,7 @@ var shop={
 	},
 	/**
      * Función shop.buyItem: Comprar item en la tienda
+     * @param {string} itemID | Id de item
      * @returns {undefined} | No devuelve ningún valor
      **/
 	buyItem: function(itemId){
@@ -71,5 +72,40 @@ var shop={
                 alert("Parece que hubo un error en el servidor, inténtelo de nuevo en unos minutos");
             }
         });
-	}
+	},
+    /**
+    * Función login.saveGoal: Guardar respuesta de objetivo
+    * @param {string} goal | Meta a guardar
+    * @returns {undefined} | No devuelve ningún valor
+    */
+    saveGoal: function(goal){        
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/store-data/goal-answer",
+            data: {
+                userId: login.userId,
+                answer: goal
+            },
+            success: function (data) {
+                //Desvanecer diálogo 
+                $(".sale-container.clicked").removeClass("clicked");
+                shop.showGoal(goal);
+            },
+            //En caso de error desvanecer
+            error: function (data) {
+                //Desvanecer diálogo
+                $(".sale-container.clicked").removeClass("clicked");
+            }
+        });
+    },
+    /**
+     * Función shop.buyItem: Comprar item en la tienda
+     * @param {string} itemID | Id de item
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    showGoal: function(itemId){
+        $(".box-left.goal").removeClass("goal");
+        $("#buy-"+itemId).parents(".sale-container").find(".box-left").addClass("goal");
+    }
 };

@@ -48,7 +48,7 @@
                 shop.initShop(<?php echo "'".$userName."','". $userToken ."'";?>);
             });
         </script>
-        <?php } if($showAnswer){?>
+        <?php } if($showAnswer){ //Si no se ha respondido a la encuesta ?>
         <!--Script de inicio de la encuesta-->
         <script type="text/javascript">
             //Una vez se haya cargado la página, inicar la encuesta
@@ -62,7 +62,30 @@
                 $("#games-survey").show();    
             }); 
         </script>
+        <?php }else if($showGoal){ //Si no se ha fijado una meta ?>
+        <!--Script de inicio de fijado de meta-->
+        <script type="text/javascript">
+            //Una vez se haya cargado la página, inicar el fijado de mea
+            $(document).ready(function () {
+                //Mostrar cuestionario de objetivo
+                login.displayGoalDialog();
+            }); 
+        </script>
+        <?php }else{ ?>
+        <script type="text/javascript">
+         //Una vez se haya cargado la página, inicar el fijado de mea
+            $(document).ready(function () {
+                //Guardar nombre de usuario
+                login.userId=<?php echo "'".$userName."'";?>;
+                //Mostrar cuestionario de objetivo
+                shop.showGoal(<?php echo $idGoal; ?>);
+            }); 
+        </script>
         <?php } ?>
+        <script type="text/javascript">
+            //Guardar nombre de usuario
+            login.userId=<?php echo "'".$userName."'";?>;
+        </script>
 
         <div class="fake-container" id="fake-container">
             <?php echo $content; ?>
@@ -86,6 +109,51 @@
                     <input type="radio" name="survey" value="Juego a videoconsolas" />Juego a videoconsolas<br/>
                 </form><br/><br/>
                 <button class="login-button" onclick="login.saveSurvey();">Guardar</button>
+            </div>
+            <div id="games-goal" style="display:none;">
+                <h2>Marca un objetivo para el MoviJuego</h2>
+                <p>En el Movijuego tienes que participar en tres juegos para poder lograr puntos que te permitan adquirir una oferta ficticia. ¿Cuál será tu objetivo inicial? <small>(Luego podrás modificarlo)</small></p>
+                 <select id="select-goal">
+                  <option value="1">Línea Movimovil: 30Mpts</option>
+                  <option value="2">Movinternet fijo: 30Mpts</option>
+                  <option value="3">MoviNubico y Movinternet: 35Mpts</option>
+                  <option value="4">Movimovil y Movisure: 35 Movipuntos</option>
+                  <option value="5">Movifusión 1: 40 Movipuntos</option>
+                  <option value="6">Movifusión 2: 40 Movipuntos</option>
+                </select> 
+                <div class="buy buy-1">
+                    <p>200 min.a fijos y móviles nacionales</p>
+                    <p>1,5 GB</p>
+                </div>
+                <div class="buy buy-2" style="display: none;">
+                    <p>Asistencia técnica</p>
+                    <p>Fibra Óptica 30Mb simétrica (sujeto a cobertura)</p>
+                    <p>Alta e instalación incluida</p>
+                    <p>Router Wi-Fi gratis</p>
+                </div>
+                <div class="buy buy-3" style="display: none;">
+                    <p>Sin compromiso</p>
+                    <p>Internet 30Mb</p>
+                    <p>Acceso Cloud a todas las revistas y libros de forma ilimitada</p>
+                    <p>5 lectores simultáneos</p>
+                    <p>Garantía de devolución 20 días</p>
+                </div>
+                <div class="buy buy-4" style="display: none;">
+                    <p>Línea Móvil 4G</p>
+                    <p>Control de vigilancia en la nube de tu hogar</p>
+                </div>
+                <div class="buy buy-5" style="display: none;">
+                    <p>Internet 30Mb</p>
+                    <p>Línea fija</p>
+                    <p>Nubico</p>
+                    <p>Garantía de devolución 20 días</p>
+                </div>
+                <div class="buy buy-6" style="display: none;">
+                    <p>Internet 30Mb</p>
+                    <p>Línea Móvil 4G</p>
+                    <p>Verisure</p>
+                </div>
+                <button class="login-button" onclick="login.saveGoal();">Guardar</button>
             </div>
         </div>
 

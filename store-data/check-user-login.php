@@ -13,8 +13,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 	}
 
 	//Obtener datos del usuario por su id y su Token de seguridad
-	$sql="SELECT points, answer, pass, security_token, u.id_user as id_user FROM users u LEFT JOIN survey s on u.id_user = s.id_user WHERE u.id_user='".$_COOKIE["games-username"]."' AND security_token='".$_COOKIE["games-st"]."' ORDER BY s.date DESC LIMIT 1";
-	
+	$sql="SELECT points, answer, id_goal, pass, security_token, u.id_user as id_user FROM users u LEFT JOIN survey s on u.id_user = s.id_user LEFT JOIN user_goal g on u.id_user = g.id_user  WHERE u.id_user='".$_COOKIE["games-username"]."' AND security_token='".$_COOKIE["games-st"]."' ORDER BY s.date, g.date DESC LIMIT 1";
 	$result = $conn->query($sql);
 
 	//Comprobar usuario
@@ -30,8 +29,14 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     		$userToken=$row["security_token"];
     		$login=false;
     		if(empty($row["answer"])){
-    			//die("asdasd");
+    			//Si no tiene fijada una respuesta de la encuesta, indicarlo
     			$showAnswer=true;
+    		}
+    		if(empty($row["id_goal"])){
+    			//Si no tiene fijada una meta, indicarlo
+    			$showGoal=true;
+    		}else{
+    			$idGoal=$row["id_goal"];
     		}
     	}else{
             $conn->close();
@@ -54,7 +59,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 		$user_pannel = '<a href="/juegos"><span>Acceder</span> <img src="images/movistar/user-icon.png"/></a>';
 	}
 	//Barra de usuario logado
-	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$userName.'. </span><span class="user-points"> Tienes '.$userPoints.' puntos</span> <img src="images/movistar/user-icon.png"/></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>';
+	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$userName.'. </span><span class="user-points"> Tienes '.$userPoints.' Movipuntos</span> <img src="images/movistar/user-icon.png"/></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>';
 }else{
 	if($_SERVER['REQUEST_URI']!="/"){
 		header('Location: /');

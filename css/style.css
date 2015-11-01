@@ -123,6 +123,9 @@ header .unlog-button:hover{
     top: 0px; left: 0px; 
     background-color: rgba(55, 55, 55, 0.7);
 }
+#login-menu-container #games-goal{
+    height: 370px;
+}
 
 #login-menu-container>div{
     background-color: rgb(255, 255, 255);
@@ -1000,6 +1003,9 @@ footer #pie a {
 .sale-container .cancel{
     background-color: #ff4444;    
 }
+.sale-container .shop-item-container .goal{
+    background-color: #ffc844;    
+}
 .sale-container .buy{
     background-color: #44aa44;    
 }
@@ -1020,6 +1026,10 @@ footer #pie a {
     text-align: center;
     font-size: 20px;
     font-family: MovistarTextRegular;
+}
+.box-left.goal{
+    border-width: 4px;
+    background-color: #d8e4e5;
 }
 .sale-container.clicked .shop-item-container{
     cursor: default;

@@ -119,6 +119,50 @@ login = {
                 answer: $("#games-survey [type=radio]:checked").val()
             },
             success: function (data) {
+                //Mostrar cuestionario de objetivo
+                login.displayGoalDialog();
+            },
+            //En caso de error desvanecer
+            error: function (data) {
+                //Desvanecer diálogo de login
+                $("#login-menu-container").fadeOut(500);
+            }
+        });
+    },
+    /**
+    * Función login.displayGoalDialog: Mostrar pregunta de objetivo
+    * @returns {undefined} | No devuelve ningún valor
+    */
+    displayGoalDialog: function(){ 
+        //Mostrar contenedor de diálogo
+        $("#login-menu-container").show().find("div:first").css("height", "350px");;
+        //Esconder diálogo de login
+        $("#login-menu-container>div:first").hide();
+        //Mostrar la encuesta
+        $("#games-goal").show();    
+        //Atender a cambios de selección
+        $("#select-goal").change(function(){
+            //Esconder todas las descripciones
+            $(".buy").hide();
+            //Mostrar la descripción del 
+            $(".buy-"+$(this).val()).show();
+        });
+    },
+        /**
+    * Función login.saveGoal: Guardar respuesta de objetivo
+    * @param {string} goal | Meta a guardar
+    * @returns {undefined} | No devuelve ningún valor
+    */
+    saveGoal: function(goal){        
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/store-data/goal-answer",
+            data: {
+                userId: login.userId,
+                answer: goal
+            },
+            success: function (data) {
                 //Desvanecer diálogo de login
                 $("#login-menu-container").fadeOut(500);
             },
@@ -129,7 +173,30 @@ login = {
             }
         });
     },
-
+    /**
+    * Función login.saveGoal: Guardar respuesta de objetivo
+    * @returns {undefined} | No devuelve ningún valor
+    */
+    saveGoal: function(){        
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/store-data/goal-answer",
+            data: {
+                userId: login.userId,
+                answer: $("#select-goal").val()
+            },
+            success: function (data) {
+                //Desvanecer diálogo de login
+                $("#login-menu-container").fadeOut(500);
+            },
+            //En caso de error desvanecer
+            error: function (data) {
+                //Desvanecer diálogo de login
+                $("#login-menu-container").fadeOut(500);
+            }
+        });
+    },
 };
 
 

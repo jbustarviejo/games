@@ -27,8 +27,7 @@ registerInShoppingHistory($conn, $points_cost, $points_result);
 
 
 /**
-* Función getPointsCost: Registrar lo ocurrido en el juego
-* @param $conn | Conexión a BD
+* Función getPointsCost: Obtener puntos por id de item
 * @returns {int} | Devuelve el coste de la oferta
 */
 function getPointsCost(){
