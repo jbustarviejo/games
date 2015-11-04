@@ -46,6 +46,8 @@
             //Una vez se haya cargado la página, inicar la tienda
             $(document).ready(function () {
                 shop.initShop(<?php echo "'".$userName."','". $userToken ."'";?>);
+                //Objetos adquiridos
+                <?php echo $purchaseListForJs;?>
             });
         </script>
         <?php } if($showAnswer){ //Si no se ha respondido a la encuesta ?>
@@ -65,7 +67,7 @@
         <?php }else if($showGoal){ //Si no se ha fijado una meta ?>
         <!--Script de inicio de fijado de meta-->
         <script type="text/javascript">
-            //Una vez se haya cargado la página, inicar el fijado de mea
+            //Una vez se haya cargado la página, inicar el fijado de meta
             $(document).ready(function () {
                 //Mostrar cuestionario de objetivo
                 login.displayGoalDialog();
@@ -73,7 +75,7 @@
         </script>
         <?php }else{ ?>
         <script type="text/javascript">
-         //Una vez se haya cargado la página, inicar el fijado de mea
+         //Una vez se haya cargado la página, inicar el fijado de meta
             $(document).ready(function () {
                 //Guardar nombre de usuario
                 login.userId=<?php echo "'".$userName."'";?>;

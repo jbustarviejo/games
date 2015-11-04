@@ -34,6 +34,14 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 				//Regalar 10 puntos
 				registerInHistory($conn, $row["id_user"], "Regalo de puntos", 10, $userPoints);
     		}
+    		if($_SERVER['REQUEST_URI']=="/tienda"){
+    			//En la página de tienda. Obtener compras del usuario
+				$purchases=getUserPurchases($conn, $row["id_user"]);
+				$purchaseListForJs="";
+				foreach ($purchases as $item) {
+					$purchaseListForJs.="$('#".$item["itemId"]."').parents('.sale-container:first').addClass('purchased');";
+				}
+    		}
     		$userName=$row["id_user"];
     		$userToken=$row["security_token"];
     		$login=false;

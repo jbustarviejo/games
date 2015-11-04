@@ -14,7 +14,7 @@ var shop={
 		shop.userName=userName;
 		shop.userToken=userToken;
 		shop.debug && console.log("init");
-		$(".sale-container").click(function(){
+		$("div.sale-container").click(function(){
 			$(".sale-container.clicked").removeClass("clicked");
 			$(this).addClass("clicked");
 		});
@@ -50,11 +50,24 @@ var shop={
             success: function (data) {
                 if (data.ok === true) {
                     //Si todo es correcto...
-                    alert("Producto adquirido");
+                    var container = $("#"+itemId).parents(".sale-container");
+                    //Esconder descripción
+                    var description = container.find(".item-description").hide();
+                    //Mostrar diálogo de adquisición
+                    var itemPurchased = container.find(".item-purchased").show();
                     //Actualizar contador de puntos
                     $(".user-points").show().text("Tienes " + data.points + " Movipuntos");
-                    //Esconder diálogo 
-                    $("#"+itemId).parents(".sale-container").removeClass("clicked");
+                    //Al hacer click en cerrar, resetear HTML
+                    container.find(".item-purchased button").click(function(e){
+                        //Evitar otros eventos
+                        e.preventDefault();
+                        e.stopPropagation();
+                        //Reset de HTML
+                        itemPurchased.hide();
+                        description.show();
+                        container.attr("class","sale-container purchased");
+                        return;
+                    });
                 }else if(data.notEnoughtPoints){
                 	//No tiene suficientes puntos
                 	alert("No tienes suficientes puntos para poder comprar esta oferta ¡ve a jugar y consigue más!");

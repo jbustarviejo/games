@@ -10,7 +10,8 @@
 				<img src="/images/movistar/movil.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div style="height: 200px;">
+	            <div class="item-description" style="height: 200px;">
+	            	<p class="purchased-title">¡Ya adquirido!</p>
 	                <h1>Línea Movimovil: 30 Movipuntos</h1>
 	                <p>200 min.a fijos y móviles nacionales</p>
     				<p>1,5 GB</p>
@@ -18,6 +19,11 @@
     				<button class="buy" id="buy-1">Comprar</button>
     				<button class="goal" onclick="shop.saveGoal(1)">Fijar como objetivo</button>
 	            </div>
+	            <div class="item-purchased">
+					<h1>Producto adquirido</h1>
+					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
+			    	<button>Cerrar</button>
+				</div>
 	        </div>
 		</div>
 		<div class="sale-container">
@@ -26,7 +32,8 @@
 				<img src="/images/movistar/internet.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div style="height: 270px;">
+	            <div class="item-description" style="height: 270px;">
+	            	<p class="purchased-title">¡Ya adquirido!</p>
 	                <h1>Movinternet fijo: 30 Movipuntos</h1>
 	                <p>Asistencia técnica</p>
 					<p>Fibra Óptica 30Mb simétrica (sujeto a cobertura)</p>
@@ -36,6 +43,11 @@
     				<button class="buy" id="buy-2">Comprar</button>
     				<button class="goal" onclick="shop.saveGoal(2)">Fijar como objetivo</button>
 	            </div>
+	            <div class="item-purchased">
+					<h1>Producto adquirido</h1>
+					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
+			    	<button>Cerrar</button>
+				</div>
 	        </div>
 		</div>
 		<h2>Ofertas de cloud</h2>
@@ -46,7 +58,8 @@
 				<img src="/images/movistar/nubico.png" style="margin: 25px auto;"/>
 			</div>
 			<div class="shop-item-container">
-	            <div>
+	            <div class="item-description">
+	            	<p class="purchased-title">¡Ya adquirido!</p>
 	                <h1>MoviNubico y Movinternet: 35 Movipuntos</h1>
 	                <p>Sin compromiso</p>
 					<p>Internet 30Mb</p>
@@ -57,6 +70,11 @@
     				<button class="buy" id="buy-3">Comprar</button>
     				<button class="goal" onclick="shop.saveGoal(3)">Fijar como objetivo</button>
 	            </div>
+	            <div class="item-purchased">
+					<h1>Producto adquirido</h1>
+					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
+			    	<button>Cerrar</button>
+				</div>
 	        </div>
 		</div>
 		<div class="sale-container">
@@ -65,7 +83,8 @@
 				<img src="/images/movistar/verisure.png" style="max-width: 80%; margin:25px auto;"/>
 			</div>
 			<div class="shop-item-container">
-	            <div style="height: 190px;">
+	            <div class="item-description" style="height: 190px;">
+	            	<p class="purchased-title">¡Ya adquirido!</p>
 	                <h1>Movimovil y Movisure: 35 Movipuntos</h1>
 	                <p>Línea Móvil 4G</p>
 					<p>Control de vigilancia en la nube de tu hogar</p>
@@ -73,6 +92,11 @@
     				<button class="buy" id="buy-4">Comprar</button>
     				<button class="goal" onclick="shop.saveGoal(4)">Fijar como objetivo</button>
 	            </div>
+	            <div class="item-purchased">
+					<h1>Producto adquirido</h1>
+					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
+			    	<button>Cerrar</button>
+				</div>
 	        </div>
 		</div>
 		<h2>Ofertas de Movifusión</h2>
@@ -82,7 +106,8 @@
 				<img src="/images/movistar/fusion.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div style="height: 265px;">
+	            <div class="item-description" style="height: 265px;">
+	            	<p class="purchased-title">¡Ya adquirido!</p>
 	                <h1>Movifusión 1: 40 Movipuntos</h1>
 	                <p>Internet 30Mb</p>
 					<p>Línea fija</p>
@@ -92,6 +117,11 @@
     				<button class="buy" id="buy-5">Comprar</button>
     				<button class="goal" onclick="shop.saveGoal(5)">Fijar como objetivo</button>
 	            </div>
+	            <div class="item-purchased">
+					<h1>Producto adquirido</h1>
+					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
+			    	<button>Cerrar</button>
+				</div>
 	        </div>
 		</div>
 		<div class="sale-container">
@@ -100,7 +130,8 @@
 				<img src="/images/movistar/fusion.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div style="height: 230px;">
+	            <div class="item-description" style="height: 230px;">
+	            	<p class="purchased-title">¡Ya adquirido!</p>
 	                <h1>Movifusión 2: 40 Movipuntos</h1>
 	                <p>Internet 30Mb</p>
 					<p>Línea Móvil 4G</p>
@@ -109,6 +140,11 @@
     				<button class="buy" id="buy-6">Comprar</button>
     				<button class="goal" onclick="shop.saveGoal(6)">Fijar como objetivo</button>
 	            </div>
+	            <div class="item-purchased">
+					<h1>Producto adquirido</h1>
+					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
+			    	<button>Cerrar</button>
+				</div>
 	        </div>
 		</div>
 	</div>

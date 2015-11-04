@@ -96,7 +96,7 @@ function registerInShoppingHistory($conn, $userId, $itemId, $points_variation, $
 }
 
 /******************************************
-* Funciones de puntos
+* Funciones de ofertas
 ******************************************/
 
 /**
@@ -119,7 +119,7 @@ function getPointsCost($game, $itemsNumber, $die = true){
 			if($itemsNumber == 4){
 				return -2;
 			}else if($itemsNumber == 3){
-				return -3;
+				return -5;
 			}
 			die(json_encode(array("ok" => false, "msg" => "4.2 Error: No se encuentra este juego (Cartas) para estos items")));
 		break;
@@ -128,7 +128,7 @@ function getPointsCost($game, $itemsNumber, $die = true){
 			if($itemsNumber == 4){
 				return -2;
 			}else if($itemsNumber == 3){
-				return -5;
+				return -3;
 			}
 			die(json_encode(array("ok" => false, "msg" => "4.3 Error: No se encuentra este juego (Cajas) para estos items")));
 		break;
@@ -226,6 +226,39 @@ function getGoalName($itemId){
     default:
       return null;
   }
+}
+
+/**
+* Función getUserPurchases: Obtener productos comprados por el jugador
+* @param $conn | Conexión activa a BD
+* @returns {int} | Devuelve los puntos
+*/
+function getUserPurchases($conn, $userId){
+	//Obtener datos del usuario por su id 
+	$sql="SELECT item_id, id_user, COUNT(*) as how_many FROM shoppingHistory WHERE id_user='".$userId."' GROUP BY item_id";
+	$result = $conn->query($sql);
+
+	//Compras de usuario
+	$purchases=array();
+
+	//Comprobar usuario
+	if ($result->num_rows > 0) {
+	    //Datos encontrados
+	    while($row = $result->fetch_assoc()) {
+		    //Si el usuario es correcto...
+		    if($userId===$row["id_user"]){
+		        //Usuario correcto, guardar compra adquirida al final del array
+		        $purchases[] = array('itemId' => $row["item_id"], "howMany" => $row["how_many"]);
+		    }else{
+		        //Error
+		        return null;
+		    }
+		}
+		return $purchases;
+	} else {
+	    //No hay nada comprado
+	    return null;
+	}
 }
 
 /******************************************

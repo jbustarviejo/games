@@ -51,8 +51,8 @@
                 <h2 class="h2-title">La caña más larga</h2>
                 <p class="screen-msg">Elige una de las cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
             </div>
-            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(3);">3 cañas<br/><small>(-1 punto)</small></button>
-            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.strawsGame.init(4);">4 cañas<br/><small>(-1 punto)</small></button>
+            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(3);">3 cañas<br/><small class="red">-1 punto por participar</small><br/><small class="green">+ 3 puntos si ganas</small></button>
+            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.strawsGame.init(4);">4 cañas<br/><small class="red">-1 punto por participar</small><br/><small class="green">+ 4 puntos si ganas</small></button>
             <!--button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.strawsGame.init(5);">5 cañas</button-->
         </div>         
         <!--Juego 1: Contenedor principal-->
@@ -88,8 +88,8 @@
                 <h2 class="h2-title">Adivina el color</h2>
                 <p class="screen-msg">Estate atento a las cartas. Se mezclarán y se cogerá una al azar ¿podrás adivinar el color del reverso?</p>
             </div>
-            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.cardsGame.init(3);">3 cartas<br/><small>(-3 puntos)</small></button>
-            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(4);">4 cartas<br/><small>(-2 puntos)</small></button>
+            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.cardsGame.init(3);">3 cartas<br/><small class="red">-5 puntos por participar</small><br/><small class="green">+ 10 puntos si ganas</small></button>
+            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(4);">4 cartas<br/><small class="red">-2 puntos por participar</small><br/><small class="green">+ 4 puntos si ganas</small></button>
             <!--button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.cardsGame.init(5);">5 cartas</button-->
         </div>
         <!--Juego 2: Contenedor principal-->
@@ -137,8 +137,8 @@
                 <h2 class="h2-title">Encuentra la caja con el premio</h2>
                 <p class="screen-msg">¿Eres capaz de encontrar la caja con el premio?</p>
             </div>
-            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.boxesGame.init(3);">3 cajas<br/><small>(-5 puntos)</small></button>
-            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.boxesGame.init(4);">4 cajas<br/><small>(-2 puntos)</small></button>
+            <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.boxesGame.init(3);">3 cajas<br/><small class="red">-3 puntos por participar</small><br/><small class="green">+ 9 puntos si ganas</small></button>
+            <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.boxesGame.init(4);">4 cajas<br/><small class="red">-2 puntos por participar</small><br/><small class="green">+ 8 puntos si ganas</small></small></button>
             <!--button class="play-button-game" onmouseover="$('#blop-sound3')[0].play();" onclick="games.boxesGame.init(5);">5 cajas</button-->
         </div>
         <!--Juego 3: Contenedor principal-->

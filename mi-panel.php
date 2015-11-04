@@ -35,12 +35,34 @@ $content=<<<HTML
   </div>
 HTML;
 }else{
+  //Obtener compras del usuario
+  $purchases=getUserPurchases($conn, $row["id_user"]);
+
+  if(!empty($purchases)){
+    //Rellenar lista de productos adquiridos
+    $userPurchases="<p>Tus produtos adquiridos:</p><ul>";
+    foreach ($purchases as $item) {
+      if($item["howMany"]>1){
+        //Especificar si tiene más de uno
+        $howMany=" (Tienes ".$item["howMany"].")";
+      }else{
+        $howMany="";
+      }
+      $itemId=substr($item["itemId"], 4);
+      $userPurchases.="<li>".getGoalName($itemId).$howMany."</li>";
+    }
+    $userPurchases.="</ul>";
+  }else{
+    $userPurchases="";
+  }
+
 //Contenido de página principal
 $content = <<<HTML
 	<h1 class="fake-title">Mi panel de usuario</h1>
 	<!--Contentedor principal-->    
 	<div id="points-container">
     <p>Tu objetivo actual: <a href="/tienda">$goalName</a></p>
+    $userPurchases
 		<p>Historial de Movipuntos: Tienes $userPoints Movipuntos</p>
 		<script type="text/javascript" src="https://www.google.com/jsapi?autoload={
             'modules':[{
@@ -56,7 +78,7 @@ $content = <<<HTML
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Fecha', 'Puntos', 'Objetivo'],
+          ['Fecha', 'Puntos', 'Objetivo actual'],
           $jsdata
         ]);
 
@@ -91,4 +113,4 @@ HTML;
 }
 
 //Layout de página
-include("pages/layout.php");
+include("pages/layout.php");  
