@@ -24,7 +24,7 @@
                     <a href="/" class="bot_home" ondragstart="return false;"></a>
                     <a href="/juegos" class="bot_desc" ondragstart="return false;">Juegos</a>
                     <a href="/tienda" class="bot_desc" ondragstart="return false;">Tienda</a>
-                    <a href="/mis-puntos" class="bot_desc" ondragstart="return false;">Mi panel</a>
+                    <a href="/mi-panel" class="bot_desc" ondragstart="return false;">Mi panel</a>
                 </div>
                 <div class="logo">
                     <img alt="movistar" src="/images/movistar/movistar-logo.png" ondragstart="return false;">
@@ -110,7 +110,7 @@
                 </form><br/><br/>
                 <button class="login-button" onclick="login.saveSurvey();">Guardar</button>
             </div>
-            <div id="games-goal" style="display:none;">
+            <div id="games-goal" style="display:none; height:285px;">
                 <h2>Marca un objetivo para el MoviJuego</h2>
                 <p>En el Movijuego tienes que participar en tres juegos para poder lograr puntos que te permitan adquirir una oferta ficticia. ¿Cuál será tu objetivo inicial? <small>(Luego podrás modificarlo)</small></p>
                  <select id="select-goal">
@@ -121,34 +121,34 @@
                   <option value="5">Movifusión 1: 40 Movipuntos</option>
                   <option value="6">Movifusión 2: 40 Movipuntos</option>
                 </select> 
-                <div class="buy buy-1">
+                <div class="buy buy-1" height="285">
                     <p>200 min.a fijos y móviles nacionales</p>
                     <p>1,5 GB</p>
                 </div>
-                <div class="buy buy-2" style="display: none;">
+                <div class="buy buy-2" style="display: none;" height="340">
                     <p>Asistencia técnica</p>
                     <p>Fibra Óptica 30Mb simétrica (sujeto a cobertura)</p>
                     <p>Alta e instalación incluida</p>
                     <p>Router Wi-Fi gratis</p>
                 </div>
-                <div class="buy buy-3" style="display: none;">
+                <div class="buy buy-3" style="display: none;" height="370">
                     <p>Sin compromiso</p>
                     <p>Internet 30Mb</p>
                     <p>Acceso Cloud a todas las revistas y libros de forma ilimitada</p>
                     <p>5 lectores simultáneos</p>
                     <p>Garantía de devolución 20 días</p>
                 </div>
-                <div class="buy buy-4" style="display: none;">
+                <div class="buy buy-4" style="display: none;" height="285">
                     <p>Línea Móvil 4G</p>
                     <p>Control de vigilancia en la nube de tu hogar</p>
                 </div>
-                <div class="buy buy-5" style="display: none;">
+                <div class="buy buy-5" style="display: none;" height="330">
                     <p>Internet 30Mb</p>
                     <p>Línea fija</p>
                     <p>Nubico</p>
                     <p>Garantía de devolución 20 días</p>
                 </div>
-                <div class="buy buy-6" style="display: none;">
+                <div class="buy buy-6" style="display: none;" height="300">
                     <p>Internet 30Mb</p>
                     <p>Línea Móvil 4G</p>
                     <p>Verisure</p>

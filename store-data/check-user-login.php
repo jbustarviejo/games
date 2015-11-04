@@ -1,16 +1,18 @@
 <?php
-//Comprobación de login
+/******************************************
+/* Comprobar cookie de usuario
+******************************************/
+
+//Funciones auxiliares
+include("functions.php");
+
+//Si $login = true, mostrar pantalla de login al usuario
 $login=true;
+
 //Si el usuario tiene las cookies
 if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
-	//Conectar a BBDD
-	include("store-data/db_connection.php");
-
-	//Intentar conexión
-	$conn = mysqli_connect($host_name, $user_name, $password, $database);
-	if (mysqli_connect_errno()) {
-	    echo "Error al conectar con servidor MySQL: " . mysqli_connect_error().$host_name. $user_name. $password. $database;
-	}
+	//Obtener datos de conexión a BD
+	include("db_connection.php");
 
 	//Obtener datos del usuario por su id y su Token de seguridad
 	$sql="SELECT points, answer, id_goal, pass, security_token, u.id_user as id_user FROM users u LEFT JOIN survey s on u.id_user = s.id_user LEFT JOIN user_goal g on u.id_user = g.id_user  WHERE u.id_user='".$_COOKIE["games-username"]."' AND security_token='".$_COOKIE["games-st"]."' ORDER BY s.date, g.date DESC LIMIT 1";
@@ -21,7 +23,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 	    //Datos encontrados
 	    $row = $result->fetch_assoc();
 
-    	//Si el usuario es correcto, coger sus puntos
+    	//Si el usuario es correcto, coger sus datos
     	if($_COOKIE["games-username"]===$row["id_user"]){
     		$conn->close();
     		$userPoints=$row["points"];
@@ -39,31 +41,22 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     			$idGoal=$row["id_goal"];
     		}
     	}else{
-            $conn->close();
-            setcookie('games-username', null, -1, '/');
-            setcookie('games-st', null, -1, '/');
-        	if($_SERVER['REQUEST_URI']!="/"){
-					header('Location: /');
-			}
-			//Barra de usuario no logado
-			$user_pannel = '<a href="/juegos"><span>Acceder</span> <img src="images/movistar/user-icon.png"/></a>';
+    		//Usuario incorrecto
+    		userNotLogged($conn);
+    		//Barra de usuario no logado
+			$user_pannel = getUserPannel();
         }
 	} else {
-		$conn->close();
-	    setcookie('games-username', null, -1, '/');
-        setcookie('games-st', null, -1, '/');
-    	if($_SERVER['REQUEST_URI']!="/"){
-			header('Location: /');
-		}
+		//Usuario no encontrado o incorrecto
+		userNotLogged($conn);
 		//Barra de usuario no logado
-		$user_pannel = '<a href="/juegos"><span>Acceder</span> <img src="images/movistar/user-icon.png"/></a>';
+		$user_pannel = getUserPannel();
 	}
 	//Barra de usuario logado
-	$user_pannel = '<a href="/mis-puntos"><span>Hola '.$userName.'. </span><span class="user-points"> Tienes '.$userPoints.' Movipuntos</span> <img src="images/movistar/user-icon.png"/></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>';
+	$user_pannel = getUserPannel($userName, $userPoints);
 }else{
-	if($_SERVER['REQUEST_URI']!="/"){
-		header('Location: /');
-	}
+	//usuario sin cookies
+	userNotLogged();
 	//Barra de usuario no logado
-	$user_pannel = '<a href="/juegos"><span>Acceder</span> <img src="images/movistar/user-icon.png"/></a>';
+	$user_pannel = getUserPannel();
 }

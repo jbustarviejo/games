@@ -204,17 +204,12 @@ games.strawsGame = {
     * @returns {undefined} | No devuelve ningún valor
     **/
     showInstructions: function(){
-        //Mostrar la pantalla de juego principal y la de instrucciones
+        //Mostrar la pantalla de juego principal y la de instrucciones, escondiendo lo demás
         $("#straws-game").show();
         $("#straws-instructions-screen").show();
-
-        //Esconder las demás
         $("#main-menu").hide();
         $("#straws-lose-screen").hide();
         $("#straws-win-screen").hide();
-
-        //Poner la música y pausar la del menú principal
-        games.playTheme(1);
     },
     /**
      * Función games.strawsGame.init: Inicializa el juego de la caña más larga
@@ -222,6 +217,8 @@ games.strawsGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (strawsNumber) {
+        //Poner la música y pausar la del menú principal
+        games.playTheme(1);
         //Calcular tiempo hasta elegir juego, restar puntos y volver aquí
         games.sendTimeToChoose("strawsGame", strawsNumber, function(){
 
@@ -401,9 +398,6 @@ games.cardsGame = {
         $("#cards-lose-screen").hide();
         $("#cards-play-button").show();
         $("#cards-instructions-screen").show();
-
-        //Poner la música y pausar la del menú principal
-        games.playTheme(2);
     },
     /**
      * Función games.cardsGame.init: Inicializa el juego de las cartas
@@ -411,6 +405,8 @@ games.cardsGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (cardsNumber) {
+        //Poner la música y pausar la del menú principal
+        games.playTheme(2);
         //Calcular tiempo hasta elegir juego, restar puntos y volver aquí
         games.sendTimeToChoose("cardsGame", cardsNumber, function(){
             //Devolver la carta final mostrada a su estado original
@@ -710,7 +706,7 @@ games.cardsGame = {
                 selected_side: selected_side,
                 displayed_side: displayed_side,
                 winner_side: winner_side,
-                cards_number: cards_number,
+                cardsNumber: cards_number,
                 cards_array: cards_array,
                 cards_clicks: cards_clicks,
                 userToken: games.userToken
@@ -745,9 +741,6 @@ games.boxesGame = {
         $("#boxes-lose-screen").hide();
         $("#boxes-win-screen").hide();
         $("#boxes-instructions-screen").show();
-
-        //Poner la música y pausar la del menú principal
-        games.playTheme(3);
     },
     /**
      * Función games.boxesGame.init: Inicializa el juego de las cartas
@@ -755,6 +748,8 @@ games.boxesGame = {
      * @returns {undefined} | No devuelve ningún valor
      **/
     init: function (boxesNumber) {
+        //Poner la música y pausar la del menú principal
+        games.playTheme(3);
         //Calcular tiempo hasta elegir juego, restar puntos y volver aquí
         games.sendTimeToChoose("boxesGame", boxesNumber, function(){
 
@@ -1031,7 +1026,7 @@ games.boxesGame = {
             dataType: "json",
             data: {
                 userId: games.userId,
-                boxes_number: boxes_number,
+                boxesNumber: boxes_number,
                 winner_box: winner_box,
                 last_box_selected: choosen_boxes[choosen_boxes.length - 1],
                 first_box_choose: choosen_boxes[0],

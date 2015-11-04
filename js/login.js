@@ -76,7 +76,7 @@ login = {
                     login.debug && console.log(data);
                     login.userId=username; 
                     //Actualizar puntos
-                    $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span> <span class="user-points">Tienes '+data.points+' puntos</span> <img src="images/movistar/user-icon.png"></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>');
+                    $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span> <span class="user-points">Tienes '+data.points+' Movipuntos</span> <img src="images/movistar/user-icon.png"></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>');
                     //Almacenar las cookies
                     expiry = new Date();
                     expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
@@ -144,8 +144,10 @@ login = {
         $("#select-goal").change(function(){
             //Esconder todas las descripciones
             $(".buy").hide();
-            //Mostrar la descripción del 
-            $(".buy-"+$(this).val()).show();
+            //Mostrar la descripción del item 
+            $(".buy-"+$(this).val()).show()
+            //Cambiar alto de pantalla
+            $("#games-goal").css("height", $(".buy-"+$(this).val()).attr("height")+"px");
         });
     },
         /**

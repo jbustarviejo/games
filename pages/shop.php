@@ -10,7 +10,7 @@
 				<img src="/images/movistar/movil.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div>
+	            <div style="height: 200px;">
 	                <h1>Línea Movimovil: 30 Movipuntos</h1>
 	                <p>200 min.a fijos y móviles nacionales</p>
     				<p>1,5 GB</p>
@@ -26,7 +26,7 @@
 				<img src="/images/movistar/internet.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div>
+	            <div style="height: 270px;">
 	                <h1>Movinternet fijo: 30 Movipuntos</h1>
 	                <p>Asistencia técnica</p>
 					<p>Fibra Óptica 30Mb simétrica (sujeto a cobertura)</p>
@@ -65,7 +65,7 @@
 				<img src="/images/movistar/verisure.png" style="max-width: 80%; margin:25px auto;"/>
 			</div>
 			<div class="shop-item-container">
-	            <div>
+	            <div style="height: 190px;">
 	                <h1>Movimovil y Movisure: 35 Movipuntos</h1>
 	                <p>Línea Móvil 4G</p>
 					<p>Control de vigilancia en la nube de tu hogar</p>
@@ -82,7 +82,7 @@
 				<img src="/images/movistar/fusion.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div>
+	            <div style="height: 265px;">
 	                <h1>Movifusión 1: 40 Movipuntos</h1>
 	                <p>Internet 30Mb</p>
 					<p>Línea fija</p>
@@ -100,7 +100,7 @@
 				<img src="/images/movistar/fusion.png"/>
 			</div>
 			<div class="shop-item-container">
-	            <div>
+	            <div style="height: 230px;">
 	                <h1>Movifusión 2: 40 Movipuntos</h1>
 	                <p>Internet 30Mb</p>
 					<p>Línea Móvil 4G</p>

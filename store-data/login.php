@@ -1,15 +1,14 @@
 <?php
+/******************************************
+/* Registro de tiempos en Base de datos. Calcular coste de paricipación en el juego
+******************************************/
 
-//Conectar a BBDD
+//Obtener datos de conexión a BD
 include("db_connection.php");
+//Funciones auxiliares
+include("functions.php");
 
-//Intentar conexión
-$conn = mysqli_connect($host_name, $user_name, $password, $database);
-if (mysqli_connect_errno()) {
-    echo "Error al conectar con servidor MySQL: " . mysqli_connect_error().$host_name. $user_name. $password. $database;
-}
-
-//Obtener datos del usuario por su id y su Token de seguridad
+//Obtener datos del usuario por su id y su contraseña
 $sql="SELECT points, answer, pass, security_token, u.id_user as id_user FROM users u LEFT JOIN survey s on u.id_user = s.id_user WHERE u.id_user='".$_POST["username"]."' AND pass='".$_POST["password"]."' ORDER BY s.date DESC LIMIT 1";
 $result = $conn->query($sql);
 

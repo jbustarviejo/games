@@ -1,5 +1,5 @@
 <?php
-
+/*
 include("db_connection.php");
 
 $conn = mysqli_connect($host_name, $user_name, $password, $database);
@@ -24,4 +24,4 @@ if ($result->num_rows > 0) {
 } else {
 	$conn->close();
     echo json_encode(array("ok" => false));
-}
+}*/

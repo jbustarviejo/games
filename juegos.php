@@ -1,4 +1,8 @@
 <?php
+/******************************************
+/* Página de los juegos
+******************************************/
+
 //Coger Contenido
 $content = file_get_contents("pages/games.php");
 //Título

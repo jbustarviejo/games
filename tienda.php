@@ -1,4 +1,8 @@
 <?php
+/******************************************
+/* Página de la tienda
+******************************************/
+
 //Coger Contenido
 $content = file_get_contents("pages/shop.php");
 //Título

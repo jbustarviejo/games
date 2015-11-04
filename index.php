@@ -1,4 +1,8 @@
 <?php
+/******************************************
+/* Página raíz
+******************************************/
+
 //Coger Contenido
 $content = file_get_contents("pages/index.php");
 //Título

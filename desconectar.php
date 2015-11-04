@@ -1,13 +1,10 @@
 <?php
+/******************************************
+/* Desconectar al usuario
+******************************************/
+
 //Borrar cookies de usuario
-if($_COOKIE["games-username"]){
-	unset($_COOKIE["games-username"]);
-	setcookie('games-username', null, -1, '/');
-}
-if($_COOKIE["games-st"]){
-	unset($_COOKIE["games-st"]);
-	setcookie('games-st', null, -1, '/');
-}
+clearUserCookies();
 
 //Volver a raíz
 header("Location: /");
