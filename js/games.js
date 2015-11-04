@@ -103,6 +103,16 @@ var games = {
         this.start_decission = new Date().getTime();
     },
     /**
+     * Función games.hideNotEnoughtPointsScreen: Esconde la pantalla de 'No tienes suficientes puntos'
+     * @returns {undefined} | No devuelve ningún valor
+     **/
+    hideNotEnoughtPointsScreen: function () {
+        $("#not-enought-points-screen").hide();
+        var theme = $("#main-theme")[0];
+        theme.currentTime = 0;
+        theme.play();
+    },
+    /**
      * Función games.resized: En caso de que el browser cambie de tamaño, se cambia el tamaño del contenedor de los juegos
      * @returns {undefined} | No devuelve ningún valor
      **/
@@ -171,6 +181,15 @@ var games = {
             success: function (data) {
                 $("#loading-screen").hide();
                 if(data.ok==false){
+                    //Parar música
+                    $("#theme-audio1")[0].pause();
+                    $("#theme-audio2")[0].pause();
+                    $("#theme-audio3")[0].pause();
+                    if(data.notEnoughtPoints==true){
+                        //El usuario no tiene suficientes puntos
+                        $("#not-enought-points-screen").show();
+                        return; 
+                    }
                     //En caso de error imprimirlo por pantalla
                     $("#error-screen").show();
                     return;

@@ -24,6 +24,14 @@
         </div>
     </div>
 
+    <!--Pantalla de 'No tienes suficientes puntos'--> 
+    <div id="not-enought-points-screen" class="screen" style="display: none;">
+        <span class="close-button" onclick="games.hideNotEnoughtPointsScreen();">X</span><br/><br/><br/><br/>
+        <h2 class="h2-title">No tienes suficientes puntos para este juego :(</h2>
+        <p class="screen-msg">Prueba con otro que necesite menos puntos</p>
+        <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.hideNotEnoughtPointsScreen();"/>
+    </div>
+
     <!--Menú principal-->
     <div id="main-menu" class="screen menu-screen">
         <div>

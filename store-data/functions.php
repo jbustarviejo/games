@@ -33,7 +33,7 @@ function getUserPoints($conn, $userId, $userToken){
 	} else {
 	    //No encontrado
 	    $conn->close();
-	    die(json_encode(array("ok" => false, "msg" => "1.2 Error: " . $sql . "<br>" . $conn->error . ". The executed query was" . $sql)));
+	    die(json_encode(array("ok" => false, "msg" => "1.2 Error: " . $conn->error . ". The executed query was" . $sql)));
 	}
 }
 
@@ -63,7 +63,7 @@ function registerInHistory($conn, $userId, $concept, $points_variation, $points_
 	} else {
 		//Error
 	    $conn->close();
-	    die(json_encode(array("ok" => false, "msg" => "2.2 Error: " . $sql . "<br>" . $conn->error . ". The executed query was: " . $sql)));
+	    die(json_encode(array("ok" => false, "msg" => "2.2 Error: " . $conn->error . ". The executed query was: " . $sql)));
 	}
 }
 
@@ -91,7 +91,7 @@ function registerInShoppingHistory($conn, $userId, $itemId, $points_variation, $
 	} else {
 		//Error
 	    $conn->close();
-	    die(json_encode(array("ok" => false, "msg" => "3.2 Error: " . $sql . "<br>" . $conn->error . ". The executed query was: " . $sql)));
+	    die(json_encode(array("ok" => false, "msg" => "3.2 Error: " . $conn->error . ". The executed query was: " . $sql)));
 	}
 }
 
@@ -278,7 +278,7 @@ function registerInBoxesGameRecords($conn, $userId){
 		return;
 	} else {
 		$conn->close();
-	    die(json_encode(array("ok" => false, "msg" => "8.1 Error: " . $sql . "<br>" . $conn->error . ". The executed query was" . $sql)));
+	    die(json_encode(array("ok" => false, "msg" => "8.1 Error: " . $conn->error . ". The executed query was" . $sql)));
 	}
 }
 

@@ -157,6 +157,15 @@
             </div>
         </div>
 
+        <!--Diálogo de regalo de puntos a usuario-->
+        <div id="user-without-points-dialog" <?php echo (!$userWithZeroPoints ? "style='display:none'" : ""); ?>>
+            <div style="height: 200px;">
+                <h1>¡Te has quedado sin puntos!</h1>
+                <p>Has perdido tus puntos, ¡pero no desistas! <br/>Aquí tienes 10 puntos de regalo para que puedas seguir jugando</p>
+                <button onclick="$('#user-without-points-dialog').hide();" style="opacity: 1;">¡A jugar!</button>
+            </div>
+        </div>
+
         <!--Footer de la página fake-->
         <footer>
             <!--img class="movistar-image-fake" src="images/movistar/movistar-bottom-fake.png"/-->

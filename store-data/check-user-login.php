@@ -25,11 +25,19 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 
     	//Si el usuario es correcto, coger sus datos
     	if($_COOKIE["games-username"]===$row["id_user"]){
-    		$conn->close();
     		$userPoints=$row["points"];
+    		if($userPoints<=0){
+    			//Usuario sin puntos
+				$userWithZeroPoints=true;
+				//Aumentar a 10
+				$userPoints = 10;
+				//Regalar 10 puntos
+				registerInHistory($conn, $row["id_user"], "Regalo de puntos", 10, $userPoints);
+    		}
     		$userName=$row["id_user"];
     		$userToken=$row["security_token"];
     		$login=false;
+    		$conn->close();
     		if(empty($row["answer"])){
     			//Si no tiene fijada una respuesta de la encuesta, indicarlo
     			$showAnswer=true;
