@@ -198,53 +198,5 @@ login = {
                 $("#login-menu-container").fadeOut(500);
             }
         });
-    },
+    }    
 };
-
-
-    /*
-    /**
-    * Función games.showSurvey: Mostrar respuesta en la encuesta
-    * @returns {undefined} | No devuelve ningún valor
-    */
-    /*showSurvey: function(checked){
-        games.debug && console.log("Stored survey answer", checked);
-        //Mostrar la encuesta
-        $("#games-survey").show(200);
-        //Mostrar la última respuesta insertada si la hubo
-        if(checked){
-            $("#games-survey [type=radio][value='"+checked+"']").prop('checked', 'checked');
-        }else{
-            $("#games-survey [type=radio]").first().prop('checked', 'checked');
-        }
-
-        //En caso de elegir una nueva respuesta, registrarla
-        $("#games-survey [type=radio]").click(function(){
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "/store-data/survey-answer",
-                data: {
-                    userId: games.userId,
-                    answer: $("#games-survey [type=radio]:checked").val()
-                },
-                success: function (data) {
-                    //No hacer nada...
-                },
-                //En caso de error alertar
-                error: function (data) {
-                    //No hacer nada...
-                }
-            });
-        });
-    }
-    <div id="games-survey" style="display:none;">
-    <h2>Encuesta: ¿Cómo sueles jugar a videojuegos?</h2>
-    <form>
-        <input type="radio" name="survey" value="No juego habitualmente" />No juego habitualmente<br/>
-        <input type="radio" name="survey" value="Juego a videojuegos de ordenador" />Juego a videojuegos de ordenador<br/>
-        <input type="radio" name="survey" value="Juego a videojuegos online" />Juego a videojuegos online<br/>
-        <input type="radio" name="survey" value="Juego a videoconsolas" />Juego a videoconsolas<br/>
-    </form>
-</div>
-*/

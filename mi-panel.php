@@ -24,6 +24,38 @@ $jsdata=$data["jsdata"];
 //Obtener nombre de la oferta
 $goalName = getGoalName($idGoal);
 
+//Encuesta de usuario
+$surveyHTML=<<<HTML
+<div id="games-survey">
+    <h2>Encuesta: ¿Cómo sueles jugar a videojuegos?</h2>
+    <form>
+        <input type="radio" name="survey" selected="selected" value="No juego habitualmente" />No juego habitualmente<br/>
+        <input type="radio" name="survey" value="Juego a videojuegos de ordenador" />Juego a videojuegos de ordenador<br/>
+        <input type="radio" name="survey" value="Juego a videojuegos online" />Juego a videojuegos online<br/>
+        <input type="radio" name="survey" value="Juego a videoconsolas" />Juego a videoconsolas<br/>
+    </form>
+</div>
+<script>
+  //Una vez se haya cargado la página, señalar en la encuesta si hay algo prefijado
+  $(document).ready(function () {
+    $("#games-survey [type=radio][value='$surveyAnswer']").prop('checked', 'checked');
+    //En caso de elegir una nueva respuesta, registrarla
+    $("#games-survey [type=radio]").click(function(){
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/store-data/survey-answer",
+            data: {
+                userId: login.userId,
+                answer: $("#games-survey [type=radio]:checked").val()
+            }
+        });
+    });
+  });
+</script>
+HTML;
+
+
 if($table==""){
 $content=<<<HTML
   <h3 class="fake-title">Mi panel de usuario</h3>
@@ -32,6 +64,7 @@ $content=<<<HTML
     <p>Tu objetivo actual: <a href="/tienda">$goalName</a></p>
     <p>Historial de Movipuntos: Tienes $userPoints Movipuntos</p>
     <h2 style="color: rgb(0, 81, 122);">¡Aún no tienes Movipuntos! Empieza a jugar <a href="/juegos">aquí</a></h2>
+    $surveyHTML
   </div>
 HTML;
 }else{
@@ -99,6 +132,7 @@ $content = <<<HTML
   			drawChart();
 	  });
     </script>
+    $surveyHTML
 	<div id="curve_chart" style="width: 100%; height: 500px; text-align: center;">Cargando datos...</div><br/><br/>
 		<table style="width:100%">
 			 <thead>
@@ -109,6 +143,7 @@ $content = <<<HTML
 			</tbody>
 		</table> 
 	</div>
+
 HTML;
 }
 

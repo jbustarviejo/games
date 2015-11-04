@@ -370,6 +370,24 @@ function userNotLogged($conn=null){
 }
 
 /**
+* Función getGameName: Obtener nombre completo de juego según se almacenó en BD
+* @param $game {string} | Nombre del juego
+* @returns {string} | Devuelve el nombre del juego
+*/
+function getGameName($game){
+  switch ($game) {
+    case "strawsGame":
+      return "Juego de las cañas";
+    case "cardsGame":
+      return "Juego de las cartas";
+    case "boxesGame":
+      return "Juego de las cajas";
+    default:
+      return null;
+  }
+}
+
+/**
 * Función getUserPointsHistory: Obtener historial de puntos
 * @param $conn | Conexión a BD
 * @param $userName {string} | Nombre de usuario
@@ -377,7 +395,7 @@ function userNotLogged($conn=null){
 * @returns array | Devuelve un array con dos subarrays, uno con datos en formato de tabla y otro con datos para inclusión en js
 */
 function getUserPointsHistory($conn, $userName, $idGoal){
-	$sql='(SELECT s.date as date, s.id_user as id_user, s.item_id as concept, s.points_variation as points_variation, s.points_result as points_result FROM shoppingHistory s WHERE id_user = "'.$userName.'") UNION (SELECT h.date as date, h.id_user as id_user, h.game as concept, h.points_variation as points_variation, h.points_result as points_result FROM gamesHistory h WHERE id_user = "'.$userName.'") order by date DESC';
+	$sql='(SELECT s.date as date, s.id_user as id_user, s.item_id as concept, s.points_variation as points_variation, s.points_result as points_result FROM shoppingHistory s WHERE id_user = "'.$userName.'") UNION (SELECT h.date as date, h.id_user as id_user, h.game as concept, h.points_variation as points_variation, h.points_result as points_result FROM gamesHistory h WHERE id_user = "'.$userName.'" AND h.points_variation > 0) order by date DESC';
 
 	$result = $conn->query($sql);
 
@@ -391,7 +409,7 @@ function getUserPointsHistory($conn, $userName, $idGoal){
 	    	if($_COOKIE["games-username"] === $row["id_user"]){
 		        $concept=getGoalName(substr($row["concept"],4,strlen($row["concept"])));
 		        if(!$concept){
-		          $concept=$row["concept"];
+		          $concept=getGameName($row["concept"]);
 		        }
 		        $table.="<tr><td>".$concept."</td>"."<td>".$row["date"]."</td><td>".$row["points_variation"]."</td><td>".$row["points_result"]."</td></tr>";
 	    		$jsdata.="[new Date('".str_replace(" ", "T", $row["date"])."'),  ".($row["points_result"] == 0 ? "0":$row["points_result"]).", ".-getItemCost("buy-".$idGoal, false)."],";
