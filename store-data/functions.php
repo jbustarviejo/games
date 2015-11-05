@@ -403,7 +403,7 @@ function getGameName($game){
     case "boxesGame":
       return "Juego de las cajas";
     default:
-      return null;
+      return $game;
   }
 }
 
