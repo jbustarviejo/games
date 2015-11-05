@@ -41,8 +41,8 @@ function getUserPoints($conn, $userId, $userToken){
 /**
 * Función registerInHistory: Registrar una variación de puntos
 * @param $conn | Conexión activa a BD
-* @param $userId | Id de usuario
-* @param $concept | Concepto de la variación
+* @param $userId {string}| Id de usuario
+* @param $concept {string}| Concepto de la variación
 * @param $points_variation {int} | Variación de puntos
 * @param $points_result {int} | Resultado final de puntos
 * @returns NULL | No devuelve ningún valor
@@ -95,6 +95,26 @@ function registerInShoppingHistory($conn, $userId, $itemId, $points_variation, $
 	}
 }
 
+/**
+* Función registerInShoppingHistory: Registrar la variación de puntos por la compra
+* @param $conn | Conexión a BD
+* @param $userId {string} | Id de usuario
+* @param $itemId {string}| Id de item
+* @returns NULL | No devuelve ningún valor
+*/
+function returnItemInShop($conn, $userId, $itemId){
+	//Marcar item más antiguo posible como devuelto
+	$sql = "UPDATE shoppingHistory SET return_date = '" . date('Y-m-d H:i:s') . "' WHERE item_id='buy-" . $itemId . "' AND id_user='" . $userId . "' AND date > (NOW() - INTERVAL 20 DAY) AND return_date IS NULL ORDER BY DATE ASC LIMIT 1";
+
+	if ($conn->query($sql) === TRUE && mysqli_affected_rows($conn)>0) {
+		return;
+	} else {
+		//Error
+	    $conn->close();
+	    die(json_encode(array("ok" => false, "msg" => "4.1 Error: " . $conn->error . ". The executed query was: " . $sql)));
+	}
+}
+
 /******************************************
 * Funciones de ofertas
 ******************************************/
@@ -112,7 +132,7 @@ function getPointsCost($game, $itemsNumber, $die = true){
 			if($itemsNumber == 4 || $itemsNumber == 3){
 				return -1;
 			}
-			die(json_encode(array("ok" => false, "msg" => "4.1 Error: No se encuentra este juego (Pajitas) para estos items")));
+			die(json_encode(array("ok" => false, "msg" => "5.1 Error: No se encuentra este juego (Pajitas) para estos items")));
 		break;
 		//Juego de las cartas
 		case 'cardsGame':
@@ -121,7 +141,7 @@ function getPointsCost($game, $itemsNumber, $die = true){
 			}else if($itemsNumber == 3){
 				return -5;
 			}
-			die(json_encode(array("ok" => false, "msg" => "4.2 Error: No se encuentra este juego (Cartas) para estos items")));
+			die(json_encode(array("ok" => false, "msg" => "5.2 Error: No se encuentra este juego (Cartas) para estos items")));
 		break;
 		//Juego de las cajas
 		case 'boxesGame':
@@ -130,10 +150,10 @@ function getPointsCost($game, $itemsNumber, $die = true){
 			}else if($itemsNumber == 3){
 				return -3;
 			}
-			die(json_encode(array("ok" => false, "msg" => "4.3 Error: No se encuentra este juego (Cajas) para estos items")));
+			die(json_encode(array("ok" => false, "msg" => "5.3 Error: No se encuentra este juego (Cajas) para estos items")));
 		break;
 		default:
-			die(json_encode(array("ok" => false, "msg" => "4.4 Error: No se encuentra este juego")));
+			die(json_encode(array("ok" => false, "msg" => "5.4 Error: No se encuentra este juego")));
 		break;
 	}
 }
@@ -178,7 +198,7 @@ function getPointsPrize($game, $itemsNumber){
 			}else if($itemsNumber == 3){
 				return 3;
 			}
-			die(json_encode(array("ok" => false, "msg" => "5.1 Error: No se encuentra este juego (Pajitas) para estos items")));
+			die(json_encode(array("ok" => false, "msg" => "6.1 Error: No se encuentra este juego (Pajitas) para estos items")));
 		break;
 		//Juego de las cartas
 		case 'cardsGame':
@@ -187,7 +207,7 @@ function getPointsPrize($game, $itemsNumber){
 			}else if($itemsNumber == 3){
 				return 10;
 			}
-			die(json_encode(array("ok" => false, "msg" => "5.2 Error: No se encuentra este juego (Cartas) para estos items")));
+			die(json_encode(array("ok" => false, "msg" => "6.2 Error: No se encuentra este juego (Cartas) para estos items")));
 		break;
 		//Juego de las cajas
 		case 'boxesGame':
@@ -196,10 +216,10 @@ function getPointsPrize($game, $itemsNumber){
 			}else if($itemsNumber == 3){
 				return 9;
 			}
-			die(json_encode(array("ok" => false, "msg" => "5.3 Error: No se encuentra este juego (Cajas) para estos items")));
+			die(json_encode(array("ok" => false, "msg" => "6.3 Error: No se encuentra este juego (Cajas) para estos items")));
 		break;
 		default:
-			die(json_encode(array("ok" => false, "msg" => "5.4 Error: No se encuentra este juego")));
+			die(json_encode(array("ok" => false, "msg" => "6.4 Error: No se encuentra este juego")));
 		break;
 	}
 }
@@ -231,11 +251,11 @@ function getGoalName($itemId){
 /**
 * Función getUserPurchases: Obtener productos comprados por el jugador
 * @param $conn | Conexión activa a BD
-* @returns {int} | Devuelve los puntos
+* @returns {array} | Devuelve un array con los datos de los items comprados
 */
 function getUserPurchases($conn, $userId){
 	//Obtener datos del usuario por su id 
-	$sql="SELECT item_id, id_user, COUNT(*) as how_many FROM shoppingHistory WHERE id_user='".$userId."' GROUP BY item_id";
+	$sql="SELECT item_id, id_user, COUNT(*) as how_many, (DATEDIFF(NOW(), max(date))<20) AND (item_id='buy-3' OR item_id='buy-5') as can_return FROM shoppingHistory WHERE id_user='".$userId."' AND return_date IS NULL GROUP BY item_id";
 	$result = $conn->query($sql);
 
 	//Compras de usuario
@@ -248,7 +268,7 @@ function getUserPurchases($conn, $userId){
 		    //Si el usuario es correcto...
 		    if($userId===$row["id_user"]){
 		        //Usuario correcto, guardar compra adquirida al final del array
-		        $purchases[] = array('itemId' => $row["item_id"], "howMany" => $row["how_many"]);
+		        $purchases[] = array('itemId' => $row["item_id"], "howMany" => $row["how_many"], "canReturn" => $row["can_return"]);
 		    }else{
 		        //Error
 		        return null;
@@ -277,7 +297,7 @@ function registerInStrawsGameRecords($conn, $userId){
 		return;
 	} else {
 		$conn->close();
-	    die(json_encode(array("ok" => false, "msg" => "6.1 Error: " . $sql . "<br>" . $conn->error . ". The executed query was" . $sql)));
+	    die(json_encode(array("ok" => false, "msg" => "7.1 Error: " . $sql . "<br>" . $conn->error . ". The executed query was" . $sql)));
 	}
 }
 
@@ -294,7 +314,7 @@ function registerIncardsGameRecords($conn, $userId){
 		return;
 	} else {
 		$conn->close();
-	    die(json_encode(array("ok" => false, "msg" => "7.1 Error: " . $sql . "<br>" . $conn->error . ". The executed query was" . $sql)));
+	    die(json_encode(array("ok" => false, "msg" => "8.1 Error: " . $sql . "<br>" . $conn->error . ". The executed query was" . $sql)));
 	}
 }
 
@@ -311,7 +331,7 @@ function registerInBoxesGameRecords($conn, $userId){
 		return;
 	} else {
 		$conn->close();
-	    die(json_encode(array("ok" => false, "msg" => "8.1 Error: " . $conn->error . ". The executed query was" . $sql)));
+	    die(json_encode(array("ok" => false, "msg" => "9.1 Error: " . $conn->error . ". The executed query was" . $sql)));
 	}
 }
 

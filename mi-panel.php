@@ -81,8 +81,14 @@ HTML;
       }else{
         $howMany="";
       }
+      if($item["canReturn"]==true){
+        //Si puede devolver el artículo
+        $canReturn=" - <a href='/tienda'> Artículo en plazo de devolución en tienda</a>";
+      }else{
+        $canReturn="";
+      }
       $itemId=substr($item["itemId"], 4);
-      $userPurchases.="<li>".getGoalName($itemId).$howMany."</li>";
+      $userPurchases.="<li>".getGoalName($itemId).$howMany.$canReturn."</li>";
     }
     $userPurchases.="</ul>";
   }else{

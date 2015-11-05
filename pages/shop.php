@@ -59,7 +59,7 @@
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description">
-	            	<p class="purchased-title">¡Ya adquirido!</p>
+	            	<p class="purchased-title">¡Ya adquirido! <span class="return-item" onclick="shop.returnItem(3)">- Devolver</span></p>
 	                <h1>MoviNubico y Movinternet: 35 Movipuntos</h1>
 	                <p>Sin compromiso</p>
 					<p>Internet 30Mb</p>
@@ -74,6 +74,11 @@
 					<h1>Producto adquirido</h1>
 					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
 			    	<button>Cerrar</button>
+				</div>
+				<div class="item-returned" style="display:none;height: 175px;">
+					<h1>Producto devuelto</h1>
+					<p>Acabas de devolver este producto. Haz click en cerrar para recargar la página</p>
+			    	<button onclick="$(this).addClass('disabled'); location.reload();">Cerrar</button>
 				</div>
 	        </div>
 		</div>
@@ -107,7 +112,7 @@
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description" style="height: 265px;">
-	            	<p class="purchased-title">¡Ya adquirido!</p>
+	            	<p class="purchased-title">¡Ya adquirido! <span class="return-item" onclick="shop.returnItem(5)">- Devolver</span></p>
 	                <h1>Movifusión 1: 40 Movipuntos</h1>
 	                <p>Internet 30Mb</p>
 					<p>Línea fija</p>
@@ -121,6 +126,11 @@
 					<h1>Producto adquirido</h1>
 					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
 			    	<button>Cerrar</button>
+				</div>
+				<div class="item-returned" style="display:none;height: 175px;">
+					<h1>Producto devuelto</h1>
+					<p>Acabas de devolver este producto. Haz click en cerrar para recargar la página</p>
+			    	<button onclick="$(this).addClass('disabled'); location.reload();">Cerrar</button>
 				</div>
 	        </div>
 		</div>

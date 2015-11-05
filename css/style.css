@@ -1098,7 +1098,14 @@ p.purchased-title{
         height: auto;
     }
 }
-
+.sale-container .return-item{
+    display: none;
+    cursor: pointer;
+    color: #005c83;
+}
+.sale-container.returnable .return-item{
+    display: inline;
+}
 .shop-item-container button {
     background-color: #003245;
     border: 1px solid;

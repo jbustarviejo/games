@@ -40,6 +40,9 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 				$purchaseListForJs="";
 				foreach ($purchases as $item) {
 					$purchaseListForJs.="$('#".$item["itemId"]."').parents('.sale-container:first').addClass('purchased');";
+					if($item["canReturn"]){
+						$purchaseListForJs.="$('#".$item["itemId"]."').parents('.sale-container:first').addClass('returnable');";
+					}
 				}
     		}
     		$userName=$row["id_user"];

@@ -120,5 +120,49 @@ var shop={
     showGoal: function(itemId){
         $(".box-left.goal").removeClass("goal");
         $("#buy-"+itemId).parents(".sale-container").find(".box-left").addClass("goal");
-    }
+    },
+    /**
+    * Función login.returnItem: Devolver artículo en plazo
+    * @param {string} itemID | Id de item
+    * @returns {undefined} | No devuelve ningún valor
+    */
+    returnItem: function(itemId){ 
+        //Diálogo de confirmación 
+        if (confirm("¿Estás seguro de querer devolver el artículo " + $("#buy-"+itemId).siblings("h1").text() + "?")) {
+            //Bloquear botones
+            $("#buy-"+itemId).addClass("disabled").siblings("button").addClass("disabled");
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/store-data/return-item",
+                data: {
+                    userId: shop.userName,
+                    userToken: shop.userToken,
+                    itemId: itemId
+                },
+                success: function (data) {
+                    //Desbloquear botones
+                    $("#buy-"+itemId).removeClass("disabled").siblings("button").removeClass("disabled");
+                    console.log(data);
+                    if(data.ok){
+                        //Si todo es correcto...
+                        var container = $("#buy-"+itemId).parents(".sale-container");
+                        //Esconder descripción
+                        container.find(".item-description").hide();
+                        //Mostrar diálogo de devolución
+                        container.find(".item-returned").show();
+                    }else{
+                        //En caso de error alertar
+                        alert("No se ha podido devolver el artículo");
+                    }
+                },
+                //En caso de error alertar
+                error: function (data) {
+                    //Desbloquear botones
+                    $("#buy-"+itemId).removeClass("disabled").siblings("button").removeClass("disabled");
+                    alert("No se ha podido devolver el artículo");
+                }
+            });
+        }    
+    },
 };

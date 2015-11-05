@@ -271,12 +271,3 @@
         </div>    
     </div>
 </div>
-
-<!--div>
-    <h2>Todo</h2>
-    <ul>
-        <li>Unlog</li>
-        <li>Aviso de compatibilidad, comprobar IE</li>
-        <li>Minificar js y css</li>
-    </ul>
-</div-->
