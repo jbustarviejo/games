@@ -47,8 +47,8 @@ function getUserPoints($conn, $userId, $userToken){
 * @param $points_result {int} | Resultado final de puntos
 * @returns NULL | No devuelve ningún valor
 */
-function registerInHistory($conn, $userId, $concept, $points_variation, $points_result){
-	$sql = "INSERT INTO gamesHistory(`id_user`, `date`, `game`, `time_to_choose`, `points_variation`, `points_result`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', '".$concept."', NULL, '" . $points_variation . "', '" . $points_result .  "')";
+function registerInHistory($conn, $userId, $time_to_choose, $concept, $points_variation, $points_result){
+	$sql = "INSERT INTO gamesHistory(`id_user`, `date`, `game`, `time_to_choose`, `points_variation`, `points_result`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', '".$concept."', " . $time_to_choose . ", '" . $points_variation . "', '" . $points_result .  "')";
 
 	if ($conn->query($sql) === TRUE) {
 		//Actualizar el marcador de usuario
@@ -71,12 +71,15 @@ function registerInHistory($conn, $userId, $concept, $points_variation, $points_
 /**
 * Función registerInShoppingHistory: Registrar la variación de puntos por la compra
 * @param $conn | Conexión a BD
+* @param $userId {string} | Id de usuario
+* @param $time_to_choose {int} | Tiempo tomado hasta decisión final
+* @param $itemId {string}| Id de item
 * @param $points_variation {int} | Variación de puntos
 * @param $points_result {int} | Resultado final de puntos
 * @returns NULL | No devuelve ningún valor
 */
-function registerInShoppingHistory($conn, $userId, $itemId, $points_variation, $points_result){
-	$sql = "INSERT INTO shoppingHistory(`id_user`, `date`, `item_id`, `points_variation`, `points_result`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', '" .$itemId ."','". $points_variation . "', '" . $points_result .  "')";
+function registerInShoppingHistory($conn, $userId, $time_to_choose, $itemId, $points_variation, $points_result){
+	$sql = "INSERT INTO shoppingHistory(`id_user`, `date`, `time_to_choose`, `item_id`, `points_variation`, `points_result`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', " .$time_to_choose .",'". $itemId ."','". $points_variation . "', '" . $points_result .  "')";
 
 	if ($conn->query($sql) === TRUE) {
 		//Actualizar el marcador de usuario
@@ -96,7 +99,7 @@ function registerInShoppingHistory($conn, $userId, $itemId, $points_variation, $
 }
 
 /**
-* Función registerInShoppingHistory: Registrar la variación de puntos por la compra
+* Función returnItemShop: Devolver datos del item adquirido en la tienda por un usuario
 * @param $conn | Conexión a BD
 * @param $userId {string} | Id de usuario
 * @param $itemId {string}| Id de item
@@ -308,7 +311,7 @@ function registerInStrawsGameRecords($conn, $userId){
 * @returns NULL | No devuelve ningún valor
 */
 function registerIncardsGameRecords($conn, $userId){
-	$sql = "INSERT INTO cardsGameRecords (`id_user`, `date`, `time_memory`, `time_decission`, `displayed_side`, `winner_side`, `selected_side`, `cards_number`, `cards_array`, `cards_clicks`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', '" . $_POST["time_memory"] . "', '" . $_POST["time_decission"] . "', '" . $_POST["displayed_side"] . "', '" . $_POST["winner_side"] . "', '" . $_POST["selected_side"] . "', '" . $_POST["cards_number"] . "', '" . $_POST["cards_array"] . "', '" . $_POST["cards_clicks"] . "')";
+	$sql = "INSERT INTO cardsGameRecords (`id_user`, `date`, `time_memory`, `time_decission`, `displayed_side`, `winner_side`, `selected_side`, `cards_number`, `cards_array`, `cards_clicks`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', '" . $_POST["time_memory"] . "', '" . $_POST["time_decission"] . "', '" . $_POST["displayed_side"] . "', '" . $_POST["winner_side"] . "', '" . $_POST["selected_side"] . "', '" . $_POST["cardsNumber"] . "', '" . $_POST["cards_array"] . "', '" . $_POST["cards_clicks"] . "')";
 
 	if ($conn->query($sql) === TRUE) {
 		return;
@@ -325,7 +328,7 @@ function registerIncardsGameRecords($conn, $userId){
 * @returns NULL | No devuelve ningún valor
 */
 function registerInBoxesGameRecords($conn, $userId){
-	$sql = "INSERT INTO boxesGameRecords(`id_user`, `date`, `boxes_number`, `winner_box`, `first_box_choose`, `first_available_boxes_to_change`, `first_time_choosing`, `second_box_choose`, `second_available_boxes_to_change`, `second_time_choosing`, `third_box_choose`, `third_available_boxes_to_change`, `third_time_choosing`, `last_box_selected`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', '" . $_POST["boxesNumber"] . "', '" . $_POST["winner_box"] . "', '" . $_POST["first_box_choose"] . "', '" . $_POST["first_available_boxes_to_change"] . "', '" . $_POST["first_time_choosing"] . "', '" . $_POST["second_box_choose"] . "', '" . $_POST["second_available_boxes_to_change"] . "', '" . $_POST["second_time_choosing"]. "', " . $_POST["third_box_choose"] . ", " . ($_POST["third_available_boxes_to_change"]=="NULL" ? "NULL" : "'" . $_POST["third_available_boxes_to_change"].  "'")  . ", " . $_POST["third_time_choosing"]. ", " . $_POST["last_box_selected"]. ")";
+	$sql = "INSERT INTO boxesGameRecords(`id_user`, `date`, `boxes_number`, `winner_box`, `first_box_choose`, `first_available_boxes_to_change`, `first_time_choosing`, `second_box_choose`, `second_available_boxes_to_change`, `second_time_choosing`, `last_box_selected`) VALUES ('" . $userId . "', '" . date('Y-m-d H:i:s') . "', '" . $_POST["boxesNumber"] . "', '" . $_POST["winner_box"] . "', '" . $_POST["first_box_choose"] . "', '" . $_POST["first_available_boxes_to_change"] . "', '" . $_POST["first_time_choosing"] . "', '" . $_POST["second_box_choose"] . "', '" . $_POST["second_available_boxes_to_change"] . "', '" . $_POST["second_time_choosing"]. "', " . $_POST["last_box_selected"]. ")";
 
 	if ($conn->query($sql) === TRUE) {
 		return;
@@ -415,7 +418,7 @@ function getGameName($game){
 * @returns array | Devuelve un array con dos subarrays, uno con datos en formato de tabla y otro con datos para inclusión en js
 */
 function getUserPointsHistory($conn, $userName, $idGoal){
-	$sql='(SELECT s.date as date, s.id_user as id_user, s.item_id as concept, s.points_variation as points_variation, s.points_result as points_result FROM shoppingHistory s WHERE id_user = "'.$userName.'") UNION (SELECT h.date as date, h.id_user as id_user, h.game as concept, h.points_variation as points_variation, h.points_result as points_result FROM gamesHistory h WHERE id_user = "'.$userName.'" AND h.points_variation > 0) order by date DESC';
+	$sql='(SELECT s.date as date, s.id_user as id_user, s.item_id as concept, s.points_variation as points_variation, s.points_result as points_result FROM shoppingHistory s WHERE id_user = "'.$userName.'") UNION (SELECT h.date as date, h.id_user as id_user, h.game as concept, h.points_variation as points_variation, h.points_result as points_result FROM gamesHistory h WHERE id_user = "'.$userName.'" AND h.points_variation != 0) order by date DESC';
 
 	$result = $conn->query($sql);
 

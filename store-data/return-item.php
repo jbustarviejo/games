@@ -26,6 +26,6 @@ $points_result = $user_points + $points_variation;
 returnItemInShop($conn, $_POST["userId"], $_POST["itemId"]);
 
 //Registrar la variación de los puntos
-registerInHistory($conn, $_POST["userId"], "Devolución de Artículo", $points_variation, $points_result);
+registerInHistory($conn, $_POST["userId"], "NULL", "Devolución de Artículo", $points_variation, $points_result);
 
 die(json_encode(array("ok" => true)));

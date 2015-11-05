@@ -14,6 +14,7 @@ var shop={
 		shop.userName=userName;
 		shop.userToken=userToken;
 		shop.debug && console.log("init");
+        shop.start_decission = new Date().getTime();
 		$("div.sale-container").click(function(){
 			$(".sale-container.clicked").removeClass("clicked");
 			$(this).addClass("clicked");
@@ -44,10 +45,13 @@ var shop={
             data: {
                 userId: shop.userName,
                 userToken: shop.userToken,
-                itemId: itemId
+                itemId: itemId,
+                time: new Date().getTime() - shop.start_decission
             },
             //En caso de éxito, guardar una cookie con el usuario
             success: function (data) {
+                //Reset del cronómetro de tiempos
+                shop.start_decission = new Date().getTime();
                 if (data.ok === true) {
                     //Si todo es correcto...
                     var container = $("#"+itemId).parents(".sale-container");
@@ -80,6 +84,8 @@ var shop={
             },
             //En caso de error alertar
             error: function (data) {
+                //Reset del cronómetro de tiempos
+                shop.start_decission = new Date().getTime();
             	//Desbloquear los botones de la compra
             	$("#"+itemId).parents(".sale-container").find("button").removeClass("disabled");
                 alert("Parece que hubo un error en el servidor, inténtelo de nuevo en unos minutos");
@@ -91,22 +97,27 @@ var shop={
     * @param {string} goal | Meta a guardar
     * @returns {undefined} | No devuelve ningún valor
     */
-    saveGoal: function(goal){        
+    saveGoal: function(goal){    
         $.ajax({
             type: "POST",
             dataType: "json",
             url: "/store-data/goal-answer",
             data: {
                 userId: login.userId,
-                answer: goal
+                answer: goal,
+                time: new Date().getTime() - shop.start_decission
             },
             success: function (data) {
+                //Reset del cronómetro de tiempos
+                shop.start_decission = new Date().getTime();
                 //Desvanecer diálogo 
                 $(".sale-container.clicked").removeClass("clicked");
                 shop.showGoal(goal);
             },
             //En caso de error desvanecer
             error: function (data) {
+                //Reset del cronómetro de tiempos
+                shop.start_decission = new Date().getTime();
                 //Desvanecer diálogo
                 $(".sale-container.clicked").removeClass("clicked");
             }
@@ -141,6 +152,8 @@ var shop={
                     itemId: itemId
                 },
                 success: function (data) {
+                    //Reset del cronómetro de tiempos
+                    shop.start_decission = new Date().getTime();
                     //Desbloquear botones
                     $("#buy-"+itemId).removeClass("disabled").siblings("button").removeClass("disabled");
                     console.log(data);
@@ -158,6 +171,8 @@ var shop={
                 },
                 //En caso de error alertar
                 error: function (data) {
+                    //Reset del cronómetro de tiempos
+                    shop.start_decission = new Date().getTime();
                     //Desbloquear botones
                     $("#buy-"+itemId).removeClass("disabled").siblings("button").removeClass("disabled");
                     alert("No se ha podido devolver el artículo");

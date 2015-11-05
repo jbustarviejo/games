@@ -32,10 +32,10 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 				//Aumentar a 10
 				$userPoints = 10;
 				//Regalar 10 puntos
-				registerInHistory($conn, $row["id_user"], "Regalo de puntos", 10, $userPoints);
+				registerInHistory($conn, $row["id_user"], "NULL", "Regalo de puntos", 10, $userPoints);
     		}
     		if($_SERVER['REQUEST_URI']=="/tienda"){
-    			//En la página de tienda. Obtener compras del usuario
+    			//En la página de tienda. Obtener compras89 del usuario
 				$purchases=getUserPurchases($conn, $row["id_user"]);
 				$purchaseListForJs="";
 				foreach ($purchases as $item) {

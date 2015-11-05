@@ -21,12 +21,12 @@ if($_POST["selected"] == $_POST["winner"]){
 	//Calcular resultante
 	$points_result = $user_points + $points_variation;
 	//Registrar la variación de los puntos
-	registerInHistory($conn, $_POST["userId"], "strawsGame", $points_variation, $points_result);
+	registerInHistory($conn, $_POST["userId"], "NULL", "strawsGame", $points_variation, $points_result);
 	//Imprimir resultado
 	die(json_encode(array("ok" => true, "points"=>$points_result)));
 }else{
 	//Registrar la no variación de los puntos
-	registerInHistory($conn, $_POST["userId"], "strawsGame", 0, $user_points);
+	registerInHistory($conn, $_POST["userId"], "NULL", "strawsGame", 0, $user_points);
 	//Imprimir resultado
 	die(json_encode(array("ok" => true)));
 }

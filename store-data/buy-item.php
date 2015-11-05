@@ -22,4 +22,4 @@ if($points_result<0){
 }
 
 //Registrar la compra
-registerInShoppingHistory($conn, $_POST["userId"],  $_POST["itemId"], $points_cost, $points_result);
+registerInShoppingHistory($conn, $_POST["userId"], $_POST["time"], $_POST["itemId"], $points_cost, $points_result);

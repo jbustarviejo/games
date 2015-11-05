@@ -18,6 +18,6 @@ if($points < -$points_variation){
 }
 $points_result=$points+$points_variation;
 //Registrar el tiempo del juego y los puntos
-registerInHistory($conn, $_POST["userId"], $_POST["game"], $points_variation, $points_result);
+registerInHistory($conn, $_POST["userId"],  $_POST["time"], $_POST["game"], $points_variation, $points_result);
 //Imprimir resultado
 die(json_encode(array("ok" => true, "points"=>$points_result)));

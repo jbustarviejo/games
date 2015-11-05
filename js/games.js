@@ -1031,13 +1031,6 @@ games.boxesGame = {
      * @returns {undefined} | No devuelve ningún valor
      */
     sendDataToServer: function (boxes_number, winner_box, boxes_available, times, choosen_boxes) {
-        //Comprobar iteracción 3. Si habían 4 o más cajas no hay problema. Si no, modificar a Null
-        var availableBoxes3 = boxes_available[2];
-        if (availableBoxes3) {
-            availableBoxes3 = availableBoxes3;
-        } else {
-            availableBoxes3 = "NULL";
-        }
         //POST al servidor con los datos
         $.ajax({
             type: "POST",
@@ -1054,9 +1047,6 @@ games.boxesGame = {
                 second_box_choose: choosen_boxes[1],
                 second_available_boxes_to_change: boxes_available[1],
                 second_time_choosing: times[1],
-                third_box_choose: choosen_boxes[2] || "NULL",
-                third_available_boxes_to_change: availableBoxes3,
-                third_time_choosing: times[2] || "NULL",
                 userToken: games.userToken
             },
             //En caso de éxito imprimirlo por pantalla

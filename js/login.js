@@ -140,6 +140,8 @@ login = {
         $("#login-menu-container>div:first").hide();
         //Mostrar la encuesta
         $("#games-goal").show();    
+        //Hacer cronómetro de tiempo
+        login.start_decission = new Date().getTime();
         //Atender a cambios de selección
         $("#select-goal").change(function(){
             //Esconder todas las descripciones
@@ -148,31 +150,6 @@ login = {
             $(".buy-"+$(this).val()).show()
             //Cambiar alto de pantalla
             $("#games-goal").css("height", $(".buy-"+$(this).val()).attr("height")+"px");
-        });
-    },
-        /**
-    * Función login.saveGoal: Guardar respuesta de objetivo
-    * @param {string} goal | Meta a guardar
-    * @returns {undefined} | No devuelve ningún valor
-    */
-    saveGoal: function(goal){        
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "/store-data/goal-answer",
-            data: {
-                userId: login.userId,
-                answer: goal
-            },
-            success: function (data) {
-                //Desvanecer diálogo de login
-                $("#login-menu-container").fadeOut(500);
-            },
-            //En caso de error desvanecer
-            error: function (data) {
-                //Desvanecer diálogo de login
-                $("#login-menu-container").fadeOut(500);
-            }
         });
     },
     /**
@@ -186,7 +163,8 @@ login = {
             url: "/store-data/goal-answer",
             data: {
                 userId: login.userId,
-                answer: $("#select-goal").val()
+                answer: $("#select-goal").val(),
+                time: new Date().getTime() - login.start_decission
             },
             success: function (data) {
                 //Desvanecer diálogo de login
@@ -198,5 +176,5 @@ login = {
                 $("#login-menu-container").fadeOut(500);
             }
         });
-    }    
+    }
 };

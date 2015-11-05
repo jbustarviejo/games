@@ -7,7 +7,7 @@
 include("db_connection.php");
 
 //Guardar respuesta en BD
-$sql = "INSERT INTO user_goal (`id_user`, `id_goal`, `date`) VALUES ('" . $_POST["userId"] . "', '" . $_POST["answer"] . "', '" . date('Y-m-d H:i:s') . "')";
+$sql = "INSERT INTO user_goal (`id_user`, `time_to_choose`, `id_goal`, `date`) VALUES ('" . $_POST["userId"] . "', '" . $_POST["time"] . "', '" . $_POST["answer"] . "', '" . date('Y-m-d H:i:s') . "')";
 
 if ($conn->query($sql) === TRUE) {
 	echo json_encode(array("ok" => true));

@@ -63,7 +63,7 @@ $content=<<<HTML
   <div id="points-container">
     <p>Tu objetivo actual: <a href="/tienda">$goalName</a></p>
     <p>Historial de Movipuntos: Tienes $userPoints Movipuntos</p>
-    <h2 style="color: rgb(0, 81, 122);">¡Aún no tienes Movipuntos! Empieza a jugar <a href="/juegos">aquí</a></h2>
+    <h2 style="color: rgb(0, 81, 122);">¡Aún no has ganado Movipuntos! Empieza a jugar <a href="/juegos">aquí</a></h2>
     $surveyHTML
   </div>
 HTML;
