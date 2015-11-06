@@ -7,8 +7,6 @@
 $title = "Mis puntos - Telefónica";
 //Comprobar usuario logado y obtener panel de usuario
 include("store-data/check-user-login.php");
-//Funciones auxiliares
-include("functions.php");
 
 //Creación del contenido de página
 

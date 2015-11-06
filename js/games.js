@@ -56,12 +56,11 @@ var games = {
         games.debug && console.log("Cargando imágenes..., quedan :" + images.length);
         //Para cada imagen esperar a que haya cargado y señalarlo
         for (var i = 0; i < images.length; i++) {
-            //console.log(images[i])
             if (images[i].complete) {
                 $(images[i]).addClass("loaded");
             } else {
                 setTimeout(function () {
-                    //Si no ha cargado esperar 0.1 s
+                    //Si no ha cargado la imagen esperar 0.1 s
                     games.initLoadResources();
                 }, 100);
                 return;
@@ -76,13 +75,20 @@ var games = {
                 $(audios[i]).addClass("loaded");
             } else {
                 setTimeout(function () {
-                    //Si no ha cargado esperar 0.1 s
+                    //Si no ha cargado el audio esperar 0.1 s
                     games.initLoadResources();
                 }, 100);
                 return;
             }
         }
-        games.debug && console.log("Audios cargados");
+        games.debug && console.log("Audios cargados, comprobando documento");
+        //Por último comprobar el estado del documento
+        if(document.readyState != "complete"){
+            setTimeout(function () {
+                //Si no ha cargado esperar 0.1 s
+                games.initLoadResources();
+            }, 100);
+        }
         //Todo cargado. Eliminar página de cargado y poner música
         games.displayMainMenu("loading-screen");
     },

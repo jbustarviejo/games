@@ -7,7 +7,7 @@
 		<div class="sale-container">
 			<div class="box-left">
 				<p>Línea Movimovil: 30Mpts</p>
-				<img src="/images/movistar/movil.png"/>
+				<img src="/images/movistar/Movil.png"/>
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description" style="height: 200px;">
@@ -29,7 +29,7 @@
 		<div class="sale-container">
 			<div class="box-left">
 				<p>Movinternet fijo: 30Mpts</p>
-				<img src="/images/movistar/internet.png"/>
+				<img src="/images/movistar/Internet.png"/>
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description" style="height: 270px;">

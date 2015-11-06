@@ -38,12 +38,15 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     			//En la página de tienda. Obtener compras89 del usuario
 				$purchases=getUserPurchases($conn, $row["id_user"]);
 				$purchaseListForJs="";
-				foreach ($purchases as $item) {
-					$purchaseListForJs.="$('#".$item["itemId"]."').parents('.sale-container:first').addClass('purchased');";
-					if($item["canReturn"]){
-						$purchaseListForJs.="$('#".$item["itemId"]."').parents('.sale-container:first').addClass('returnable');";
+				if(!empty($purchases)){
+					//Si hay historial de compras...
+					foreach ($purchases as $item) {
+						$purchaseListForJs.="$('#".$item["itemId"]."').parents('.sale-container:first').addClass('purchased');";
+						if($item["canReturn"]){
+							$purchaseListForJs.="$('#".$item["itemId"]."').parents('.sale-container:first').addClass('returnable');";
+						}
 					}
-				}
+				}	
     		}
     		$userName=$row["id_user"];
     		$userToken=$row["security_token"];
