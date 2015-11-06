@@ -233,7 +233,6 @@
             <img src="/images/largest-straw/straw2.jpg"/>
             <img src="/images/largest-straw/straw3.jpg"/>
             <img src="/images/largest-straw/straw4.jpg"/>
-            <img src="/images/largest-straw/straw5.jpg"/>
             <!--Cards game-->
             <img src="/images/cards/black-card-background.jpg"/>
             <img src="/images/cards/red-card-background.jpg"/>
@@ -251,19 +250,16 @@
             <img src="/images/boxes/box2.png"/>
             <img src="/images/boxes/box3.png"/>
             <img src="/images/boxes/box4.png"/>
-            <img src="/images/boxes/box5.png"/>
             <img src="/images/boxes/boxes-top-title.png"/>
             <img src="/images/boxes/boxes-top.png"/>
             <img src="/images/boxes/open-box-win1.png"/>
             <img src="/images/boxes/open-box-win2.png"/>
             <img src="/images/boxes/open-box-win3.png"/>
             <img src="/images/boxes/open-box-win4.png"/>
-            <img src="/images/boxes/open-box-win5.png"/>
             <img src="/images/boxes/open-box1.png"/>
             <img src="/images/boxes/open-box2.png"/>
             <img src="/images/boxes/open-box3.png"/>
             <img src="/images/boxes/open-box4.png"/>
-            <img src="/images/boxes/open-box5.png"/>
             <img src="/images/boxes/table.png"/>
             <img src="/images/boxes/yourbox.png"/>
             <img src="/images/boxes/yourboxwhite.png"/>
