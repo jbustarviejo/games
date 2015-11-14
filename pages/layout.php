@@ -112,10 +112,12 @@
                 </form><br/><br/>
                 <button class="login-button" onclick="login.saveSurvey();">Guardar</button>
             </div>
-            <div id="games-goal" style="display:none; height:285px;">
+            <div id="games-goal" style="display:none; height:220px;">
                 <h2>Marca un objetivo para el MoviJuego</h2>
-                <p>En el Movijuego tienes que participar en tres juegos para poder lograr puntos que te permitan adquirir una oferta ficticia. ¿Cuál será tu objetivo inicial? <small>(Luego podrás modificarlo)</small></p>
-                 <select id="select-goal">
+                <p>En el Movijuego tienes que participar en tres juegos para poder lograr puntos que te permitan adquirir una oferta ficticia. ¿Cuál será tu objetivo inicial? <br/></p>
+                <p>Ve a la tienda y fija un objetivo inicial haciendo click en las ofertas y posteriormente en el botón 'Fijar como objetivo'</p>
+                <button class="login-button" onclick="window.location = '/tienda';">Ir a la tienda</button-->
+                 <!--select id="select-goal">
                   <option value="1">Línea Movimovil: 30Mpts</option>
                   <option value="2">Movinternet fijo: 30Mpts</option>
                   <option value="3">MoviNubico y Movinternet: 35Mpts</option>
@@ -155,7 +157,7 @@
                     <p>Línea Móvil 4G</p>
                     <p>Verisure</p>
                 </div>
-                <button class="login-button" onclick="login.saveGoal();">Guardar</button>
+                <button class="login-button" onclick="login.saveGoal();">Guardar</button-->
             </div>
         </div>
 
@@ -163,7 +165,7 @@
         <div id="user-without-points-dialog" <?php echo (!$userWithZeroPoints ? "style='display:none'" : ""); ?>>
             <div style="height: 200px;">
                 <h1>¡Te has quedado sin puntos!</h1>
-                <p>Has perdido tus puntos, ¡pero no desistas! <br/>Aquí tienes 10 puntos de regalo para que puedas seguir jugando</p>
+                <p>Has perdido tus puntos, ¡pero no desistas! <br/>Aquí tienes 8 puntos de regalo para que puedas seguir jugando</p>
                 <button onclick="$('#user-without-points-dialog').hide();" style="opacity: 1;">¡A jugar!</button>
             </div>
         </div>

@@ -29,10 +29,10 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     		if($userPoints<=0){
     			//Usuario sin puntos
 				$userWithZeroPoints=true;
-				//Aumentar a 10
-				$userPoints = 10;
-				//Regalar 10 puntos
-				registerInHistory($conn, $row["id_user"], "NULL", "Regalo de puntos", 10, $userPoints);
+				//Aumentar a 8
+				$userPoints = 8;
+				//Regalar 8 puntos
+				registerInHistory($conn, $row["id_user"], "NULL", "Regalo de puntos", 8, $userPoints);
     		}
     		if($_SERVER['REQUEST_URI']=="/tienda"){
     			//En la página de tienda. Obtener compras89 del usuario
@@ -57,10 +57,11 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     			//Si no tiene fijada una respuesta de la encuesta, indicarlo
     			$showAnswer=true;
     		}
-    		if(empty($row["id_goal"])){
+    		if(empty($row["id_goal"]) && $_SERVER['REQUEST_URI']!="/tienda"){
     			//Si no tiene fijada una meta, indicarlo
     			$showGoal=true;
     		}else{
+    			$showGoal=false;
     			$idGoal=$row["id_goal"];
     		}
     	}else{

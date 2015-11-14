@@ -83,14 +83,15 @@ var games = {
         }
         games.debug && console.log("Audios cargados, comprobando documento");
         //Por último comprobar el estado del documento
-        if(document.readyState != "complete"){
+        /*if(document.readyState != "complete" || document.readyState != "interactive"){
             setTimeout(function () {
                 //Si no ha cargado esperar 0.1 s
                 games.initLoadResources();
             }, 100);
-        }
-        //Todo cargado. Eliminar página de cargado y poner música
-        games.displayMainMenu("loading-screen");
+        }else{*/
+            //Todo cargado. Eliminar página de cargado y poner música
+            games.displayMainMenu("loading-screen");
+        //}
     },
     /**
      * Función games.displayMainMenu: Muestra el menú principal, escondiendo la pantalla con la id especificada 
@@ -104,7 +105,11 @@ var games = {
         $("#theme-audio2")[0].pause();
         $("#theme-audio3")[0].pause();
         var theme = $("#main-theme")[0];
-        theme.currentTime = 0;
+        try{
+            theme.currentTime = 0;
+        }catch(Exception){
+            //No hacer nada...
+        }
         theme.play();
         this.start_decission = new Date().getTime();
     },
@@ -115,7 +120,11 @@ var games = {
     hideNotEnoughtPointsScreen: function () {
         $("#not-enought-points-screen").hide();
         var theme = $("#main-theme")[0];
-        theme.currentTime = 0;
+        try{
+            theme.currentTime = 0;
+        }catch(Exception){
+            //No hacer nada...
+        }
         theme.play();
     },
     /**
@@ -163,7 +172,11 @@ var games = {
     playTheme: function (themeNumber) {
         $("#main-theme")[0].pause();
         var theme = $("#theme-audio" + themeNumber)[0];
-        theme.currentTime = 0;
+        try{
+            theme.currentTime = 0;
+        }catch(Exception){
+            //No hacer nada...
+        }
         theme.play();
     },
     /**
@@ -470,15 +483,11 @@ games.cardsGame = {
             if (cardsNumber === 4) { //Añadir una carta más si son 4
                 cardsArray[cardsArray.length] = ["black-card", "red-card"];
                 offsetLeft = 10;
-            } else if (cardsNumber === 5) { //Añadir dos cartas más si son 5
-                cardsArray[cardsArray.length] = ["black-card", "red-card"];
-                cardsArray[cardsArray.length] = ["red-card", "black-card"];
-                offsetLeft = 0.5;
             }
 
             //Barajar las cartas
             games.cardsGame.cardsArray = games.cardsGame.shuffle(cardsArray);
-            //ALmacenar las cartas que se mostrarán
+            //Almacenar las cartas que se mostrarán
             games.cardsGame.displayedCards = encodeURI(games.cardsGame.cardsArray);
 
             //Mostrar las cartas en su contenedor principal
@@ -555,9 +564,11 @@ games.cardsGame = {
             $(".card-container").hide();
             //Elegir una carta aleatoria
             var card = games.cardsGame.shuffle(games.cardsGame.cardsArray)[0];
+            games.debug && console.log("Extraída",card);
             var choose = Math.floor(Math.random() * 2);
             var selected_side = card[choose];
             var winner_side = (choose == 0 ? card[1] : card[0]);
+            games.debug && console.log("Mostrado",selected_side);
             //Almacenar los lados escondido y mostrado de la carta
             games.cardsGame.displayed = selected_side;
             games.cardsGame.winner = winner_side;

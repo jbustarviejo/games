@@ -29,7 +29,7 @@
         <span class="close-button" onclick="games.hideNotEnoughtPointsScreen();">X</span><br/><br/><br/><br/>
         <h2 class="h2-title">No tienes suficientes puntos para este juego :(</h2>
         <p class="screen-msg">Prueba con otro que necesite menos puntos</p>
-        <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.hideNotEnoughtPointsScreen();"/>
+        <button onclick="games.hideNotEnoughtPointsScreen();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
     </div>
 
     <!--Menú principal-->
@@ -65,7 +65,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                 <p class="screen-msg">Has conseguido 3 Movipuntos</p>
-                <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('straws-game');"/>
+                <button onclick="games.displayMainMenu('straws-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
             </div>
         </div>
         <!--Juego 1: Página de has perdido-->
@@ -74,7 +74,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
                 <p class="screen-msg">¡Pero puedes volver a intentarlo!</p>
-                <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('straws-game');"/>
+                <button onclick="games.displayMainMenu('straws-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
             </div>
         </div>
     </div>
@@ -114,7 +114,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                 <p class="screen-msg">Has conseguido 4 Movipuntos</p>
-                <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('cards-game');"/>
+                <button onclick="games.displayMainMenu('cards-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
             </div>
         </div>
         <!--Juego 2: Página de has perdido-->
@@ -123,7 +123,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
                 <p class="screen-msg">¡Pero puedes volver a intentarlo!</p>
-                <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('cards-game');"/>
+                <button onclick="games.displayMainMenu('cards-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
             </div>
         </div>
     </div>
@@ -154,7 +154,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                 <p class="screen-msg">Has conseguido 8 Movipuntos</p>
-                <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('boxes-game');"/>
+                <button onclick="games.displayMainMenu('boxes-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
             </div>
         </div>
         <!--Juego 3: Página de has perdido-->
@@ -163,7 +163,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
                 <p class="screen-msg">¡Pero puedes volver a intentarlo!</p>
-                <img src="/images/general/back.jpg" ondragstart="return false;" class="back-button" alt="Volver" onclick="games.displayMainMenu('boxes-game');"/>
+                <button onclick="games.displayMainMenu('boxes-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
             </div>
         </div>
     </div>
@@ -210,17 +210,12 @@
             <!--Genericos /menú-->
             <img src="/images/general/mute.png"/>
             <img src="/images/general/sound.png"/>
-            <img src="/images/general/grass.jpg"/>
             <img src="/images/general/no-internet.png"/>
             <img src="/images/general/loading-title.png"/>
             <img src="/images/general/main-title.png"/>
             <img src="/images/general/first-button.jpg"/>
             <img src="/images/general/second-button.jpg"/>
             <img src="/images/general/third-button.jpg"/>
-            <img src="/images/general/play.jpg"/>
-            <img src="/images/general/back.jpg"/>
-            <img src="/images/general/login-btn.jpg"/>
-            <img src="/images/general/login-title.png"/>
             <!--Straws game-->
             <img src="/images/largest-straw/helper-arrow.png"/>
             <img src="/images/largest-straw/helper-text.png"/>

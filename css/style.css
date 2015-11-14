@@ -442,6 +442,22 @@ footer #pie a {
     color: #333;
     font-weight: bold;
 }
+#game-container .play-button-game.return-button{
+    padding: 1% 1% 2%;
+    width: 26%;
+}
+#game-container .play-button-game.return-button span{
+    font-size: 7vw; 
+    line-height: 0; 
+    display: inline;
+}
+#game-container .play-button-game.return-button:hover{
+    font-size: 1.9vw;
+    padding-top: 2%;
+    width: 32%;
+    margin-top: 3.5%;
+    padding-bottom: 2%;
+}
 #game-container .play-button-game .green{
     color: #44aa44;
 }
@@ -457,16 +473,6 @@ footer #pie a {
     padding-bottom: 2%;
     padding-top: 1%;
     width: 28%;
-}
-#game-container .back-button{
-    border-radius: 6px;
-    margin-top: 2%;
-    width: 18%;
-    cursor: pointer;
-}
-#game-container .back-button:hover{
-    margin-top: 1.5%;
-    width: 20%;
 }
 #game-container button{
     cursor:pointer;

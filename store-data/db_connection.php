@@ -2,10 +2,10 @@
 
 //Detectar configuración del servidor
 if(php_uname('n')!="MacBook-de-jbustarviejogmailcom.local"){
-	$host_name = "db451884065.db.1and1.com";
-	$database = "db451884065";
-	$user_name = "dbo451884065";
-	$password = "delfos1.x.2";
+	$host_name = "localhost";
+	$database = "games";
+	$user_name = "root";
+	$password = "";
 }else{
 	$host_name = "localhost";
 	$database = "test";
