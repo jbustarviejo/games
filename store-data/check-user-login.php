@@ -35,7 +35,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 				registerInHistory($conn, $row["id_user"], "NULL", "Regalo de puntos", 8, $userPoints);
     		}
     		if($_SERVER['REQUEST_URI']=="/tienda"){
-    			//En la página de tienda. Obtener compras89 del usuario
+    			//En la página de tienda. Obtener compras del usuario
 				$purchases=getUserPurchases($conn, $row["id_user"]);
 				$purchaseListForJs="";
 				if(!empty($purchases)){
@@ -57,9 +57,14 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     			//Si no tiene fijada una respuesta de la encuesta, indicarlo
     			$showAnswer=true;
     		}
-    		if(empty($row["id_goal"]) && $_SERVER['REQUEST_URI']!="/tienda"){
-    			//Si no tiene fijada una meta, indicarlo
-    			$showGoal=true;
+    		if(empty($row["id_goal"])){
+	   			if($_SERVER['REQUEST_URI']=="/tienda"){ //Si no estoy en la tienda
+					$firstTime=true; //No hay meta y estamos en la tienda => Primer acceso
+					$showGoal=false;
+    			}else{
+	    			//Si no tiene fijada una meta, indicarlo
+    				$showGoal=true;
+    			}
     		}else{
     			$showGoal=false;
     			$idGoal=$row["id_goal"];

@@ -6,13 +6,13 @@
 		<h2>Ofertas básicas</h2>
 		<div class="sale-container">
 			<div class="box-left">
-				<p>Línea Movimovil: 30Mpts</p>
+				<p>Línea Móvil: 30Mpts</p>
 				<img src="/images/movistar/Movil.png"/>
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description" style="height: 200px;">
 	            	<p class="purchased-title">¡Ya adquirido!</p>
-	                <h1>Línea Movimovil: 30 Movipuntos</h1>
+	                <h1>Línea Móvil: 30 Movipuntos</h1>
 	                <p>200 min.a fijos y móviles nacionales</p>
     				<p>1,5 GB</p>
     				<button class="cancel">Cancelar</button>
@@ -23,6 +23,11 @@
 					<h1>Producto adquirido</h1>
 					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
 			    	<button>Cerrar</button>
+				</div>
+				<div class="item-first-goal">
+					<h1>¡Has fijado tu objetivo!</h1>
+					<p>Ahora, vayamos a jugar</p>
+			    	<a href="/jugar"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
@@ -47,6 +52,11 @@
 					<h1>Producto adquirido</h1>
 					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
 			    	<button>Cerrar</button>
+				</div>
+				<div class="item-first-goal">
+					<h1>¡Has fijado tu objetivo!</h1>
+					<p>Ahora, vayamos a jugar</p>
+			    	<a href="/jugar"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
@@ -80,17 +90,22 @@
 					<p>Acabas de devolver este producto. Haz click en cerrar para recargar la página</p>
 			    	<button onclick="$(this).addClass('disabled'); location.reload();">Cerrar</button>
 				</div>
+				<div class="item-first-goal">
+					<h1>¡Has fijado tu objetivo!</h1>
+					<p>Ahora, vayamos a jugar</p>
+			    	<a href="/jugar"><button>¡A jugar!</button></a>
+				</div>
 	        </div>
 		</div>
 		<div class="sale-container">
 			<div class="box-left">
-				<p>Movimovil y Movisure: 35Mpts</p>
+				<p>Móvil y Movisure: 35Mpts</p>
 				<img src="/images/movistar/verisure.png" style="max-width: 80%; margin:25px auto;"/>
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description" style="height: 190px;">
 	            	<p class="purchased-title">¡Ya adquirido!</p>
-	                <h1>Movimovil y Movisure: 35 Movipuntos</h1>
+	                <h1>Móvil y Movisure: 35 Movipuntos</h1>
 	                <p>Línea Móvil 4G</p>
 					<p>Control de vigilancia en la nube de tu hogar</p>
     				<button class="cancel">Cancelar</button>
@@ -102,21 +117,26 @@
 					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
 			    	<button>Cerrar</button>
 				</div>
+				<div class="item-first-goal">
+					<h1>¡Has fijado tu objetivo!</h1>
+					<p>Ahora, vayamos a jugar</p>
+			    	<a href="/jugar"><button>¡A jugar!</button></a>
+				</div>
 	        </div>
 		</div>
 		<h2>Ofertas de Movifusión</h2>
 		<div class="sale-container">
 			<div class="box-left">
-				<p>Movifusión 1: 40Mpts</p>
+				<p>Movifusión Nubico: 40Mpts</p>
 				<img src="/images/movistar/fusion.png"/>
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description" style="height: 265px;">
 	            	<p class="purchased-title">¡Ya adquirido! <span class="return-item" onclick="shop.returnItem(5)">- Devolver</span></p>
-	                <h1>Movifusión 1: 40 Movipuntos</h1>
+	                <h1>Movifusión Nubico: 40 Movipuntos</h1>
 	                <p>Internet 30Mb</p>
 					<p>Línea fija</p>
-					<p>Nubico</p>
+					<p>Movinubico</p>
 	    			<p>Garantía de devolución 20 días</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-5">Comprar</button>
@@ -132,20 +152,25 @@
 					<p>Acabas de devolver este producto. Haz click en cerrar para recargar la página</p>
 			    	<button onclick="$(this).addClass('disabled'); location.reload();">Cerrar</button>
 				</div>
+				<div class="item-first-goal">
+					<h1>¡Has fijado tu objetivo!</h1>
+					<p>Ahora, vayamos a jugar</p>
+			    	<a href="/jugar"><button>¡A jugar!</button></a>
+				</div>
 	        </div>
 		</div>
 		<div class="sale-container">
 			<div class="box-left">
-				<p>Movifusión 2: 40Mpts</p>
+				<p>Movifusión Verisure: 40Mpts</p>
 				<img src="/images/movistar/fusion.png"/>
 			</div>
 			<div class="shop-item-container">
 	            <div class="item-description" style="height: 230px;">
 	            	<p class="purchased-title">¡Ya adquirido!</p>
-	                <h1>Movifusión 2: 40 Movipuntos</h1>
+	                <h1>Movifusión Verisure: 40 Movipuntos</h1>
 	                <p>Internet 30Mb</p>
 					<p>Línea Móvil 4G</p>
-					<p>Verisure</p>
+					<p>Movisure</p>
     				<button class="cancel">Cancelar</button>
     				<button class="buy" id="buy-6">Comprar</button>
     				<button class="goal" onclick="shop.saveGoal(6)">Fijar como objetivo</button>
@@ -154,6 +179,11 @@
 					<h1>Producto adquirido</h1>
 					<p>Acabas de comprar este producto, pero puedes seguir jugando para comprar más</p>
 			    	<button>Cerrar</button>
+				</div>
+				<div class="item-first-goal">
+					<h1>¡Has fijado tu objetivo!</h1>
+					<p>Ahora, vayamos a jugar</p>
+			    	<a href="/jugar"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>

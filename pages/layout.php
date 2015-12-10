@@ -34,55 +34,55 @@
 
         <!--Script de inicio de juegos-->
         <?php if($_SERVER['REQUEST_URI']=="/juegos"){ ?>
-        <script type="text/javascript">
-            //Una vez se haya cargado la página, inicar los juegos
-            $(document).ready(function () {
-                games.initGames(<?php echo "'".$userName."','".$userPoints."','". $userToken ."'";?>);
-            });
-        </script>
+            <script type="text/javascript">
+                //Una vez se haya cargado la página, inicar los juegos
+                $(document).ready(function () {
+                    games.initGames(<?php echo "'".$userName."','".$userPoints."','". $userToken ."'";?>);
+                });
+            </script>
         <?php } else if($_SERVER['REQUEST_URI']=="/tienda"){ ?>
-        <!--Script de inicio de la tienda-->
-        <script type="text/javascript">
-            //Una vez se haya cargado la página, inicar la tienda
-            $(document).ready(function () {
-                shop.initShop(<?php echo "'".$userName."','". $userToken ."'";?>);
-                //Objetos adquiridos
-                <?php echo $purchaseListForJs;?>
-            });
-        </script>
+            <!--Script de inicio de la tienda-->
+            <script type="text/javascript">
+                //Una vez se haya cargado la página, inicar la tienda
+                $(document).ready(function () {
+                    shop.initShop(<?php echo "'".$userName."','". $userToken ."'";?>, <?php echo (empty($firstTime) ? "false" : "true"); ?>);
+                    //Objetos adquiridos
+                    <?php echo $purchaseListForJs;?>
+                });
+            </script>
         <?php } if($showAnswer){ //Si no se ha respondido a la encuesta ?>
-        <!--Script de inicio de la encuesta-->
-        <script type="text/javascript">
-            //Una vez se haya cargado la página, inicar la encuesta
-            $(document).ready(function () {
-                login.userId=<?php echo "'".$userName."'";?>;
-                //Mostrar contenedor de diálogo
-                $("#login-menu-container").show();
-                //Esconder diálogo de login
-                $("#login-menu-container>div:first").hide();
-                //Mostrar la encuesta
-                $("#games-survey").show();    
-            }); 
-        </script>
+            <!--Script de inicio de la encuesta-->
+            <script type="text/javascript">
+                //Una vez se haya cargado la página, inicar la encuesta
+                $(document).ready(function () {
+                    login.userId=<?php echo "'".$userName."'";?>;
+                    //Mostrar contenedor de diálogo
+                    $("#login-menu-container").show();
+                    //Esconder diálogo de login
+                    $("#login-menu-container>div:first").hide();
+                    //Mostrar la encuesta
+                    $("#games-survey").show();    
+                }); 
+            </script>
         <?php }else if($showGoal){ //Si no se ha fijado una meta ?>
-        <!--Script de inicio de fijado de meta-->
-        <script type="text/javascript">
-            //Una vez se haya cargado la página, inicar el fijado de meta
-            $(document).ready(function () {
-                //Mostrar cuestionario de objetivo
-                login.displayGoalDialog();
-            }); 
-        </script>
+            <!--Script de inicio de fijado de meta-->
+            <script type="text/javascript">
+                //Una vez se haya cargado la página, inicar el fijado de meta
+                $(document).ready(function () {
+                    //Mostrar cuestionario de objetivo
+                    login.displayGoalDialog();
+                }); 
+            </script>
         <?php }else{ ?>
-        <script type="text/javascript">
-         //Una vez se haya cargado la página, inicar el fijado de meta
-            $(document).ready(function () {
-                //Guardar nombre de usuario
-                login.userId=<?php echo "'".$userName."'";?>;
-                //Mostrar cuestionario de objetivo
-                shop.showGoal(<?php echo $idGoal; ?>);
-            }); 
-        </script>
+            <script type="text/javascript">
+             //Una vez se haya cargado la página, inicar el fijado de meta
+                $(document).ready(function () {
+                    //Guardar nombre de usuario
+                    login.userId=<?php echo "'".$userName."'";?>;
+                    //Mostrar cuestionario de objetivo
+                    shop.showGoal(<?php echo $idGoal; ?>);
+                }); 
+            </script>
         <?php } ?>
         <script type="text/javascript">
             //Guardar nombre de usuario
@@ -118,10 +118,10 @@
                 <p>Ve a la tienda y fija un objetivo inicial haciendo click en las ofertas y posteriormente en el botón 'Fijar como objetivo'</p>
                 <button class="login-button" onclick="window.location = '/tienda';">Ir a la tienda</button-->
                  <!--select id="select-goal">
-                  <option value="1">Línea Movimovil: 30Mpts</option>
+                  <option value="1">Línea Movil: 30Mpts</option>
                   <option value="2">Movinternet fijo: 30Mpts</option>
                   <option value="3">MoviNubico y Movinternet: 35Mpts</option>
-                  <option value="4">Movimovil y Movisure: 35 Movipuntos</option>
+                  <option value="4">Movil y Movisure: 35 Movipuntos</option>
                   <option value="5">Movifusión 1: 40 Movipuntos</option>
                   <option value="6">Movifusión 2: 40 Movipuntos</option>
                 </select> 

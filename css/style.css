@@ -1082,6 +1082,11 @@ p.purchased-title{
     display: none;
 }
 
+.shop-item-container .item-first-goal{
+    height: 170px; 
+    display: none;
+}
+
 .shop-item-container>div{
     background-color: rgb(255, 255, 255);
     border-radius: 15px;

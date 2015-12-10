@@ -8,11 +8,13 @@ var shop={
      * Función shop.initShop: Iniciar el contenedor de la tienda
      * @param {string} userName | Id de usuario
      * @param {string} userToken | Token de seguridad de usuario
+     * @param {boolean} firtsLogin | True si el usuario aún no ha fijado su primera meta (primer login)
      * @returns {undefined} | No devuelve ningún valor
      **/
-	initShop: function(userName, userToken){
+	initShop: function(userName, userToken, firstLogin){
 		shop.userName=userName;
 		shop.userToken=userToken;
+        shop.firstLogin=firstLogin;
 		shop.debug && console.log("init");
         shop.start_decission = new Date().getTime();
 		$("div.sale-container").click(function(){
@@ -110,8 +112,13 @@ var shop={
             success: function (data) {
                 //Reset del cronómetro de tiempos
                 shop.start_decission = new Date().getTime();
-                //Desvanecer diálogo 
-                $(".sale-container.clicked").removeClass("clicked");
+                if(shop.firstLogin==true){ //Si es la primera vez que se fija el objetivo
+                    //Desvanecer diálogo 
+                    $(".sale-container.clicked .item-first-goal").show();
+                }else{
+                    //Desvanecer diálogo 
+                    $(".sale-container.clicked").removeClass("clicked");
+                }
                 shop.showGoal(goal);
             },
             //En caso de error desvanecer

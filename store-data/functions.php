@@ -235,13 +235,13 @@ function getPointsPrize($game, $itemsNumber){
 function getGoalName($itemId){
   switch ($itemId) {
     case 1:
-      return "Línea Movimovil: 30Mpts";
+      return "Línea Móvil: 30Mpts";
     case 2:
       return "Movinternet fijo: 30Mpts";
     case 3:
       return "MoviNubico y Movinternet: 35Mpts";
     case 4:
-      return "Movimovil y Movisure: 35Mpts";
+      return "Móvil y Movisure: 35Mpts";
     case 5:
       return "Movifusión 1: 40Mpts";
     case 6:
