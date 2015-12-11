@@ -2,10 +2,12 @@
 <div id="index-container">
 	<h1>Bienvenid@ a la página del Movijuego</h1>
 
-	<p>Juega y consigue Movipuntos para poder cambiarlos por Moviofertas</p>
-	<p>Tienes 3 minijuegos con diferentes tipos de complejidad, cada uno de ellos con diferentes recompensas al ganar. Ganando a juegos más complejos lograrás mejores puntuaciones. Cuantos más Movipuntos tengas, ¡mejores Moviofertas conseguirás!</p>
+	<p>Juega y consigue Movipuntos para poder cambiarlos por Moviofertas en la <a href="tienda">tienda<a>. Ese es el objetivo principal.</p>
+	<p>Tienes para ello tres minijuegos con diferentes tipos de complejidad, cada uno de ellos con distintas recompensas al ganar. Ganando a juegos más complejos lograrás mejores puntuaciones. Cuantos más Movipuntos tengas, ¡mejores Moviofertas conseguirás!</p>
+      <p>Pero no todo es tan fácil, administra bien tus puntos porque participar en los juegos <b>tiene un coste de puntos</b> que varía según el juego.
+      De todas formas no somos tan malos, <b>si te quedas sin puntos te regalaremos ocho Movipuntos</b> para que puedas seguir jugando</p>
 
-	<a href="/juegos">¡Jugar ya!</a><br/><br/>
+	No esperes más y <a href="/juegos">¡Juega ya!</a><br/><br/>
 	<small>* Las Moviofertas son ofertas ficticias, mostradas en esta página con finalidades de investigación. Igualmente, los Movipuntos no representan ningún tipo de cambio real.</small>
 	<img class="main-description-image" ondragstart="return false;" src="/images/general/main-description-image.jpg">
 

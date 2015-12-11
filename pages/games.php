@@ -29,7 +29,15 @@
         <span class="close-button" onclick="games.hideNotEnoughtPointsScreen();">X</span><br/><br/><br/><br/>
         <h2 class="h2-title">No tienes suficientes puntos para este juego :(</h2>
         <p class="screen-msg">Prueba con otro que necesite menos puntos</p>
-        <button onclick="games.hideNotEnoughtPointsScreen();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
+        <button onclick="games.hideNotEnoughtPointsScreen();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú</button>
+    </div>
+
+    <!--Pantalla de 'Ya no tienes puntos'--> 
+    <div id="not-enought-points-screen-2" class="screen" style="display: none;">
+        <span class="close-button" onclick="games.hideNotEnoughtPointsScreen();">X</span><br/><br/><br/><br/>
+        <h2 class="h2-title">Vaya... No has ganado y no te quedan puntos...</h2>
+        <p class="screen-msg">Pero espera... ¡sólo por ser tú! te vamos a regalar 8 puntos por recargar la página</p>
+        <button onclick="location.reload();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Recargar aquí</button>
     </div>
 
     <!--Menú principal-->
@@ -49,7 +57,7 @@
             <span class="close-button" onclick="games.displayMainMenu('straws-game');">X</span>
             <div>
                 <h2 class="h2-title">La caña más larga</h2>
-                <p class="screen-msg">Elige una de las cañas escondidas, si resulta ser la más larga, ¡enhorabuena! habrás ganado</p>
+                <p class="screen-msg">Se te van a enseñar varias cañas escondidas y tienes que adivinar cuál es la más larga para poder ganar. Puedes elegir 3 o 4 cañas, pero ojo ¡pierdes un punto por participar!</p>
             </div>
             <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.strawsGame.init(3);">3 cañas<br/><small class="red">-1 punto por participar</small><br/><small class="green">+ 3 puntos si ganas</small></button>
             <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.strawsGame.init(4);">4 cañas<br/><small class="red">-1 punto por participar</small><br/><small class="green">+ 4 puntos si ganas</small></button>
@@ -65,7 +73,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                 <p class="screen-msg">Has conseguido 3 Movipuntos</p>
-                <button onclick="games.displayMainMenu('straws-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
+                <button onclick="games.strawsGame.showInstructions();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver a jugar</button>
             </div>
         </div>
         <!--Juego 1: Página de has perdido-->
@@ -74,7 +82,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
                 <p class="screen-msg">¡Pero puedes volver a intentarlo!</p>
-                <button onclick="games.displayMainMenu('straws-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
+                <button onclick="games.strawsGame.showInstructions();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver a jugar</button>
             </div>
         </div>
     </div>
@@ -86,7 +94,7 @@
             <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
             <div>
                 <h2 class="h2-title">Adivina el color</h2>
-                <p class="screen-msg">Estate atento a las cartas. Se mezclarán y se cogerá una al azar ¿podrás adivinar el color del reverso?</p>
+                <p class="screen-msg">Se muestran una serie de cartas que tienen dos caras que pueden ser ambas rojas, negras o bien una roja y otra negra. Se mezclarán en un sombrero y se muestra la cara de una de ellas, ¿eres capaz de avidinar el color del reverso?. ¡No te olvides de que hay un coste por participar!</p>
             </div>
             <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.cardsGame.init(3);">3 cartas<br/><small class="red">-5 puntos por participar</small><br/><small class="green">+ 10 puntos si ganas</small></button>
             <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(4);">4 cartas<br/><small class="red">-2 puntos por participar</small><br/><small class="green">+ 4 puntos si ganas</small></button>
@@ -114,7 +122,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                 <p class="screen-msg">Has conseguido 4 Movipuntos</p>
-                <button onclick="games.displayMainMenu('cards-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
+                <button onclick="games.cardsGame.showInstructions();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver a jugar</button>
             </div>
         </div>
         <!--Juego 2: Página de has perdido-->
@@ -123,7 +131,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
                 <p class="screen-msg">¡Pero puedes volver a intentarlo!</p>
-                <button onclick="games.displayMainMenu('cards-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
+                <button onclick="games.cardsGame.showInstructions();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver a jugar</button>
             </div>
         </div>
     </div>
@@ -135,7 +143,7 @@
             <span class="close-button" onclick="games.displayMainMenu('boxes-game');">X</span>
             <div>
                 <h2 class="h2-title">Encuentra la caja con el premio</h2>
-                <p class="screen-msg">¿Eres capaz de encontrar la caja con el premio?</p>
+                <p class="screen-msg">Tienes una mesa con varias cajas, pero sólo una de ellas tiene un premio, elige la caja que creas que lo tiene. Si te ofrecen cambiar de caja ¿te quedarías con la tuya? Eso sí, recuerda que participar tiene un coste de puntos</p>
             </div>
             <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.boxesGame.init(3);">3 cajas<br/><small class="red">-3 puntos por participar</small><br/><small class="green">+ 9 puntos si ganas</small></button>
             <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.boxesGame.init(4);">4 cajas<br/><small class="red">-2 puntos por participar</small><br/><small class="green">+ 8 puntos si ganas</small></small></button>
@@ -154,7 +162,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Enhorabuena ¡Has ganado!</h2>
                 <p class="screen-msg">Has conseguido 8 Movipuntos</p>
-                <button onclick="games.displayMainMenu('boxes-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
+                <button onclick="games.boxesGame.showInstructions();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver a jugar</button>
             </div>
         </div>
         <!--Juego 3: Página de has perdido-->
@@ -163,7 +171,7 @@
             <div style="color: #fff; margin-top: 22%;">
                 <h2 class="h2-title">Vaya... No has ganado...</h2>
                 <p class="screen-msg">¡Pero puedes volver a intentarlo!</p>
-                <button onclick="games.displayMainMenu('boxes-game');" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú <span>&#8631;</span></button>
+                <button onclick="games.boxesGame.showInstructions();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver a jugar</button>
             </div>
         </div>
     </div>

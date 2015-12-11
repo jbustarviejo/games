@@ -379,7 +379,11 @@ games.strawsGame = {
             }
 
         } else {
-            $("#straws-lose-screen").show();
+            if(games.userPoints==0){ //Si ya no quedan puntos
+                $("#not-enought-points-screen-2").show();
+            }else{
+                $("#straws-lose-screen").show();
+            }
             $("#lose-sound")[0].play();
         }
     },
@@ -709,8 +713,12 @@ games.cardsGame = {
                 }
                 $("#cards-win-screen").show();
             } else {
+                if(games.userPoints==0){ //Si ya no quedan puntos
+                    $("#not-enought-points-screen-2").show();
+                }else{
+                     $("#cards-lose-screen").show();
+                }
                 $("#lose-sound")[0].play();
-                $("#cards-lose-screen").show();
             }
             $("#theme-audio2")[0].pause();
             //Actualizar puntos
@@ -1030,7 +1038,11 @@ games.boxesGame = {
                 $('#boxes-win-screen').show();
             } else {
                 //Pantalla de has perdido
-                $('#boxes-lose-screen').show();
+                if(games.userPoints==0){ //Si ya no quedan puntos
+                    $("#not-enought-points-screen-2").show();
+                }else{
+                     $('#boxes-lose-screen').show();
+                }
             }
             //Actualizar puntos
             games.updatePoints();
