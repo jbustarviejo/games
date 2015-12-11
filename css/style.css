@@ -1103,10 +1103,29 @@ p.purchased-title{
     top: 0;
     vertical-align: middle;
     width: 50%;
+    overflow: scroll;
 }
-@media all and (max-width: 750px) { 
+.shop-item-container .description-container{
+    position: absolute; 
+    left: 0px; 
+    right: 0px; 
+    margin: 15px auto auto; 
+    top: 0px; 
+    bottom: 0px; 
+    height: 67%;
+}
+.shop-item-container .item-description > h1 {
+    font-size: 23px;
+}
+@media all and (max-width: 1000px) { 
     .shop-item-container>div{
-        height: auto;
+        height: auto !important;
+    }
+}
+@media all and (max-width: 450px) { 
+    .shop-item-container>div button{
+        width: 100%;
+    }
     }
 }
 .sale-container .return-item{
