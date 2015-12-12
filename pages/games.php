@@ -26,15 +26,14 @@
 
     <!--Pantalla de 'No tienes suficientes puntos'--> 
     <div id="not-enought-points-screen" class="screen" style="display: none;">
-        <span class="close-button" onclick="games.hideNotEnoughtPointsScreen();">X</span><br/><br/><br/><br/>
+        <span class="close-button" onclick="games.hideNotEnoughtPointsScreen();">X</span><br/><br/>
         <h2 class="h2-title">No tienes suficientes puntos para este juego :(</h2>
         <p class="screen-msg">Prueba con otro que necesite menos puntos</p>
         <button onclick="games.hideNotEnoughtPointsScreen();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Volver al menú</button>
     </div>
 
     <!--Pantalla de 'Ya no tienes puntos'--> 
-    <div id="not-enought-points-screen-2" class="screen" style="display: none;">
-        <span class="close-button" onclick="games.hideNotEnoughtPointsScreen();">X</span><br/><br/><br/><br/>
+    <div id="not-enought-points-screen-2" class="screen" style="display: none;"><br/><br/>
         <h2 class="h2-title">Vaya... No has ganado y no te quedan puntos...</h2>
         <p class="screen-msg">Pero espera... ¡sólo por ser tú! te vamos a regalar 8 puntos por recargar la página</p>
         <button onclick="location.reload();" class="play-button-game return-button" onmouseover="$('#blop-sound1')[0].play();">Recargar aquí</button>

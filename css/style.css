@@ -151,6 +151,14 @@ header .unlog-button:hover{
         height: auto;
     }
 }
+@media all and (max-width: 800px) { 
+    #user-without-points-dialog h1{
+        font-size: 21px;
+    }
+    #user-without-points-dialog p{
+        font-size: 13px;
+    }
+}
 
 #login-menu-container .input-login {
     border: 1px solid gray;
@@ -434,25 +442,19 @@ footer #pie a {
     width: 25%;
     margin-top: 4%;
     border-radius: 8px;
-    font-size: 1.5vw;
     margin-left: 0.5%;
     margin-right: 0.5%;
     height: 16%;
     background-color: #F8F8F8;
     color: #333;
     font-weight: bold;
+    font-size: 20px;
 }
 #game-container .play-button-game.return-button{
     padding: 1% 1% 2%;
     width: 26%;
 }
-#game-container .play-button-game.return-button span{
-    font-size: 7vw; 
-    line-height: 0; 
-    display: inline;
-}
 #game-container .play-button-game.return-button:hover{
-    font-size: 1.9vw;
     padding-top: 2%;
     width: 32%;
     margin-top: 3.5%;
@@ -465,7 +467,6 @@ footer #pie a {
     color: #ff4444;
 }
 #game-container .play-button-game:hover, #game-container .play-button-game2{
-    font-size: 2vw;
     height: 23%;
     margin-left: 0;
     margin-right: 0;
@@ -473,6 +474,7 @@ footer #pie a {
     padding-bottom: 2%;
     padding-top: 1%;
     width: 28%;
+    font-size: 25px;
 }
 #game-container button{
     cursor:pointer;
@@ -616,11 +618,95 @@ footer #pie a {
     opacity:0.7;
 }
 #game-container .h2-title{
-    font-size: 4vw;
+    font-size: 50px;
 }
- #game-container .screen-msg{
-    font-size: 2vw;
+#game-container .screen-msg{
+    font-size: 23px;
     margin: 0 5%;
+}
+@media all and (max-width: 900px) { 
+    #game-container .h2-title{
+        font-size: 40px;
+    }
+    #game-container .screen-msg{
+        font-size: 20px;
+    }
+    #game-container .play-button-game{
+        font-size: 16px;
+    }
+    #game-container .play-button-game:hover, #game-container .play-button-game-2{
+        font-size: 18px;
+    }
+}
+@media all and (max-width: 740px) { 
+    #game-container .h2-title{
+        font-size: 30px;
+    }
+    #game-container .screen-msg{
+        font-size: 18px;
+    }
+    #game-container .play-button-game{
+        font-size: 13px;
+    }
+    #game-container .play-button-game:hover, #game-container .play-button-game-2{
+        font-size: 15px;
+    }
+}
+@media all and (max-width: 600px) { 
+    #game-container .h2-title{
+        font-size: 30px;
+    }
+    #game-container .screen-msg{
+        font-size: 15px;
+    }
+    #game-container .play-button-game{
+        font-size: 9px;
+    }
+    #game-container .play-button-game:hover, #game-container .play-button-game-2{
+        font-size: 12px;
+    }
+}
+@media all and (max-width: 500px) { 
+    #game-container .h2-title{
+        font-size: 20px;
+    }
+    #game-container .screen-msg{
+        font-size: 12px;
+    }
+    #game-container .play-button-game{
+        font-size: 7px;
+    }
+    #game-container .play-button-game:hover, #game-container .play-button-game-2{
+        font-size: 8px;
+    }
+}
+@media all and (max-width: 400px) { 
+    #game-container .h2-title{
+        font-size: 15px;
+    }
+    #game-container .screen-msg{
+        font-size: 8px;
+    }
+    #game-container .play-button-game{
+        font-size: 5px;
+    }
+    #game-container .play-button-game:hover, #game-container .play-button-game-2{
+        font-size: 7px;
+    }
+}
+@media all and (max-width: 300px) { 
+    #game-container .h2-title{
+        font-size: 12px;
+    }
+    #game-container .screen-msg{
+        font-size: 5px;
+    }
+    #game-container .play-button-game{
+        font-size: 3px;
+    }
+    #game-container .play-button-game:hover, #game-container .play-button-game-2{
+        font-size: 6px;
+    }
 }
 
 /*Flip effects*/
