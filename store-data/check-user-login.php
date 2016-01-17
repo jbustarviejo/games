@@ -26,6 +26,10 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     	//Si el usuario es correcto, coger sus datos
     	if($_COOKIE["games-username"]===$row["id_user"]){
     		$userPoints=$row["points"];
+    		//Registro de página visitada
+    		$sql = "INSERT INTO pagesHistory(`id_user`, `date`, `page`) VALUES ('" . $row["id_user"] . "', '" . date('Y-m-d H:i:s') . "', '".$_SERVER['REQUEST_URI']."')";
+    		$conn->query($sql);
+
     		if($userPoints<=0){
     			//Usuario sin puntos
 				$userWithZeroPoints=true;
