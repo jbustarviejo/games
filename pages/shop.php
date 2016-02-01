@@ -29,7 +29,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
-			    	<a href="/jugar"><button>¡A jugar!</button></a>
+			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
@@ -60,7 +60,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
-			    	<a href="/jugar"><button>¡A jugar!</button></a>
+			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
@@ -99,7 +99,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
-			    	<a href="/jugar"><button>¡A jugar!</button></a>
+			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
@@ -128,7 +128,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
-			    	<a href="/jugar"><button>¡A jugar!</button></a>
+			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
@@ -165,7 +165,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
-			    	<a href="/jugar"><button>¡A jugar!</button></a>
+			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
@@ -195,7 +195,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
-			    	<a href="/jugar"><button>¡A jugar!</button></a>
+			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
 		</div>
