@@ -1,6 +1,6 @@
 <!--Página de inicio de los juegos-->
 <div id="index-container">
-	<h1>Bienvenid@ a la página del Movijuego</h1>
+	<h1>Bienvenid@ a la página de los Movijuegos</h1>
 
 	<p>Juega y consigue Movipuntos para poder cambiarlos por Moviofertas en la <a href="tienda">tienda<a> ¡Ese es el objetivo principal!</p>
 	<p>Tienes para ello <b>tres minijuegos</b> con diferentes tipos de complejidad, cada uno de ellos con distintas recompensas al ganar. Ganando a juegos más complejos lograrás mejores puntuaciones. Cuantos más Movipuntos tengas, ¡mejores Moviofertas conseguirás!</p>

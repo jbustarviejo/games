@@ -96,7 +96,7 @@
         <!--Diálogo de login de usuario-->
         <div id="login-menu-container" <?php echo (!$login ? "style='display:none'" : ""); ?>>
             <div>
-                <h1>¡Bienvenido al Movijuego!</h1>
+                <h1>¡Bienvenido a los Movijuegos!</h1>
                 <p>Para poder participar es necesario estar logado. Introduce tus datos de acceso</p>
                 <input class="input-login login-username" id="login-username" type="text" onkeypress="login.keypressed(event);" placeholder="Introduce tu id de usuario" disabled="disabled" /><br/>
                 <input class="input-login login-password" id="login-password" type="password" onkeypress="login.keypressed(event);" placeholder="Introduce tu contraseña" disabled="disabled" /><br>
@@ -113,8 +113,8 @@
                 <button class="login-button" onclick="login.saveSurvey();">Guardar</button>
             </div>
             <div id="games-goal" style="display:none; height:220px;">
-                <h2>Marca un objetivo para el MoviJuego</h2>
-                <p>En el Movijuego tienes que participar en tres juegos para poder lograr puntos que te permitan adquirir una oferta ficticia. ¿Cuál será tu objetivo inicial? <br/></p>
+                <h2>Marca un objetivo para los MoviJuegos</h2>
+                <p>En los Movijuegos tienes que participar en tres juegos para poder lograr puntos que te permitan adquirir una oferta ficticia. ¿Cuál será tu objetivo inicial? <br/></p>
                 <p>Ve a la tienda y fija un objetivo inicial haciendo click en las ofertas y posteriormente en el botón 'Fijar como objetivo'</p>
                 <button class="login-button" onclick="window.location = '/tienda';">Ir a la tienda</button-->
                  <!--select id="select-goal">
