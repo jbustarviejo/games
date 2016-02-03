@@ -55,7 +55,13 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     		$userName=$row["id_user"];
     		$userToken=$row["security_token"];
     		$surveyAnswer=$row["answer"];
-    		$surveyText=json_encode($row["text_answer"]);
+    		//Si está vacío o es null, dejarlo vacío
+    		if(empty($row["text_answer"]) || $row["text_answer"] == "null"){
+    			$surveyText="";
+    		}else{
+    			$surveyText=json_encode($row["text_answer"]);
+    		}
+    		
     		$login=false;
     		$conn->close();
     		if(empty($row["answer"])){
