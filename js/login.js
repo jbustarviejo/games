@@ -116,7 +116,8 @@ login = {
             url: "/store-data/survey-answer",
             data: {
                 userId: login.userId,
-                answer: $("#games-survey [type=radio]:checked").val()
+                answer: $("#games-survey [type=radio]:checked").val(),
+                text_answer: $("#games-survey #survey-textarea").val(),
             },
             success: function (data) {
                 //Mostrar cuestionario de objetivo
@@ -136,8 +137,9 @@ login = {
     displayGoalDialog: function(){ 
         //Mostrar contenedor de diálogo
         $("#login-menu-container").show().find("div:first").css("height", "350px");;
-        //Esconder diálogo de login
+        //Esconder diálogo de login y encuestas
         $("#login-menu-container>div:first").hide();
+        $("#login-menu-container #games-survey").hide();
         //Mostrar la encuesta
         $("#games-goal").show();    
         //Hacer cronómetro de tiempo

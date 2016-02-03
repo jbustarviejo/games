@@ -15,7 +15,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
 	include("db_connection.php");
 
 	//Obtener datos del usuario por su id y su Token de seguridad
-	$sql="SELECT points, (SELECT answer FROM survey s WHERE s.id_user='".$_COOKIE["games-username"]."' ORDER BY s.date DESC LIMIT 1) as answer, pass, security_token, u.id_user as id_user, (SELECT id_goal FROM user_goal g WHERE g.id_user='".$_COOKIE["games-username"]."' ORDER BY g.date DESC LIMIT 1) as id_goal FROM users u WHERE u.id_user='".$_COOKIE["games-username"]."' AND security_token='".$_COOKIE["games-st"]."' LIMIT 1";
+	$sql="SELECT points, (SELECT answer FROM survey s WHERE s.id_user='".$_COOKIE["games-username"]."' ORDER BY s.date DESC LIMIT 1) as answer, (SELECT text_answer FROM survey s WHERE s.id_user='".$_COOKIE["games-username"]."' ORDER BY s.date DESC LIMIT 1) as text_answer, pass, security_token, u.id_user as id_user, (SELECT id_goal FROM user_goal g WHERE g.id_user='".$_COOKIE["games-username"]."' ORDER BY g.date DESC LIMIT 1) as id_goal FROM users u WHERE u.id_user='".$_COOKIE["games-username"]."' AND security_token='".$_COOKIE["games-st"]."' LIMIT 1";
 	$result = $conn->query($sql);
 
 	//Comprobar usuario
@@ -55,6 +55,7 @@ if(!empty($_COOKIE["games-username"]) && !empty($_COOKIE["games-st"])){
     		$userName=$row["id_user"];
     		$userToken=$row["security_token"];
     		$surveyAnswer=$row["answer"];
+    		$surveyText=json_encode($row["text_answer"]);
     		$login=false;
     		$conn->close();
     		if(empty($row["answer"])){

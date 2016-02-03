@@ -169,6 +169,20 @@ header .unlog-button:hover{
     width: 46%;
 }
 
+#survey-textarea{
+    width: 90%;
+    height: 15%;
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding: 10px;
+}
+
+@media all and (max-width: 1100px) { 
+    #survey-textarea{
+        height: 5%;
+    }
+}
+
 #login-menu-container button, #user-without-points-dialog button{
     background-color: #003245;
     border: 1px solid;

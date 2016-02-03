@@ -9,7 +9,7 @@
 
 	No esperes más y <a href="/juegos">¡Juega ya!</a><br/><br/>
 	<small>* Las Moviofertas son ofertas ficticias, mostradas en esta página con finalidades de investigación. Igualmente, los Movipuntos no representan ningún tipo de cambio real.</small><br/><br/>
-      <small><i>La resolución óptima de la página es para dispositivos con una resolución mayor a los 1000px de ancho. Al utilizar elementos de HTML5 se recomienda un navegador lo más actualizado posible, por ejemplo Mozzilla Firefox 42.0</i></small>
+      <small><i>La resolución óptima de la página es para dispositivos con una resolución mayor a los 1000px de ancho. Al utilizar elementos de HTML5 se recomienda un navegador lo más actualizado posible, por ejemplo Mozzilla Firefox 42.0. Los Movijuegos son compatibles con dispositivos móviles y tablets, pero se recomienda su uso desde un ordenador.</i></small>
 	<img class="main-description-image" ondragstart="return false;" src="/images/general/main-description-image.jpg">
 
 	<!--Recursos a pre-cargar-->

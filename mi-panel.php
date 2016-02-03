@@ -25,13 +25,12 @@ $goalName = getGoalName($idGoal);
 //Encuesta de usuario
 $surveyHTML=<<<HTML
 <div id="games-survey">
-    <h2>Encuesta: ¿Cómo sueles jugar a videojuegos?</h2>
+    <h2>Encuesta: Indica con qué juego te identificas más</h2>
     <form>
-        <input type="radio" name="survey" selected="selected" value="No juego habitualmente" />No juego habitualmente<br/>
-        <input type="radio" name="survey" value="Juego a videojuegos de ordenador" />Juego a videojuegos de ordenador<br/>
-        <input type="radio" name="survey" value="Juego a videojuegos online" />Juego a videojuegos online<br/>
-        <input type="radio" name="survey" value="Juego a videoconsolas" />Juego a videoconsolas<br/>
-    </form>
+        <input type="radio" name="survey" selected="selected" value="Poker" />Poker<br/>
+        <input type="radio" name="survey" value="Ajedrez" />Ajedrez<br/>
+        <input type="radio" name="survey" value="Parchis" />Parchís<br/><br/>
+    </form><textarea id="survey-textarea" placeholder="Escribe ¿Cuáles son tus dos juegos favoritos?"></textarea>
 </div>
 <script>
   //Una vez se haya cargado la página, señalar en la encuesta si hay algo prefijado
@@ -45,7 +44,23 @@ $surveyHTML=<<<HTML
             url: "/store-data/survey-answer",
             data: {
                 userId: login.userId,
-                answer: $("#games-survey [type=radio]:checked").val()
+                answer: $("#games-survey [type=radio]:checked").val(),
+                text_answer: $("#games-survey #survey-textarea").val()
+            }
+        });
+    });
+    //Rellenar texto de encuesta
+    $("#games-survey #survey-textarea").text($surveyText);
+    //En caso de que cambie el texto, se actualiza
+    $("#games-survey #survey-textarea").change(function(){
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/store-data/survey-answer",
+            data: {
+                userId: login.userId,
+                answer: $("#games-survey [type=radio]:checked").val(),
+                text_answer: $("#games-survey #survey-textarea").val()
             }
         });
     });

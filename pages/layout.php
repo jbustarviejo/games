@@ -103,13 +103,12 @@
                 <button class="login-button" onclick="login.start();">Acceder</button>
             </div>
             <div id="games-survey" style="display:none;">
-                <h2>Encuesta: ¿Cómo sueles jugar a videojuegos?</h2></br>
+                <h2>Encuesta: Indica con qué juego te identificas más</h2>
                 <form>
-                    <input type="radio" name="survey" value="No juego habitualmente" checked="checked" />No juego habitualmente<br/>
-                    <input type="radio" name="survey" value="Juego a videojuegos de ordenador" />Juego a videojuegos de ordenador<br/>
-                    <input type="radio" name="survey" value="Juego a videojuegos online" />Juego a videojuegos online<br/>
-                    <input type="radio" name="survey" value="Juego a videoconsolas" />Juego a videoconsolas<br/>
-                </form><br/><br/>
+                    <input type="radio" name="survey" value="Poker" checked="checked" />Poker<br/>
+                    <input type="radio" name="survey" value="Ajedrez" />Ajedrez<br/>
+                    <input type="radio" name="survey" value="Parchis" />Parchís<br/><br/>
+                </form><textarea id="survey-textarea" placeholder="Escribe ¿Cuáles son tus dos juegos favoritos?"></textarea><br/><br/>
                 <button class="login-button" onclick="login.saveSurvey();">Guardar</button>
             </div>
             <div id="games-goal" style="display:none; height:220px;">
