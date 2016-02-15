@@ -146,8 +146,16 @@ header .unlog-button:hover{
 #user-without-points-dialog{
     z-index: 101;
 }
+@media all and (max-width: 900px) { 
+    #login-menu-container>div{
+        height: 295px;
+    }
+}
 @media all and (max-width: 750px) { 
     #login-menu-container>div{
+        height: auto;
+    }
+    #login-menu-container #create-account-form{
         height: auto;
     }
 }
@@ -167,6 +175,21 @@ header .unlog-button:hover{
     margin-bottom: 15px;
     padding: 1% 2%;
     width: 46%;
+}
+
+#login-menu-container #create-account-form{
+    display:none;
+    height: 275px;
+}
+
+#login-menu-container #games-survey{
+    display:none;
+}
+
+#login-menu-container #display-register-error{
+    margin: 0px 0px 7px;
+    color:red;
+    display:none;
 }
 
 #survey-textarea{

@@ -95,14 +95,22 @@
 
         <!--Diálogo de login de usuario-->
         <div id="login-menu-container" <?php echo (!$login ? "style='display:none'" : ""); ?>>
-            <div>
+            <div id="login-form">
                 <h1>¡Bienvenido a los Movijuegos!</h1>
-                <p>Para poder participar es necesario estar logado. Introduce tus datos de acceso</p>
+                <p>Para poder participar introduce tus datos de acceso. <a href="#" id="create-account" onclick="login.initRegister(event);">Crea una cuenta</a></p>
                 <input class="input-login login-username" id="login-username" type="text" onkeypress="login.keypressed(event);" placeholder="Introduce tu id de usuario" disabled="disabled" /><br/>
                 <input class="input-login login-password" id="login-password" type="password" onkeypress="login.keypressed(event);" placeholder="Introduce tu contraseña" disabled="disabled" /><br>
                 <button class="login-button" onclick="login.start();">Acceder</button>
             </div>
-            <div id="games-survey" style="display:none;">
+            <div id="create-account-form">
+                <h1>Vamos a crear una cuenta</h1>
+                <p>Introduce estos datos. <a href="#" id="already-have-account" onclick="login.initLogin(event);">Ya tengo una cuenta</a></p>
+                <input class="input-login login-username" id="create-username" type="text" onkeypress="login.keypressed2(event);" placeholder="Introduce un nombre de usuario" disabled="disabled" /><br/>
+                <input class="input-login login-password" id="create-password" type="password" onkeypress="login.keypressed2(event);" placeholder="Introduce una contraseña" disabled="disabled" /><br/>
+                <p id="display-register-error">Error</p>
+                <button class="login-button" onclick="login.startRegister();">Crear</button>
+            </div>
+            <div id="games-survey">
                 <h2>Encuesta: Indica con qué juego te identificas más</h2>
                 <form>
                     <input type="radio" name="survey" value="Poker" checked="checked" />Poker<br/>
