@@ -82,16 +82,15 @@ var games = {
             }
         }
         games.debug && console.log("Audios cargados, comprobando documento");
-        //Por último comprobar el estado del documento
-        /*if(document.readyState != "complete" || document.readyState != "interactive"){
-            setTimeout(function () {
-                //Si no ha cargado esperar 0.1 s
-                games.initLoadResources();
-            }, 100);
-        }else{*/
-            //Todo cargado. Eliminar página de cargado y poner música
-            games.displayMainMenu("loading-screen");
-        //}
+
+        //Leer cookie de volumen
+        var volume = games.getCookie("games-volume");
+        //Si el volumen está apagado...
+        if(volume=="0"){
+            games.toggleSound(); //Quitar volumen
+        }
+
+        games.displayMainMenu("loading-screen");
     },
     /**
      * Función games.displayMainMenu: Muestra el menú principal, escondiendo la pantalla con la id especificada 
@@ -155,13 +154,21 @@ var games = {
      * Función games.toggleSound: Apagar/encender el sonido
      * @returns {undefined} | No devuelve ningún valor
      **/
-    toogleSound: function () {
+    toggleSound: function () {
         if (this.sound) {
             $("#toggle-sound").attr("src", "/images/general/mute.png");
             $("audio").prop("volume", 0);
+            //Guardar volumen en cookie
+            expiry = new Date();
+            expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
+            document.cookie = "games-volume=0; expires=" + expiry.toGMTString();
         } else {
             $("#toggle-sound").attr("src", "/images/general/sound.png");
             $("audio").prop("volume", 1);
+            //Guardar volumen en cookie
+            expiry = new Date();
+            expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
+            document.cookie = "games-volume=1; expires=" + expiry.toGMTString();
         }
         this.sound = !this.sound;
     },
@@ -232,6 +239,20 @@ var games = {
     updatePoints: function () {
         $(".user-points").show().text("Tienes " + games.userPoints + " Movipuntos");
     },
+    /**
+     * Función games.getCookie: Leer el valor de una cookie
+     * @returns {string} | Devuelve el valor de la cookie esoecificada
+     */
+    getCookie: function(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+        }
+        return "";
+    } 
 };
 /**
  * @Variable games.strawsGame: Contenedor de todas las funciones necesarias para el juego de las cañas

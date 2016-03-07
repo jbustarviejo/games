@@ -9,7 +9,7 @@
 <div id="game-container" style="width: 902px; height: 451px;">
 
     <!--Sonido on/off-->
-    <img id="toggle-sound" onclick="games.toogleSound();" ondragstart="return false;" src="/images/general/sound.png"/>
+    <img id="toggle-sound" onclick="games.toggleSound();" ondragstart="return false;" src="/images/general/sound.png"/>
 
     <!--Pantalla de 'error con inernet'--> 
     <div id="error-screen" class="screen error-screen">

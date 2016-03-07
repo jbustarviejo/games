@@ -1,6 +1,5 @@
 //Una vez se haya cargado la página, permitir el login
 window.onload = function () {
-    //login.checkCookie();
     $(".input-login").removeAttr("disabled");
     $(".login-button").css("opacity", "1");
 };
@@ -95,7 +94,7 @@ login = {
                     $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span> <span class="user-points">Tienes '+data.points+' Movipuntos</span> <img src="images/movistar/user-icon.png"></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>');
                     //Almacenar las cookies
                     expiry = new Date();
-                    expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
+                    expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 10 * 1000));
                     document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
                     document.cookie = "games-st=" + data.token + "; expires=" + expiry.toGMTString();
                     //Si no ha respondido a la encuesta...
@@ -308,7 +307,7 @@ login = {
                     $("#user-pannel").html('<a href="/mis-puntos"><span>Hola '+username+'.</span> <span class="user-points">Tienes '+data.points+' Movipuntos</span> <img src="images/movistar/user-icon.png"></a><a class="unlog-button" title="desconectar" href="/desconectar">X</a>');
                     //Almacenar las cookies
                     expiry = new Date();
-                    expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 6 * 1000));
+                    expiry.setTime(expiry.getTime() + (60 * 60 * 24 * 30 * 10 * 1000));
                     document.cookie = "games-username=" + username + "; expires=" + expiry.toGMTString();
                     document.cookie = "games-st=" + data.token + "; expires=" + expiry.toGMTString();
                     //Si no ha respondido a la encuesta...
