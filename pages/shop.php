@@ -29,6 +29,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
+					<p>Puedes elegir cualquiera de los tres juegos y después cambiar</p>
 			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
@@ -60,6 +61,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
+					<p>Puedes elegir cualquiera de los tres juegos y después cambiar</p>
 			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
@@ -80,7 +82,7 @@
 						<p>Internet 30Mb</p>
 		    			<p>Acceso Cloud a todas las revistas y libros de forma ilimitada</p>
 		    			<p>5 lectores simultáneos</p>
-		    			<p>Garantía de devolución 20 días</p>
+		    			<p><b>Garantía de devolución 20 días</b></p>
 	    				<button class="cancel">Cancelar</button>
 	    				<button class="buy" id="buy-3">Comprar</button>
 	    				<button class="goal" onclick="shop.saveGoal(3)">Fijar como objetivo</button>
@@ -99,6 +101,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
+					<p>Puedes elegir cualquiera de los tres juegos y después cambiar</p>
 			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
@@ -128,6 +131,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
+					<p>Puedes elegir cualquiera de los tres juegos y después cambiar</p>
 			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
@@ -146,7 +150,7 @@
 		                <p>Internet 30Mb</p>
 						<p>Línea fija</p>
 						<p>Movinubico</p>
-		    			<p>Garantía de devolución 20 días</p>
+		    			<p><b>Garantía de devolución 20 días</b></p>
 	    				<button class="cancel">Cancelar</button>
 	    				<button class="buy" id="buy-5">Comprar</button>
 	    				<button class="goal" onclick="shop.saveGoal(5)">Fijar como objetivo</button>
@@ -165,6 +169,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
+					<p>Puedes elegir cualquiera de los tres juegos y después cambiar</p>
 			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>
@@ -195,6 +200,7 @@
 				<div class="item-first-goal">
 					<h1>¡Has fijado tu objetivo!</h1>
 					<p>Ahora, vayamos a jugar</p>
+					<p>Puedes elegir cualquiera de los tres juegos y después cambiar</p>
 			    	<a href="/juegos"><button>¡A jugar!</button></a>
 				</div>
 	        </div>

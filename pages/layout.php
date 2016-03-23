@@ -119,10 +119,11 @@
                 </form><textarea id="survey-textarea" placeholder="Escribe ¿Cuáles son tus dos juegos favoritos?"></textarea><br/><br/>
                 <button class="login-button" onclick="login.saveSurvey();">Guardar</button>
             </div>
-            <div id="games-goal" style="display:none; height:220px;">
+            <div id="games-goal" style="display:none; height:270px;">
                 <h2>Marca un objetivo para los MoviJuegos</h2>
                 <p>En los Movijuegos tienes que participar en tres juegos para poder lograr puntos que te permitan adquirir una oferta ficticia. ¿Cuál será tu objetivo inicial? <br/></p>
                 <p>Ve a la tienda y fija un objetivo inicial haciendo click en las ofertas y posteriormente en el botón 'Fijar como objetivo'</p>
+                <p><b>Tómate su tiempo para elegir la oferta que más te satisfaga</b></p>
                 <button class="login-button" onclick="window.location = '/tienda';">Ir a la tienda</button-->
                  <!--select id="select-goal">
                   <option value="1">Línea Movil: 30Mpts</option>

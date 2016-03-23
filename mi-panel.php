@@ -96,7 +96,7 @@ HTML;
       }
       if($item["canReturn"]==true){
         //Si puede devolver el artículo
-        $canReturn=" - <a href='/tienda'> Artículo en plazo de devolución en tienda</a>";
+        $canReturn=" - <a href='/tienda'> Artículo con posibilidad de devolución en tienda</a>";
       }else{
         $canReturn="";
       }
@@ -136,7 +136,6 @@ $content = <<<HTML
 
         var options = {
           title: 'Historial de Movipuntos',
-          curveType: 'function',
           legend: { position: 'bottom' },
           series: {
             1: { lineDashStyle: [5, 5] },

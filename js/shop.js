@@ -114,6 +114,8 @@ var shop={
                 shop.start_decission = new Date().getTime();
                 if(shop.firstLogin==true){ //Si es la primera vez que se fija el objetivo
                     //Desvanecer diálogo 
+                    $(".sale-container.clicked .item-description").hide();
+                    //Mostrar el nuevo diálogo
                     $(".sale-container.clicked .item-first-goal").show();
                 }else{
                     //Desvanecer diálogo 

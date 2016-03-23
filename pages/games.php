@@ -93,7 +93,7 @@
             <span class="close-button" onclick="games.displayMainMenu('cards-game');">X</span>
             <div>
                 <h2 class="h2-title">Adivina el color</h2>
-                <p class="screen-msg">Se muestran una serie de cartas que tienen dos caras que pueden ser ambas rojas, negras o bien una roja y otra negra. Se mezclarán en un sombrero y se muestra la cara de una de ellas, ¿eres capaz de avidinar el color del reverso?. ¡No te olvides de que hay un coste por participar!</p>
+                <p class="screen-msg">Se muestran una serie de cartas que tienen dos caras que pueden ser ambas rojas, negras o bien una roja y otra negra. Se mezclarán en un sombrero y se muestra la cara de una de ellas, ¿eres capaz de adivinar el color del reverso?. ¡No te olvides de que hay un coste por participar!</p>
             </div>
             <button class="play-button-game" onmouseover="$('#blop-sound1')[0].play();" onclick="games.cardsGame.init(3);">3 cartas<br/><small class="red">-5 puntos por participar</small><br/><small class="green">+ 10 puntos si ganas</small></button>
             <button class="play-button-game" onmouseover="$('#blop-sound2')[0].play();" onclick="games.cardsGame.init(4);">4 cartas<br/><small class="red">-2 puntos por participar</small><br/><small class="green">+ 4 puntos si ganas</small></button>
@@ -103,7 +103,7 @@
         <div id="main-screen-cards-game" class="screen">
             <div id="main-screen-cards-container">
                 <img id="cards-title" src="/images/cards/title1.png"/>
-                <img id="cards-play-button" src="/images/cards/do-click.jpg" ondragstart="return false;" class="play-button cards-play-button"/>
+                <img id="cards-play-button" src="/images/cards/done.jpg" ondragstart="return false;" class="play-button cards-play-button ready-btn" onclick="games.cardsGame.animateCardsToHat();" />
                 <img id="cards-hat" ondragstart="return false;" src="/images/cards/hat.png"/>
                 <div id="final-card" class="card-container smaller">
                     <div class="card" onclick="return false;">

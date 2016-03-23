@@ -490,8 +490,6 @@ games.cardsGame = {
 
             //Restablecer título
             $("#cards-title").attr("src", "/images/cards/title1.png").show();
-            //Restablecer botón
-            $("#cards-play-button").attr("src", "/images/cards/do-click.jpg").removeClass("ready-btn").removeAttr("onclick");
             //Borrar posibles cartas antiguas
             $(".card-container").remove();
             //Borrar estilo del sombrero
@@ -554,8 +552,6 @@ games.cardsGame = {
         $("#card-" + cardNumber).toggleClass("flipped");
         //Se reproduce el sonido de voltearla
         $('#flipCardAudio' + cardNumber)[0].play();
-        //Se habilita el botón de jugar
-        $("#cards-play-button").attr("src", "/images/cards/done.jpg").addClass("ready-btn").attr("onclick", "games.cardsGame.animateCardsToHat();");
         //Registrar un nuevo click
         this.cardsClicks += cardNumber + ",";
     },
