@@ -115,7 +115,7 @@ $content = <<<HTML
 	<div id="points-container">
     <p>Tu objetivo actual: <a href="/tienda">$goalName</a></p>
     $userPurchases
-		<p>Historial de Movipuntos: Tienes $userPoints Movipuntos</p>
+		<p>Historial de Movipuntos: Tienes $userPoints Movipuntos$gifts</p>
 		<script type="text/javascript" src="https://www.google.com/jsapi?autoload={
             'modules':[{
               'name':'visualization',
