@@ -130,7 +130,7 @@ $content = <<<HTML
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Fecha', 'Puntos', 'Objetivo actual'],
+          ['Fecha', 'Puntos',{'type': 'string', 'role': 'style'},'Objetivo actual',{'type': 'string', 'role': 'style'}],
           $jsdata
         ]);
 
@@ -138,10 +138,10 @@ $content = <<<HTML
           title: 'Historial de Movipuntos',
           legend: { position: 'bottom' },
           series: {
+            0: { pointSize: 3, lineDashStyle: [2, 3], color: '#b0cbdb' },
             1: { lineDashStyle: [5, 5] },
            }
         };
-
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
         chart.draw(data, options);

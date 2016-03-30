@@ -435,7 +435,7 @@ function getUserPointsHistory($conn, $userName, $idGoal){
 		          $concept=getGameName($row["concept"]);
 		        }
 		        $table.="<tr><td>".$concept."</td>"."<td>".$row["date"]."</td><td>".$row["points_variation"]."</td><td>".$row["points_result"]."</td></tr>";
-	    		$jsdata.="[new Date('".str_replace(" ", "T", $row["date"])."'),  ".($row["points_result"] == 0 ? "0":$row["points_result"]).", ".-getItemCost("buy-".$idGoal, false)."],";
+	    		$jsdata.="[new Date('".str_replace(" ", "T", $row["date"])."'),  ".($row["points_result"] == 0 ? "0":$row["points_result"]).",  'point { size: 2; fill-color: #31698A;}', ".-getItemCost("buy-".$idGoal, false).", 'point { }'],";
 	    	}else{
 	          $table.="";
 	          $jsdata.="";

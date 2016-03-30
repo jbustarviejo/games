@@ -187,7 +187,7 @@
                         <li class="sinborde">&copy; Movistar</li>
                         <li class="sinborde"><a target="_blank" href="http://www.telefonica.com">Telefónica S.A.</a></li>
                         <li><a target="_blank" href="http://movistar.com/politica_cookies.shtml">Política de cookies</a></li>
-                        <li><a target="_blank"  href="http://movistar.com/proteccion_datos.shtml">Protección de datos</a></li>
+                        <li><a target="_blank"  href="https://zonabeta.movistar.es/condiciones-de-uso">Condiciones de uso</a></li>
                     </ul>
                     <div class="logo-telef">
                         <a target="_blank" href="http://www.telefonica.com"><img alt="logo telefonica" src="/images/movistar/telefonica.png"></a>
