@@ -435,12 +435,28 @@ function getUserPointsHistory($conn, $userName, $idGoal){
 		          $concept=getGameName($row["concept"]);
 		        }
 		        $table.="<tr><td>".$concept."</td>"."<td>".$row["date"]."</td><td>".$row["points_variation"]."</td><td>".$row["points_result"]."</td></tr>";
-	    		$jsdata.="[new Date('".str_replace(" ", "T", $row["date"])."'),  ".($row["points_result"] == 0 ? "0":$row["points_result"]).",  'point { size: 2; fill-color: #31698A;}', ".-getItemCost("buy-".$idGoal, false).", 'point { }'],";
+	    		/*"$jsdata.=[new Date('".str_replace(" ", "T", $row["date"])."'),  ".($row["points_result"] == 0 ? "0":$row["points_result"]).",  'point { size: 2; fill-color: #31698A;}', ".-getItemCost("buy-".$idGoal, false).", 'point { }'],";*/
 	    	}else{
 	          $table.="";
 	          $jsdata.="";
 	      }
 	    }
+
+		$sql='SELECT DATE_FORMAT(date, "%Y-%m-%d") as datee, points_result FROM ((SELECT s.date as date, s.id_user as id_user, s.item_id as concept, s.points_variation as points_variation, s.points_result as points_result FROM shoppingHistory s WHERE id_user = "'.$userName.'") UNION (SELECT h.date as date, h.id_user as id_user, h.game as concept, h.points_variation as points_variation, h.points_result as points_result FROM gamesHistory h WHERE id_user = "'.$userName.'" AND h.points_variation != 0) order by date DESC) as t GROUP BY datee;';
+
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0) {
+			$last_date=null;
+		    //Datos encontrados
+		    while($row = $result->fetch_assoc()) {
+		    	if(empty($last_date)){
+		    		$last_date=$row["datee"];
+		    	}
+		    	$jsdata.="[new Date('".str_replace(" ", "T", $row["datee"])."'), ".$row["points_result"].", ".-getItemCost("buy-".$idGoal, false)."],";
+			}
+		}
+
 	} else {
 		$conn->close();
 	  	$table="";

@@ -130,15 +130,15 @@ $content = <<<HTML
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Fecha', 'Puntos',{'type': 'string', 'role': 'style'},'Objetivo actual',{'type': 'string', 'role': 'style'}],
+          ['Fecha', 'Puntos','Objetivo actual'],
           $jsdata
         ]);
 
         var options = {
-          title: 'Historial de Movipuntos',
+          title: 'Variaciones de Movipuntos por días',
           legend: { position: 'bottom' },
           series: {
-            0: { pointSize: 3, lineDashStyle: [2, 3], color: '#b0cbdb' },
+            0: { pointSize: 5},
             1: { lineDashStyle: [5, 5] },
            }
         };
