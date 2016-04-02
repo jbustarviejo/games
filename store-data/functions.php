@@ -442,19 +442,16 @@ function getUserPointsHistory($conn, $userName, $idGoal){
 	      }
 	    }
 
-		$sql='SELECT DATE_FORMAT(date, "%Y-%m-%d") as datee, points_result FROM ((SELECT s.date as date, s.id_user as id_user, s.item_id as concept, s.points_variation as points_variation, s.points_result as points_result FROM shoppingHistory s WHERE id_user = "'.$userName.'") UNION (SELECT h.date as date, h.id_user as id_user, h.game as concept, h.points_variation as points_variation, h.points_result as points_result FROM gamesHistory h WHERE id_user = "'.$userName.'" AND h.points_variation != 0) order by date DESC) as t GROUP BY datee;';
+		$sql='(SELECT IFNULL(SUM(g.points_variation>0),0) as won, IFNULL(SUM(g.points_variation=0),0) as loose, IFNULL(SUM(g.points_variation<0),0) as total, IFNULL((SELECT SUM(points_variation) FROM gamesHistory g WHERE id_user = "'.$userName.'" AND game = "sticksGame" AND points_variation > 0),0) as earned FROM gamesHistory g WHERE id_user = "'.$userName.'" AND game = "sticksGame") UNION (SELECT IFNULL(SUM(g.points_variation>0),0) as won, IFNULL(SUM(g.points_variation=0),0) as loose, IFNULL(SUM(g.points_variation<0),0) as total, IFNULL((SELECT SUM(points_variation) FROM gamesHistory g WHERE id_user = "'.$userName.'" AND game = "cardsGame" AND points_variation > 0),0) as earned FROM gamesHistory g WHERE id_user = "'.$userName.'" AND game = "cardsGame") UNION (SELECT IFNULL(SUM(g.points_variation>0),0) as won, IFNULL(SUM(g.points_variation=0),0) as loose, IFNULL(SUM(g.points_variation<0),0) as total, IFNULL((SELECT SUM(points_variation) FROM gamesHistory g WHERE id_user = "'.$userName.'" AND game = "boxesGame" AND points_variation > 0),0) as earned FROM gamesHistory g WHERE id_user = "'.$userName.'" AND game = "boxesGame")';
 
 		$result = $conn->query($sql);
 
 		if ($result->num_rows > 0) {
-			$last_date=null;
+		    $gameNames=array(0=>"Juego de las cañas",1=>"Juego de las cartas",2=>"Juego de las cajas");
+		    $i=0; 
 		    //Datos encontrados
 		    while($row = $result->fetch_assoc()) {
-		    	if(empty($last_date)){
-		    		$last_date=$row["datee"];
-		    	}
-		    	$jsdata.="[new Date('".str_replace(" ", "T", $row["datee"])."'), ".$row["points_result"].", ".-getItemCost("buy-".$idGoal, false)."],";
-			}
+		    	$jsdata.="<tr><td>".$gameNames[$i++]."</td><td>".$row["won"]."</td><td>".$row["loose"]."</td><td>".$row["total"]."</td><td>".$row["earned"]."</td></tr>";			}
 		}
 
 	} else {

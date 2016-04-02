@@ -116,42 +116,18 @@ $content = <<<HTML
     <p>Tu objetivo actual: <a href="/tienda">$goalName</a></p>
     $userPurchases
 		<p>Historial de Movipuntos: Tienes $userPoints Movipuntos$gifts</p>
-		<script type="text/javascript" src="https://www.google.com/jsapi?autoload={
-            'modules':[{
-              'name':'visualization',
-              'version':'1',
-              'packages':['corechart']
-            }]
-          }">
-        </script>
-
-	<script type="text/javascript">
-      google.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Fecha', 'Puntos','Objetivo actual'],
-          $jsdata
-        ]);
-
-        var options = {
-          title: 'Variaciones de Movipuntos por días',
-          legend: { position: 'bottom' },
-          series: {
-            0: { pointSize: 5},
-            1: { lineDashStyle: [5, 5] },
-           }
-        };
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-        chart.draw(data, options);
-      }
-      $(window).resize(function(){
-  			drawChart();
-	  });
-    </script>
     $surveyHTML
-	<div id="curve_chart" style="width: 100%; height: 500px; text-align: center;">Cargando datos...</div><br/><br/>
+	<div id="curve_chart">
+  <br/><br/>
+   <table style="width:100%">
+       <thead>
+       <td>Juego</td><td>Ganados</td><td>Perdidos</td><td>Total veces jugadas</td><td>Puntos totales ganados</td>
+       </thead>
+       <tbody>
+        $jsdata
+      </tbody>
+    </table>
+  </div><br/><br/>
 		<table style="width:100%">
 			 <thead>
 			 <td>Concepto</td><td>Fecha</td><td>Variación</td><td>Resultado</td>
